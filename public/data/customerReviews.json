@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Alice Johnson",
+    "image": "https://randomuser.me/api/portraits/women/1.jpg",
+    "designation": "Retail Buyer",
+    "comment": "I love how easy it is to find products from reliable managers. The platform is intuitive, and my orders are always delivered on time. It has truly simplified my purchasing process and saved me a lot of time."
+  },
+  {
+    "name": "Michael Smith",
+    "image": "https://randomuser.me/api/portraits/men/2.jpg",
+    "designation": "Wholesale Distributor",
+    "comment": "This marketplace is fantastic! I can quickly browse a wide range of products, place orders, and track delivery without any hassle. The managers are responsive, and the platform is very user-friendly. Highly recommended for bulk buyers."
+  },
+  {
+    "name": "Sophia Lee",
+    "image": "https://randomuser.me/api/portraits/women/3.jpg",
+    "designation": "Online Shop Owner",
+    "comment": "Managing my purchases has never been easier. The platform connects me with trustworthy managers and ensures I get the products I need on time. The interface is clean, and I love the smooth ordering process."
+  },
+  {
+    "name": "David Brown",
+    "image": "https://randomuser.me/api/portraits/men/4.jpg",
+    "designation": "Small Business Owner",
+    "comment": "I appreciate how transparent the process is from posting to delivery. Managers provide clear product details, and the tracking system keeps me informed. It’s a reliable platform for sourcing products efficiently."
+  },
+  {
+    "name": "Emma Wilson",
+    "image": "https://randomuser.me/api/portraits/women/5.jpg",
+    "designation": "Cafe Owner",
+    "comment": "The platform has helped me discover new products and suppliers I wouldn’t have found otherwise. It’s easy to use, and I always get updates on my orders. The customer support is also very helpful when needed."
+  },
+  {
+    "name": "James Taylor",
+    "image": "https://randomuser.me/api/portraits/men/6.jpg",
+    "designation": "Fashion Retailer",
+    "comment": "I’m impressed with how seamless the ordering and delivery process is. Managers upload detailed product info, and I can quickly place orders without confusion. It’s a reliable platform that makes my sourcing much easier."
+  }
+]

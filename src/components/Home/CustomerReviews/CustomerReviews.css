@@ -1,0 +1,24 @@
+@reference '../../../index.css';
+
+.slider .swiper-slide:not(.swiper-slide-active),
+.slider .swiper-slide:not(.swiper-slide-active) {
+  filter: blur(2px);
+  opacity: 0.5;
+}
+
+.slider .swiper-slide-active {
+  box-shadow: 0 2px 10px 0 #0005;
+}
+
+.slider .swiper-slide.swiper-slide-next,
+.slider .swiper-slide.swiper-slide-prev {
+  filter: blur(1px);
+  opacity: 0.9;
+}
+
+.pagination .swiper-pagination-bullet {
+  @apply bg-neutral/50 transition-all duration-300;
+}
+.pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  @apply bg-primary w-6 rounded-full transition-all duration-300;
+}

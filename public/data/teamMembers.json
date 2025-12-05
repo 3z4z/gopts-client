@@ -1,0 +1,38 @@
+[
+  {
+    "image": "https://images2.imgbox.com/7d/ca/O5XD7snX_o.jpg",
+    "name": "Md. Jamshed Hasan",
+    "designation": "Chief Executive Officer",
+    "experience": "10 years"
+  },
+  {
+    "image": "https://images2.imgbox.com/37/1d/rbVw5P2N_o.jpg",
+    "name": "Rafiq Ahmed",
+    "designation": "Chief Technology Officer",
+    "experience": "8 years"
+  },
+  {
+    "image": "https://images2.imgbox.com/6f/3f/iOclC6z1_o.jpg",
+    "name": "Nadia Karim",
+    "designation": "Product Manager",
+    "experience": "6 years"
+  },
+  {
+    "image": "https://images2.imgbox.com/6f/a7/DAWydf9h_o.jpg",
+    "name": "Imran Hossain",
+    "designation": "Lead Software Engineer",
+    "experience": "5 years"
+  },
+  {
+    "image": "https://images2.imgbox.com/86/b9/aHbMcVFI_o.jpg",
+    "name": "Sofia Chowdhury",
+    "designation": "UI/UX Designer",
+    "experience": "4 years"
+  },
+  {
+    "image": "https://images2.imgbox.com/71/49/AhaToYW4_o.jpg",
+    "name": "Tariq Bin Aziz",
+    "designation": "Customer Success Manager",
+    "experience": "3 years"
+  }
+]
