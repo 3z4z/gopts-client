@@ -30,20 +30,20 @@ export default function RegisterPage() {
   } = useForm({
     mode: "all",
     defaultValues: {
-      profileImage: "",
+      image: "",
     },
   });
-  const watchUploadImage = useWatch({ name: "profileImage", control });
+  const watchUploadImage = useWatch({ name: "image", control });
   const handleRegister = async (data) => {
     setIsRegistering(true);
     const formData = new FormData();
     const { password, ...rest } = data;
-    formData.append("profileImage", data.profileImage?.[0]);
+    formData.append("profileImage", data.image?.[0]);
     const res = await axiosInstance.post("/upload", formData);
     const profileImgUrl = await res.data?.profileImgUrl;
     const userData = {
       ...rest,
-      profileImg: profileImgUrl,
+      image: profileImgUrl,
       status: "pending",
     };
     const { user, error } = await signUp(
@@ -82,7 +82,7 @@ export default function RegisterPage() {
             <button
               disabled={isRegistering}
               className="absolute top-2 right-2 cursor-pointer"
-              onClick={() => reset({ ...currentValues, profileImage: "" })}
+              onClick={() => reset({ ...currentValues, image: "" })}
             >
               <IoIosCloseCircle className="w-6 h-6 text-error" />
             </button>
@@ -112,11 +112,11 @@ export default function RegisterPage() {
               </div>
               <input
                 disabled={isRegistering}
-                onClick={() => trigger("profileImage")}
+                onClick={() => trigger("image")}
                 type="file"
                 accept="image/*"
                 className="hidden"
-                {...register("profileImage", {
+                {...register("image", {
                   required: "User image is required",
                 })}
               />

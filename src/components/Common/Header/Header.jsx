@@ -3,6 +3,7 @@ import NavbarComponent from "../Navbar/Navbar";
 
 import { FiMoon, FiSun } from "react-icons/fi";
 import MainLogoComponent from "../MainLogo/MainLogo";
+import UserLoadingSpinnerLoader from "../Loaders/UserLoadingSpinner";
 import { Link } from "react-router";
 import { useAuthStore } from "../../../stores/useAuthStore";
 import { userDdLinks } from "../../../utils/navLinks";
@@ -39,12 +40,12 @@ export default function HeaderComponent() {
         mainColor={"text-primary"}
         subColor={"text-secondary"}
       />
-      <div className="flex items-center gap-8">
+      <div className="flex items-center">
         <NavbarComponent />
         {isAuthLoading ? (
-          <div className="loading loading-spinner"></div>
+          <UserLoadingSpinnerLoader />
         ) : !user ? (
-          <div className="flex gap-2">
+          <div className="flex gap-2 ms-8 me-2">
             <Link
               to={"/auth/login"}
               className="btn btn-primary rounded-full px-5 btn-outline"
@@ -57,15 +58,9 @@ export default function HeaderComponent() {
             >
               Register
             </Link>
-            <button
-              onClick={toggleTheme}
-              className="btn btn-ghost rounded-full p-2.5 h-auto w-auto text-lg"
-            >
-              {themeState === "dark" ? <FiMoon /> : <FiSun />}
-            </button>
           </div>
         ) : (
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-end ms-8 me-2">
             <div
               tabIndex={0}
               role="button"
@@ -107,6 +102,12 @@ export default function HeaderComponent() {
             </ul>
           </div>
         )}
+        <button
+          onClick={toggleTheme}
+          className="btn btn-ghost rounded-full p-2.5 h-auto w-auto text-lg"
+        >
+          {themeState === "dark" ? <FiMoon /> : <FiSun />}
+        </button>
       </div>
     </header>
   );

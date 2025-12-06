@@ -64,7 +64,7 @@ label {
   --color-success: oklch(68% 0.18 150);
   --color-success-content: oklch(20% 0.03 150);
 
-  --color-warning: oklch(82% 0.18 90);
+  --color-warning: oklch(75% 0.22 90);
   --color-warning-content: oklch(22% 0.03 90);
 
   --color-error: oklch(60% 0.25 25);
@@ -90,21 +90,21 @@ label {
   color-scheme: dark;
 
   --color-base-100: oklch(22% 0.03 240);
-  --color-base-200: oklch(18% 0.025 240);
-  --color-base-300: oklch(14% 0.02 240);
+  --color-base-200: oklch(19.5% 0.025 240);
+  --color-base-300: oklch(15% 0.02 240);
   --color-base-content: oklch(92% 0.02 240);
 
   --color-primary: oklch(50% 0.12 260);
   --color-primary-content: oklch(98% 0.015 260);
 
   --color-secondary: oklch(45% 0.12 230);
-  --color-secondary-content: oklch(12% 0.02 230);
+  --color-secondary-content: oklch(98% 0.015 260);
 
   --color-accent: oklch(50% 0.1 210);
   --color-accent-content: oklch(12% 0.02 210);
 
-  --color-neutral: oklch(75% 0.02 240);
-  --color-neutral-content: oklch(90% 0.01 240);
+  --color-neutral: oklch(85% 0.02 240);
+  --color-neutral-content: oklch(25% 0.01 240);
 
   --color-info: oklch(75% 0.15 240);
   --color-success: oklch(70% 0.2 145);
@@ -124,4 +124,12 @@ label {
   --border: 1px;
   --depth: 1;
   --noise: 0;
+}
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
