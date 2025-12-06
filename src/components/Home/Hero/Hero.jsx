@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { container } from "../../../utils/classNames";
 // import heroImg from '../'
 export default function HeroComponent() {
@@ -16,9 +17,12 @@ export default function HeroComponent() {
             finishing), manage teams & supervisors, and ensure every shipment is
             delivered on time — with real-time visibility across your factory.
           </p>
-          <button className="btn btn-primary text-lg rounded-full h-auto py-2.5 px-12">
-            Take a tour
-          </button>
+          <Link
+            to={"/auth/register"}
+            className="btn btn-primary text-lg rounded-full h-auto py-2.5 px-12"
+          >
+            Start your tour
+          </Link>
         </div>
         <figure className="w-full aspect-video bg-base-200 rounded-lg">
           {/* <img src={heroImg} alt="" /> */}

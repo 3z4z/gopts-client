@@ -1,3 +1,6 @@
+import { BiExit } from "react-icons/bi";
+import { FaClipboardUser } from "react-icons/fa6";
+
 export const headerNavLinks = [
   { title: "Home", path: "/" },
   { title: "All Products", path: "/products" },
@@ -10,4 +13,8 @@ export const footerNavLinks = [
   { title: "Privacy & Policy", link: "/privacy-policy" },
   { title: "About Us", link: "/about-us" },
   { title: "FaQ", link: "/faq" },
+];
+
+export const userDdLinks = [
+  { title: "My Orders", path: "/dashboard/my-orders", icon: FaClipboardUser },
 ];
