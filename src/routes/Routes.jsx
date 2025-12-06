@@ -8,11 +8,13 @@ import LoginPage from "../pages/Login/Login";
 import RegisterPage from "../pages/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/Dashboard";
-import DashboardHomePage from "../pages/DashboardHome/DashboardHome";
-import ManageUsersPage from "../pages/Admin/ManageUsers/ManageUsers";
+import DashboardHomePage from "../pages/Dashboard/DashboardHome/DashboardHome";
+import ManageUsersPage from "../pages/Dashboard/Admin/ManageUsers/ManageUsers";
 import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
-import AddProductPage from "../pages/Manager/AddProduct/AddProduct";
+import AddProductPage from "../pages/Dashboard/Manager/AddProduct/AddProduct";
+import ManageProductsPage from "../pages/Dashboard/Common/ManageProducts/ManageProducts";
+import EditProductPage from "../pages/Dashboard/Manager/EditProduct/EditProduct";
 
 export const router = createBrowserRouter([
   {
@@ -70,10 +72,26 @@ export const router = createBrowserRouter([
       },
       // manager routes
       {
+        path: "manage-products",
+        element: (
+          <ManagerRoute>
+            <ManageProductsPage />
+          </ManagerRoute>
+        ),
+      },
+      {
         path: "add-product",
         element: (
           <ManagerRoute>
             <AddProductPage />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "edit-product/:id",
+        element: (
+          <ManagerRoute>
+            <EditProductPage />
           </ManagerRoute>
         ),
       },

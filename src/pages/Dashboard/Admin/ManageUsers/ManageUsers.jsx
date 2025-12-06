@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
-import useAxios from "../../../hooks/useAxios";
-import userUsers from "../../../hooks/userUsers";
+import useAxios from "../../../../hooks/useAxios";
+import userUsers from "../../../../hooks/userUsers";
 import { useRef, useState } from "react";
 
 export default function ManageUsersPage() {
