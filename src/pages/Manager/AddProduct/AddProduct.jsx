@@ -4,14 +4,26 @@ import { useForm, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
 import useCategories from "../../../hooks/useCategories";
+import { axiosInstance } from "../../../utils/axiosInstance";
+import useAxios from "../../../hooks/useAxios";
+import toast from "react-hot-toast";
+import AuthSpinnerLoader from "../../../components/Common/Loaders/AuthSpinner";
+import UploadInfiniteLoader from "../../../components/Common/Loaders/UploadInfinite";
+import { useAuthStore } from "../../../stores/useAuthStore";
 
 export default function AddProductPage() {
+  const [isProductAdding, setIsProductAdding] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
   const { data: categories = [], isLoading } = useCategories();
+  const axios = useAxios();
+  const { user } = useAuthStore();
   const {
     register,
     handleSubmit,
     control,
+    reset,
+    trigger,
+    setValue,
     formState: { errors, isValid },
   } = useForm({
     mode: "all",
@@ -21,8 +33,46 @@ export default function AddProductPage() {
   });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const watchUploadImages = useWatch({ name: "images", control }) || [];
-  const addProduct = (data) => {
-    console.log(data);
+  const addProduct = async (data) => {
+    setIsProductAdding(true);
+    await axios
+      .post("/products/check-duplicate", { name: data?.name })
+      .then(async (res) => {
+        if (res.data?.existed === false) {
+          const formData = new FormData();
+          for (let i = 0; imageFiles.length > i; i++) {
+            formData.append("productImages", imageFiles[i]);
+          }
+          const res = await axiosInstance.post(
+            "/upload/product-images",
+            formData
+          );
+          const productImageUrls = await res.data?.productImageUrls;
+          const productData = {
+            ...data,
+            createdAt: new Date().toISOString(),
+            managerName: user?.displayName,
+            managerEmail: user?.email,
+            minOrderAmount: Number(data.minOrderAmount),
+            images: productImageUrls,
+          };
+          const productRes = await axios.post("/products", productData);
+          if (productRes.status === 201) {
+            toast.success(productRes.data?.message);
+            reset();
+            setImageFiles([]);
+          } else {
+            toast.error(productRes.data?.message);
+          }
+        } else {
+          toast.error(res.data?.message);
+        }
+      })
+      .catch((err) => {
+        toast.error(err);
+        console.log(err);
+      });
+    setIsProductAdding(false);
   };
   useEffect(() => {
     setImageFiles((prev) => [...prev, ...Array.from(watchUploadImages)]);
@@ -36,6 +86,9 @@ export default function AddProductPage() {
 
   const removeImage = (index) => {
     const updatedFiles = imageFiles.filter((_, i) => i !== index);
+    if (updatedFiles.length === 0) {
+      setValue("images", [], { shouldValidate: true });
+    }
     console.log("updatedFiles", updatedFiles);
     setImageFiles(updatedFiles);
   };
@@ -53,6 +106,7 @@ export default function AddProductPage() {
                 <div className="flex flex-col gap-1 flex-1">
                   <label>Product Name</label>
                   <input
+                    disabled={isProductAdding}
                     type="text"
                     className="input w-full"
                     placeholder="Product Name"
@@ -67,6 +121,7 @@ export default function AddProductPage() {
                 <div className="flex flex-col gap-1 flex-1">
                   <label>Product Category</label>
                   <select
+                    disabled={isProductAdding}
                     className="select w-full"
                     defaultValue={"Select a category"}
                     {...register("category", {
@@ -94,6 +149,7 @@ export default function AddProductPage() {
               <div className="flex flex-col gap-1 mb-3">
                 <label>Product Description</label>
                 <textarea
+                  disabled={isProductAdding}
                   rows={6}
                   className="textarea resize-none w-full"
                   placeholder="Product Description"
@@ -113,6 +169,7 @@ export default function AddProductPage() {
                 <div className="flex flex-col gap-1 flex-1">
                   <label>Price in BDT</label>
                   <input
+                    disabled={isProductAdding}
                     type="number"
                     className="input w-full"
                     placeholder="Price in BDT"
@@ -132,10 +189,12 @@ export default function AddProductPage() {
                 <div className="flex flex-col gap-1 flex-1">
                   <label>Available Quantity</label>
                   <input
+                    disabled={isProductAdding}
                     type="number"
                     className="input w-full"
                     placeholder="Available Quantity"
                     {...register("availableQuantity", {
+                      valueAsNumber: true,
                       required: "Available quantity is required",
                       min: {
                         value: 100,
@@ -159,6 +218,7 @@ export default function AddProductPage() {
                       className="cursor-pointer flex items-center gap-2"
                     >
                       <input
+                        disabled={isProductAdding}
                         type="radio"
                         name="quantity"
                         className="radio radio-sm"
@@ -182,6 +242,7 @@ export default function AddProductPage() {
                 <div className="flex flex-col gap-1 flex-1">
                   <label>Payment Method</label>
                   <select
+                    disabled={isProductAdding}
                     className="select w-full"
                     defaultValue={"Select payment method"}
                     {...register("paymentMethod", {
@@ -203,6 +264,7 @@ export default function AddProductPage() {
                 <div className="flex flex-col gap-1 flex-1">
                   <label>Youtube Video Demo</label>
                   <input
+                    disabled={isProductAdding}
                     type="text"
                     className="input w-full"
                     placeholder="https://..."
@@ -211,8 +273,11 @@ export default function AddProductPage() {
               </div>
               <label className="flex items-center cursor-pointer">
                 <input
+                  disabled={isProductAdding}
                   type="checkbox"
                   className="checkbox checkbox-sm checkbox-primary rounded-md"
+                  defaultChecked={false}
+                  {...register("markFeatured", { valueAsBoolean: true })}
                 />
                 <span className="mt-px ms-2">
                   Feature this product on <strong>Home Page</strong>
@@ -233,12 +298,20 @@ export default function AddProductPage() {
                     </p>
                   </div>
                   <input
+                    disabled={isProductAdding}
+                    onClick={() => trigger("images")}
                     type="file"
                     accept="image/*"
                     className="hidden"
                     multiple
                     onChange={handleImageChange}
-                    {...register("images")}
+                    {...register("images", {
+                      required: "Product image is required",
+                      minLength: {
+                        value: 1,
+                        message: "Product image is required",
+                      },
+                    })}
                   />
                 </label>
                 {imageFiles.map((image, index) => (
@@ -251,7 +324,9 @@ export default function AddProductPage() {
                       alt=""
                       className="object-contain h-full"
                     />
+                    {isProductAdding && <UploadInfiniteLoader />}
                     <button
+                      type="button"
                       className="absolute top-2 right-2 text-error text-2xl cursor-pointer"
                       onClick={() => removeImage(index)}
                     >
@@ -260,9 +335,17 @@ export default function AddProductPage() {
                   </figure>
                 ))}
               </div>
+
+              {errors.images && (
+                <p className="text-error">{errors.images.message}</p>
+              )}
             </div>
           </div>
-          <button className="btn w-max btn-primary h-auto py-2.5 px-8 rounded-full mt-6">
+          <button
+            disabled={!isValid || isProductAdding}
+            className="btn w-max btn-primary h-auto py-2.5 px-8 rounded-full mt-6"
+          >
+            {isProductAdding && <AuthSpinnerLoader />}
             Add Product
           </button>
         </form>

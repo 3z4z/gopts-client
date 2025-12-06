@@ -86,11 +86,7 @@ export default function RegisterPage() {
             >
               <IoIosCloseCircle className="w-6 h-6 text-error" />
             </button>
-            {isRegistering && (
-              <div className="absolute w-full h-full left-0 top-0 bg-base-300/70 flex items-center justify-center">
-                <UploadInfiniteLoader />
-              </div>
-            )}
+            {isRegistering && <UploadInfiniteLoader />}
             <img
               src={URL.createObjectURL(watchUploadImage?.[0])}
               alt=""
