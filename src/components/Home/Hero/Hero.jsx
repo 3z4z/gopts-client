@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { container } from "../../../utils/classNames";
-// import heroImg from '../'
+import heroImg from "../../../assets/gopts-hero.jpg";
 export default function HeroComponent() {
   return (
     <section className="bg-base-100 py-24 mt-24">
@@ -24,8 +24,8 @@ export default function HeroComponent() {
             Start your tour
           </Link>
         </div>
-        <figure className="w-full aspect-video bg-base-200 rounded-lg">
-          {/* <img src={heroImg} alt="" /> */}
+        <figure className="w-full aspect-video bg-base-200 rounded-2xl overflow-hidden shadow-lg shadow-primary/20">
+          <img src={heroImg} alt="" />
         </figure>
       </div>
     </section>

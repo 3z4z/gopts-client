@@ -1,6 +1,12 @@
 import { Outlet } from "react-router";
 import HeaderComponent from "../components/Common/Header/Header";
 import FooterComponent from "../components/Common/Footer/Footer";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/effect-coverflow";
+import "swiper/css/thumbs";
+import "swiper/css/free-mode";
 
 export default function RootLayout() {
   return (

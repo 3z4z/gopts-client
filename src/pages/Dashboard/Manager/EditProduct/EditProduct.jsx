@@ -27,7 +27,6 @@ export default function EditProductPage() {
   });
   useEffect(() => {
     if (product.images && product.images.length > 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setImageFiles(product.images);
     }
   }, [product]);
@@ -74,7 +73,7 @@ export default function EditProductPage() {
         images: finalImageUrls,
       };
 
-      const productRes = await axios.put(`/products/${id}`, productData);
+      const productRes = await axios.patch(`/products/${id}`, productData);
 
       if (productRes.status === 200) {
         toast.success(

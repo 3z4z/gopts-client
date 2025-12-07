@@ -15,6 +15,8 @@ import ManagerRoute from "./ManagerRoute";
 import AddProductPage from "../pages/Dashboard/Manager/AddProduct/AddProduct";
 import ManageProductsPage from "../pages/Dashboard/Common/ManageProducts/ManageProducts";
 import EditProductPage from "../pages/Dashboard/Manager/EditProduct/EditProduct";
+import AllProductsPage from "../pages/Dashboard/Admin/AllProducts/AllProducts";
+import ProductDetailsPage from "../pages/Private/ProductDetails/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
+      },
+      {
+        path: "/products/:id",
+        element: (
+          <PrivateRoute>
+            <ProductDetailsPage />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -67,6 +77,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageUsersPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "all-products",
+        element: (
+          <AdminRoute>
+            <AllProductsPage />
           </AdminRoute>
         ),
       },

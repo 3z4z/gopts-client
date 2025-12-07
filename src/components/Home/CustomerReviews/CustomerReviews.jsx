@@ -10,10 +10,6 @@ import SectionTitleComponent from "../../Common/SectionTitle/SectionTitle";
 import { container } from "../../../utils/classNames";
 import { FaQuoteLeft } from "react-icons/fa6";
 
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import "swiper/css/effect-coverflow";
 import "./CustomerReviews.css";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
