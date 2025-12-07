@@ -10,11 +10,13 @@ import ProductForm from "../Common/ProductForm";
 export default function AddProductPage() {
   const [isProductAdding, setIsProductAdding] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
+  const [formResetKey, setFormResetKey] = useState(0);
   const { data: categories = [], isLoading: isCategoriesLoading } =
     useCategories();
   const axios = useAxios();
   const { user } = useAuthStore();
-  const { reset, setValue, control } = useForm({
+  const { control } = useForm({
     mode: "all",
     defaultValues: {
       images: [],
@@ -26,6 +28,7 @@ export default function AddProductPage() {
   useEffect(() => {
     setImageFiles((prev) => [...prev, ...Array.from(watchUploadImages)]);
   }, [watchUploadImages, setImageFiles]);
+
   const addProduct = async (data) => {
     setIsProductAdding(true);
     await axios
@@ -43,7 +46,6 @@ export default function AddProductPage() {
           const productImageUrls = await res.data?.productImageUrls;
           const productData = {
             ...data,
-            createdAt: new Date().toISOString(),
             managerName: user?.displayName,
             managerEmail: user?.email,
             minOrderAmount: Number(data.minOrderAmount),
@@ -52,8 +54,9 @@ export default function AddProductPage() {
           const productRes = await axios.post("/products", productData);
           if (productRes.status === 201) {
             toast.success(productRes.data?.message);
-            reset();
+            setFormResetKey((prev) => prev + 1);
             setImageFiles([]);
+            setImageUrls([]);
           } else {
             toast.error(productRes.data?.message);
           }
@@ -67,26 +70,26 @@ export default function AddProductPage() {
       });
     setIsProductAdding(false);
   };
+
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
-    setImageFiles((prev) => [...prev, ...Array.from(newFiles)]);
-    console.log("newFiles", imageFiles);
-    console.log("newFiles", newFiles);
+    const getImageUrls = newFiles.map((i) => URL.createObjectURL(i));
+    setImageFiles((prev) => [...prev, ...newFiles]);
+    setImageUrls((prev) => [...prev, ...getImageUrls]);
   };
 
   const removeImage = (index) => {
     const updatedFiles = imageFiles.filter((_, i) => i !== index);
-    if (updatedFiles.length === 0) {
-      setValue("images", [], { shouldValidate: true });
-    }
-    console.log("updatedFiles", updatedFiles);
+    const updatedUrls = imageUrls.filter((_, i) => i !== index);
     setImageFiles(updatedFiles);
+    setImageUrls(updatedUrls);
   };
   return (
     <>
       <h4 className="mb-4 text-3xl">Add a product</h4>
       <div className="bg-base-200 rounded-lg py-8">
         <ProductForm
+          key={formResetKey}
           categories={categories}
           handleImageChange={handleImageChange}
           onSubmit={addProduct}
@@ -94,6 +97,7 @@ export default function AddProductPage() {
           isProductAdding={isProductAdding}
           removeImage={removeImage}
           imageFiles={imageFiles}
+          imageUrls={imageUrls}
           setImageFiles={setImageFiles}
         />
       </div>

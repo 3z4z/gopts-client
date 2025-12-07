@@ -15,8 +15,9 @@ import ManagerRoute from "./ManagerRoute";
 import AddProductPage from "../pages/Dashboard/Manager/AddProduct/AddProduct";
 import ManageProductsPage from "../pages/Dashboard/Common/ManageProducts/ManageProducts";
 import EditProductPage from "../pages/Dashboard/Manager/EditProduct/EditProduct";
-import AllProductsPage from "../pages/Dashboard/Admin/AllProducts/AllProducts";
+import AllProductsAdmin from "../pages/Dashboard/Admin/AllProducts/AllProducts";
 import ProductDetailsPage from "../pages/Private/ProductDetails/ProductDetails";
+import AllProductsPage from "../pages/AllProductsPage/AllProductsPage";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
+      },
+      {
+        path: "/products",
+        Component: AllProductsPage,
       },
       {
         path: "/products/:id",
@@ -84,7 +89,7 @@ export const router = createBrowserRouter([
         path: "all-products",
         element: (
           <AdminRoute>
-            <AllProductsPage />
+            <AllProductsAdmin />
           </AdminRoute>
         ),
       },

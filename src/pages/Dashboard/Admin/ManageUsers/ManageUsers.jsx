@@ -47,7 +47,6 @@ export default function ManageUsersPage() {
   return (
     <>
       <h4 className="text-2xl mb-4">Manage All Users</h4>
-      <p>Total users: {isLoading ? 0 : users.length}</p>
       <div className="flex justify-between">
         <input
           type="search"
@@ -75,7 +74,7 @@ export default function ManageUsersPage() {
         <table className="table">
           <thead className="bg-base-300">
             <tr>
-              <th>Sl no.</th>
+              <th>Sl no</th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>

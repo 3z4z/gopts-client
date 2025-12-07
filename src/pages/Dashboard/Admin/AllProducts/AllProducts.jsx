@@ -1,20 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/useAxios";
 import toast from "react-hot-toast";
+import useProducts from "../../../../hooks/useProducts";
+import { useState } from "react";
+import useCategories from "../../../../hooks/useCategories";
 
-export default function AllProductsPage() {
+export default function AllProductsAdmin() {
   const axios = useAxios();
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
   const {
     data: products = [],
     isLoading,
     refetch,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const res = await axios.get("/products");
-      return res.data;
-    },
-  });
+  } = useProducts({ search: search, category: category });
+  const { data: categories = [], isLoading: isCategoriesLoading } =
+    useCategories();
   const updateFeatureStatus = async (product) => {
     const status = { markFeatured: product.markFeatured };
     if (product.markFeatured) {
@@ -36,7 +36,36 @@ export default function AllProductsPage() {
   };
   return (
     <>
-      <p>this is all products {products.length}</p>
+      <h4 className="text-2xl mb-4">Manage all products</h4>
+      <div className="flex justify-between">
+        <input
+          type="search"
+          className="input"
+          placeholder="Search"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select
+          defaultValue={""}
+          className="select"
+          onChange={(e) => {
+            setCategory(
+              e.target.value === "Select category" ? "" : e.target.value
+            );
+            refetch();
+          }}
+        >
+          <option value="Select category">Select category</option>
+          {isCategoriesLoading ? (
+            <option>Loading...</option>
+          ) : (
+            categories.map((c) => (
+              <option key={c._id} value={c.name}>
+                {c.name}
+              </option>
+            ))
+          )}
+        </select>
+      </div>
       {isLoading ? (
         <p>Loading...</p>
       ) : products.length > 0 ? (
@@ -55,7 +84,7 @@ export default function AllProductsPage() {
             </thead>
             <tbody>
               {products.map((p, i) => (
-                <tr key={p._id}>
+                <tr key={p._id} className="even:bg-base-200">
                   <td>{i + 1}</td>
                   <td>
                     <figure className="w-12 h-12 flex items-center justify-center border border-primary/25 rounded-sm overflow-hidden">
@@ -71,6 +100,10 @@ export default function AllProductsPage() {
                   <td>{p.category}</td>
                   <td>{p.managerName}</td>
                   <td>
+                    <button className="btn btn-sm btn-info me-2">Update</button>
+                    <button className="btn btn-sm btn-error me-2">
+                      Delete
+                    </button>
                     <button
                       className="btn btn-sm"
                       onClick={() => updateFeatureStatus(p)}

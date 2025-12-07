@@ -50,6 +50,18 @@ export default function ProductForm({
         paymentMethod: product.paymentMethod,
         images: product.images,
       });
+    } else {
+      reset({
+        name: "",
+        category: "Select a category",
+        description: "",
+        price: null,
+        availableQuantity: null,
+        minOrderAmount: "50",
+        markFeatured: "",
+        paymentMethod: "Select payment method",
+        images: [],
+      });
     }
   }, [product, reset]);
 
