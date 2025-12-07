@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./ProductDetails.css";
+import useRole from "../../../hooks/useRole";
 export default function ProductDetailsPage() {
   useEffect(() => {
     window.scrollTo({
@@ -15,6 +16,7 @@ export default function ProductDetailsPage() {
   }, []);
   const { id } = useParams();
   const axios = useAxios();
+  const { role } = useRole();
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const { data: product = {}, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -29,7 +31,10 @@ export default function ProductDetailsPage() {
     <div className={`${container} mt-24`}>
       <div className="grid grid-cols-3">
         <div className="col-span-2">
-          <h1 className="text-4xl">{product?.name}</h1>
+          <h1 className="text-4xl mb-6">{product?.name}</h1>
+          {role?.role?.toLowerCase() === "buyer" && (
+            <button className="btn btn-primary">Book Now</button>
+          )}
         </div>
         <div>
           {product.images.length > 1 ? (

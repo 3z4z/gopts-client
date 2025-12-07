@@ -18,6 +18,7 @@ import EditProductPage from "../pages/Dashboard/Manager/EditProduct/EditProduct"
 import AllProductsAdmin from "../pages/Dashboard/Admin/AllProducts/AllProducts";
 import ProductDetailsPage from "../pages/Private/ProductDetails/ProductDetails";
 import AllProductsPage from "../pages/AllProductsPage/AllProductsPage";
+import AdminOrManagerRoute from "./AdminOrManagerRoute";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,15 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      // admin + manager routes
+      {
+        path: "edit-product/:id",
+        element: (
+          <AdminOrManagerRoute>
+            <EditProductPage />
+          </AdminOrManagerRoute>
+        ),
+      },
       // manager routes
       {
         path: "manage-products",
@@ -107,14 +117,6 @@ export const router = createBrowserRouter([
         element: (
           <ManagerRoute>
             <AddProductPage />
-          </ManagerRoute>
-        ),
-      },
-      {
-        path: "edit-product/:id",
-        element: (
-          <ManagerRoute>
-            <EditProductPage />
           </ManagerRoute>
         ),
       },

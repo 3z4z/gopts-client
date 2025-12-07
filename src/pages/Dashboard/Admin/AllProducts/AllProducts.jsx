@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import useProducts from "../../../../hooks/useProducts";
 import { useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
+import { Link } from "react-router";
+import { handleProductDelete } from "../../../../utils/handleDeleteProduct";
 
 export default function AllProductsAdmin() {
   const axios = useAxios();
@@ -12,7 +14,10 @@ export default function AllProductsAdmin() {
     data: products = [],
     isLoading,
     refetch,
-  } = useProducts({ search: search, category: category });
+  } = useProducts({
+    search: search,
+    category: category,
+  });
   const { data: categories = [], isLoading: isCategoriesLoading } =
     useCategories();
   const updateFeatureStatus = async (product) => {
@@ -68,7 +73,7 @@ export default function AllProductsAdmin() {
       </div>
       {isLoading ? (
         <p>Loading...</p>
-      ) : products.length > 0 ? (
+      ) : products.result.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">
             <thead className="bg-base-300">
@@ -83,7 +88,7 @@ export default function AllProductsAdmin() {
               </tr>
             </thead>
             <tbody>
-              {products.map((p, i) => (
+              {products.result.map((p, i) => (
                 <tr key={p._id} className="even:bg-base-200">
                   <td>{i + 1}</td>
                   <td>
@@ -100,8 +105,16 @@ export default function AllProductsAdmin() {
                   <td>{p.category}</td>
                   <td>{p.managerName}</td>
                   <td>
-                    <button className="btn btn-sm btn-info me-2">Update</button>
-                    <button className="btn btn-sm btn-error me-2">
+                    <Link
+                      className="btn btn-sm btn-info me-2"
+                      to={`/dashboard/edit-product/${p._id}`}
+                    >
+                      Update
+                    </Link>
+                    <button
+                      className="btn btn-sm btn-error me-2"
+                      onClick={() => handleProductDelete(p, axios, refetch)}
+                    >
                       Delete
                     </button>
                     <button

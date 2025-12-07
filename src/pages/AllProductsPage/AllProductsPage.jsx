@@ -1,4 +1,6 @@
 import { Link } from "react-router";
+import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
+
 import SectionTitleComponent from "../../components/Common/SectionTitle/SectionTitle";
 import useProducts from "../../hooks/useProducts";
 import { container } from "../../utils/classNames";
@@ -10,6 +12,9 @@ export default function AllProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sort, setSort] = useState("");
   const [time, setTime] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [skip, setSkip] = useState(0);
+  const limit = 6;
 
   const { data: products = [], isLoading } = useProducts({
     search: search,
@@ -17,9 +22,13 @@ export default function AllProductsPage() {
     fields: "name,images,category,price,availableQuantity,createdAt",
     sort: sort,
     time: time,
+    limit: limit,
+    skip: skip,
   });
+
   const { data: categories = [], isLoading: isCategoryLoading } =
     useCategories();
+  const totalPages = Math.ceil(products?.count / limit);
   return (
     <div className={`${container} mt-36`}>
       <SectionTitleComponent
@@ -99,19 +108,61 @@ export default function AllProductsPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
             <div>
-              <div className="join">
-                <button className="join-item btn">1</button>
-                <button className="join-item btn btn-active">2</button>
-                <button className="join-item btn">3</button>
-                <button className="join-item btn">4</button>
-              </div>
+              {totalPages > 0 && products.count > limit ? (
+                <div className="join">
+                  <button
+                    disabled={skip <= 0}
+                    onClick={() => {
+                      setSkip(currentPage * limit - limit);
+                      setCurrentPage(currentPage - 1);
+                    }}
+                    className="join-item btn"
+                  >
+                    <IoChevronBackOutline />
+                  </button>
+                  {isLoading ? (
+                    <button disabled className="join-item btn">
+                      <span className="loading loading-dots loading-xs text-primary/50"></span>
+                    </button>
+                  ) : (
+                    [
+                      ...Array(totalPages)
+                        .keys()
+                        .map((i) => (
+                          <button
+                            onClick={() => {
+                              setSkip(i * limit);
+                              setCurrentPage(i);
+                            }}
+                            key={i}
+                            className={`join-item btn ${
+                              currentPage === i && "btn-primary"
+                            }`}
+                          >
+                            {i + 1}
+                          </button>
+                        )),
+                    ]
+                  )}
+                  <button
+                    disabled={currentPage >= totalPages - 1}
+                    onClick={() => {
+                      setSkip(currentPage * limit + limit);
+                      setCurrentPage(currentPage + 1);
+                    }}
+                    className="join-item btn"
+                  >
+                    <IoChevronForwardOutline />
+                  </button>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="grid grid-cols-3 gap-6">
             {isLoading ? (
               <p>Loading...</p>
-            ) : products.length > 0 ? (
-              products.map((product) => (
+            ) : products.result.length > 0 ? (
+              products.result.map((product) => (
                 <div
                   key={product._id}
                   className="p-4.5 shadow rounded-lg cursor-pointer hover:bg-base-200/50 bg-base-200/35 transition-all flex flex-col border border-base-200"

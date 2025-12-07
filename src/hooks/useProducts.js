@@ -1,14 +1,47 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxios from "./useAxios";
+import { axiosInstance } from "../utils/axiosInstance";
 
-export default function useProducts({ search, category, fields, sort, time }) {
-  const axios = useAxios();
+export default function useProducts({
+  search,
+  featured,
+  category,
+  fields,
+  sort,
+  time,
+  skip,
+  limit,
+}) {
   return useQuery({
-    queryKey: ["products", search, category, fields, sort, time],
+    queryKey: [
+      "products",
+      featured,
+      search,
+      category,
+      fields,
+      sort,
+      time,
+      skip,
+      limit,
+    ],
     queryFn: async () => {
-      const res = await axios.get(
-        `/products?category=${category}&search=${search}&fields=${fields}&sort=${sort}&time=${time}`
+      const query = {
+        search,
+        featured,
+        category,
+        fields,
+        sort,
+        time,
+        skip,
+        limit,
+      };
+      const filteredQuery = Object.fromEntries(
+        Object.entries(query).filter(
+          ([_, value]) => value !== undefined && value !== ""
+        )
       );
+      const params = new URLSearchParams(filteredQuery);
+
+      const res = await axiosInstance.get(`/products?${params.toString()}`);
       return res.data;
     },
   });

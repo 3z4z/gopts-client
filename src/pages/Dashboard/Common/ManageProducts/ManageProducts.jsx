@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link } from "react-router";
 import { useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
+import { handleProductDelete } from "../../../../utils/handleDeleteProduct";
 
 export default function ManageProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -26,27 +27,6 @@ export default function ManageProductsPage() {
   });
   const { data: categories = [], isLoading: isCategoriesLoading } =
     useCategories();
-  const handleProductDelete = (product) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await axios.delete(`/products/${product._id}`);
-        refetch();
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-        });
-      }
-    });
-  };
   const updateProduct = () => {};
   return (
     <>
@@ -82,7 +62,7 @@ export default function ManageProductsPage() {
       </div>
       {isLoading ? (
         <p>Loading...</p>
-      ) : products.length > 0 ? (
+      ) : products.result.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">
             <thead className="bg-base-300">
@@ -96,7 +76,7 @@ export default function ManageProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {products.map((p, i) => (
+              {products.result.map((p, i) => (
                 <tr key={i} className="even:bg-base-200">
                   <td>{i + 1}</td>
                   <td>
@@ -125,7 +105,7 @@ export default function ManageProductsPage() {
                       </Link>
                       <button
                         className="btn btn-sm"
-                        onClick={() => handleProductDelete(p)}
+                        onClick={() => handleProductDelete(p, axios, refetch)}
                       >
                         Delete
                       </button>
