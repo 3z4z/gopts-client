@@ -12,6 +12,7 @@ export default function EditProductPage() {
   const axios = useAxios();
   const [isProductEditing, setIsProductEditing] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
   const {
     data: product = {},
@@ -27,18 +28,23 @@ export default function EditProductPage() {
   });
   useEffect(() => {
     if (product.images && product.images.length > 0) {
+      setImageUrls(product.images);
       setImageFiles(product.images);
     }
   }, [product]);
-  const handleImageChange = (e, setValue) => {
+
+  const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
+    const objImageUrls = newFiles.map((f) => URL.createObjectURL(f));
+    setImageUrls((prev) => [...prev, ...objImageUrls]);
     setImageFiles((prev) => [...prev, ...newFiles]);
-    setValue("images", e.target.files, { shouldValidate: true });
   };
 
   const removeImage = (index) => {
     const updatedFiles = imageFiles.filter((_, i) => i !== index);
+    const updatedUrls = imageUrls.filter((_, i) => i !== index);
     setImageFiles(updatedFiles);
+    setImageUrls(updatedUrls);
   };
   const editProduct = async (data) => {
     setIsProductEditing(true);
@@ -72,9 +78,11 @@ export default function EditProductPage() {
         minOrderAmount: Number(data.minOrderAmount),
         images: finalImageUrls,
       };
+      console.log("productData", productData);
 
       const productRes = await axios.patch(`/products/${id}`, productData);
 
+      console.log("productRes", productRes);
       if (productRes.status === 200) {
         toast.success(
           productRes.data?.message || "Product updated successfully!"
@@ -114,6 +122,7 @@ export default function EditProductPage() {
           handleImageChange={handleImageChange}
           isProductAdding={isProductEditing}
           setImageFiles={setImageFiles}
+          imageUrls={imageUrls}
           imageFiles={imageFiles}
         />
       </div>

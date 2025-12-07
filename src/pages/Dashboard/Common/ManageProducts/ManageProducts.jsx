@@ -3,8 +3,12 @@ import { useAuthStore } from "../../../../stores/useAuthStore";
 import useAxios from "../../../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
+import { useState } from "react";
+import useCategories from "../../../../hooks/useCategories";
 
 export default function ManageProductsPage() {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const { user } = useAuthStore();
   const axios = useAxios();
   const {
@@ -12,12 +16,16 @@ export default function ManageProductsPage() {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["products", user?.email],
+    queryKey: ["products", user?.email, searchValue, selectedCategory],
     queryFn: async () => {
-      const res = await axios.get(`/products?email=${user?.email}`);
+      const res = await axios.get(
+        `/products?email=${user?.email}&search=${searchValue}&category=${selectedCategory}`
+      );
       return res.data;
     },
   });
+  const { data: categories = [], isLoading: isCategoriesLoading } =
+    useCategories();
   const handleProductDelete = (product) => {
     Swal.fire({
       title: "Are you sure?",
@@ -43,6 +51,35 @@ export default function ManageProductsPage() {
   return (
     <>
       <h4 className="text-3xl mb-4">Manage your products</h4>
+      <div className="flex justify-between">
+        <input
+          type="search"
+          className="input"
+          placeholder="Search"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <select
+          defaultValue={""}
+          className="select"
+          onChange={(e) => {
+            setSelectedCategory(
+              e.target.value === "Select category" ? "" : e.target.value
+            );
+            refetch();
+          }}
+        >
+          <option value="Select category">Select category</option>
+          {isCategoriesLoading ? (
+            <option>Loading...</option>
+          ) : (
+            categories.map((c) => (
+              <option key={c._id} value={c.name}>
+                {c.name}
+              </option>
+            ))
+          )}
+        </select>
+      </div>
       {isLoading ? (
         <p>Loading...</p>
       ) : products.length > 0 ? (
@@ -71,7 +108,10 @@ export default function ManageProductsPage() {
                       />
                     </figure>
                   </td>
-                  <td>{p.name}</td>
+                  <td>
+                    <p className="font-bold">{p.name}</p>
+                    <p>Cat: {p.category}</p>
+                  </td>
                   <td>{p.price}</td>
                   <td>{p.paymentMethod}</td>
                   <td>

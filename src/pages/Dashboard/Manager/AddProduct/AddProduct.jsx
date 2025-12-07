@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { useEffect, useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
 import { axiosInstance } from "../../../../utils/axiosInstance";
 import useAxios from "../../../../hooks/useAxios";
@@ -14,12 +14,18 @@ export default function AddProductPage() {
     useCategories();
   const axios = useAxios();
   const { user } = useAuthStore();
-  const { reset, setValue } = useForm({
+  const { reset, setValue, control } = useForm({
     mode: "all",
     defaultValues: {
       images: [],
     },
   });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const watchUploadImages = useWatch({ name: "images", control }) || [];
+
+  useEffect(() => {
+    setImageFiles((prev) => [...prev, ...Array.from(watchUploadImages)]);
+  }, [watchUploadImages, setImageFiles]);
   const addProduct = async (data) => {
     setIsProductAdding(true);
     await axios
@@ -63,8 +69,9 @@ export default function AddProductPage() {
   };
   const handleImageChange = (e) => {
     const newFiles = Array.from(e.target.files);
-    setImageFiles(Array.from(newFiles));
+    setImageFiles((prev) => [...prev, ...Array.from(newFiles)]);
     console.log("newFiles", imageFiles);
+    console.log("newFiles", newFiles);
   };
 
   const removeImage = (index) => {

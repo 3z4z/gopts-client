@@ -12,6 +12,5 @@ export default function useRole() {
       return res.data;
     },
   });
-  console.log("role", role.role);
   return { isLoading, role };
 }

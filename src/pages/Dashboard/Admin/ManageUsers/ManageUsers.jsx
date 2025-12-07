@@ -1,10 +1,20 @@
 import { useQueryClient } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/useAxios";
-import userUsers from "../../../../hooks/userUsers";
+import useUsers from "../../../../hooks/useUsers";
 import { useRef, useState } from "react";
 
 export default function ManageUsersPage() {
-  const { data: users = [], isLoading, refetch } = userUsers();
+  const [selectedRole, setSelectedRole] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  console.log("selectedRole", selectedRole);
+  const {
+    data: users = [],
+    isLoading,
+    refetch,
+  } = useUsers({
+    role: selectedRole,
+    search: searchValue,
+  });
   const [selectedUser, setSelectedUser] = useState(null);
   const queryClient = useQueryClient();
   const axios = useAxios();
@@ -33,19 +43,32 @@ export default function ManageUsersPage() {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <>
       <h4 className="text-2xl mb-4">Manage All Users</h4>
       <p>Total users: {isLoading ? 0 : users.length}</p>
       <div className="flex justify-between">
-        <input type="search" className="input" placeholder="Search" />
-        <select defaultValue={"Select user type"} className="select">
+        <input
+          type="search"
+          className="input"
+          placeholder="Search"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <select
+          defaultValue={"Select user type"}
+          className="select"
+          onChange={(e) => {
+            setSelectedRole(e.target.value);
+            refetch();
+          }}
+        >
           <option value="Select user type" disabled>
             Select user type
           </option>
-          <option value="admin">Admin</option>
-          <option value="manager">Manager</option>
-          <option value="buyer">Buyer</option>
+          <option value="Admin">Admin</option>
+          <option value="Manager">Manager</option>
+          <option value="Buyer">Buyer</option>
         </select>
       </div>
       <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">

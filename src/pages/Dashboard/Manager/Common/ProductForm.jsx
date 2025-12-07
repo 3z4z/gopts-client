@@ -1,4 +1,4 @@
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { container } from "../../../../utils/classNames";
 import UploadInfiniteLoader from "../../../../components/Common/Loaders/UploadInfinite";
 import { IoMdCloseCircle } from "react-icons/io";
@@ -13,37 +13,45 @@ export default function ProductForm({
   categories = [],
   isCategoriesLoading,
   handleImageChange,
-  setImageFiles,
-  imageFiles = [],
   removeImage,
+  imageUrls = [],
 }) {
   const {
     register,
     handleSubmit,
     trigger,
-    control,
     setValue,
+    reset,
     formState: { errors, isValid },
   } = useForm({
     mode: "all",
     defaultValues: {
-      name: product?.name || "",
-      category: product?.category || "Select a category",
-      description: product?.description || "",
-      price: product?.price || null,
-      availableQuantity: product?.availableQuantity || null,
-      minOrderAmount: product?.minOrderAmount || "50",
-      markFeatured: product?.markFeatured || false,
-      paymentMethod: product?.paymentMethod || "Select payment method",
-      images: product?.images || [],
+      name: "",
+      category: "Select a category",
+      description: "",
+      price: null,
+      availableQuantity: null,
+      minOrderAmount: "50",
+      markFeatured: false,
+      paymentMethod: "Select payment method",
+      images: [],
     },
   });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const watchUploadImages = useWatch({ name: "images", control }) || [];
-
   useEffect(() => {
-    setImageFiles((prev) => [...prev, ...Array.from(watchUploadImages)]);
-  }, [watchUploadImages, setImageFiles]);
+    if (product && product._id) {
+      reset({
+        name: product.name,
+        category: product.category,
+        description: product.description,
+        price: product.price,
+        availableQuantity: product.availableQuantity,
+        minOrderAmount: product.minOrderAmount,
+        markFeatured: product.markFeatured,
+        paymentMethod: product.paymentMethod,
+        images: product.images,
+      });
+    }
+  }, [product, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`fieldset ${container}`}>
@@ -248,16 +256,9 @@ export default function ProductForm({
                 className="hidden"
                 multiple
                 onChange={handleImageChange}
-                {...register("images", {
-                  required: "Product image is required",
-                  minLength: {
-                    value: 1,
-                    message: "Product image is required",
-                  },
-                })}
               />
             </label>
-            {imageFiles.map((image, index) => (
+            {imageUrls.map((image, index) => (
               <figure
                 key={index}
                 className="h-40 w-full overflow-hidden flex items-center justify-center border border-primary/20 rounded-lg relative"
