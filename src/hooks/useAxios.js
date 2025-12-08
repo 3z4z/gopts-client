@@ -21,8 +21,9 @@ export default function useAxios() {
       (err) => {
         const status = err?.response?.status;
         if (status === 401 || status === 403 || status === 404) {
-          signOut();
-          navigate("/auth/login");
+          // signOut();
+          // navigate("/auth/login");
+          console.log(err);
         }
         return Promise.reject(err);
       }

@@ -10,6 +10,7 @@ export default function useProducts({
   time,
   skip,
   limit,
+  payMethod,
 }) {
   return useQuery({
     queryKey: [
@@ -22,6 +23,7 @@ export default function useProducts({
       time,
       skip,
       limit,
+      payMethod,
     ],
     queryFn: async () => {
       const query = {
@@ -33,6 +35,7 @@ export default function useProducts({
         time,
         skip,
         limit,
+        payMethod,
       };
       const filteredQuery = Object.fromEntries(
         Object.entries(query).filter(

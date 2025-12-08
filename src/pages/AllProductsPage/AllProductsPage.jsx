@@ -12,6 +12,7 @@ export default function AllProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sort, setSort] = useState("");
   const [time, setTime] = useState("");
+  const [payMethod, setPayMethod] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [skip, setSkip] = useState(0);
   const limit = 6;
@@ -19,11 +20,13 @@ export default function AllProductsPage() {
   const { data: products = [], isLoading } = useProducts({
     search: search,
     category: selectedCategory,
-    fields: "name,images,category,price,availableQuantity,createdAt",
+    fields:
+      "name,images,category,price,availableQuantity,createdAt,paymentMethod",
     sort: sort,
     time: time,
     limit: limit,
     skip: skip,
+    payMethod: payMethod,
   });
 
   const { data: categories = [], isLoading: isCategoryLoading } =
@@ -97,6 +100,18 @@ export default function AllProductsPage() {
                 <option value="last-month">Last 1 month</option>
               </select>
             </div>
+            <select
+              className="select my-3"
+              onChange={(e) =>
+                setPayMethod(
+                  e.target.value === "Select an option" ? "" : e.target.value
+                )
+              }
+            >
+              <option value="Select an option">Select an option</option>
+              <option value="cod">Cash on delivery</option>
+              <option value="stripe">Stripe</option>
+            </select>
           </div>
         </div>
         <div className="col-span-3">

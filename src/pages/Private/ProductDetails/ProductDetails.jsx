@@ -1,12 +1,11 @@
-import { useParams } from "react-router";
-import useAxios from "../../../hooks/useAxios";
-import { useQuery } from "@tanstack/react-query";
+import { Link, useParams } from "react-router";
 import { container } from "../../../utils/classNames";
 import { useEffect, useState } from "react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./ProductDetails.css";
 import useRole from "../../../hooks/useRole";
+import useProduct from "../../../hooks/useProduct";
 export default function ProductDetailsPage() {
   useEffect(() => {
     window.scrollTo({
@@ -15,17 +14,9 @@ export default function ProductDetailsPage() {
     });
   }, []);
   const { id } = useParams();
-  const axios = useAxios();
   const { role } = useRole();
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const { data: product = {}, isLoading } = useQuery({
-    queryKey: ["product", id],
-    queryFn: async () => {
-      const res = await axios.get(`/products/${id}`);
-      return res.data;
-    },
-    enabled: !!id,
-  });
+  const { data: product = {}, isLoading } = useProduct({ id: id });
   if (isLoading) return <p>Loading...</p>;
   return (
     <div className={`${container} mt-24`}>
@@ -33,7 +24,12 @@ export default function ProductDetailsPage() {
         <div className="col-span-2">
           <h1 className="text-4xl mb-6">{product?.name}</h1>
           {role?.role?.toLowerCase() === "buyer" && (
-            <button className="btn btn-primary">Book Now</button>
+            <Link
+              to={`/book-product/${product._id}`}
+              className="btn btn-primary"
+            >
+              Book Now
+            </Link>
           )}
         </div>
         <div>

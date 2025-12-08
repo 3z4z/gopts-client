@@ -19,6 +19,11 @@ import AllProductsAdmin from "../pages/Dashboard/Admin/AllProducts/AllProducts";
 import ProductDetailsPage from "../pages/Private/ProductDetails/ProductDetails";
 import AllProductsPage from "../pages/AllProductsPage/AllProductsPage";
 import AdminOrManagerRoute from "./AdminOrManagerRoute";
+import ProductBookingPage from "../pages/Private/ProductBooking/ProductBooking";
+import MyOrdersPage from "../pages/Dashboard/Buyer/MyOrders/MyOrders";
+import PaymentSuccessPage from "../pages/Dashboard/Buyer/Payments/PaymentSuccess";
+import PaymentFailedPage from "../pages/Dashboard/Buyer/Payments/PaymentFailed";
+import BuyerRoute from "./BuyerRoute";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +43,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ProductDetailsPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/book-product/:id",
+        element: (
+          <PrivateRoute>
+            <ProductBookingPage />
           </PrivateRoute>
         ),
       },
@@ -76,6 +89,30 @@ export const router = createBrowserRouter([
       {
         path: "home",
         Component: DashboardHomePage,
+      },
+      {
+        path: "my-orders",
+        element: (
+          <BuyerRoute>
+            <MyOrdersPage />
+          </BuyerRoute>
+        ),
+      },
+      {
+        path: "payment-success",
+        element: (
+          <BuyerRoute>
+            <PaymentSuccessPage />
+          </BuyerRoute>
+        ),
+      },
+      {
+        path: "payment-failed",
+        element: (
+          <BuyerRoute>
+            <PaymentFailedPage />
+          </BuyerRoute>
+        ),
       },
       // admin routes
       {
