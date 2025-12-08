@@ -51,6 +51,10 @@ export default function MyOrdersPage() {
                         <p className="badge badge-sm badge-outline badge-success">
                           Paid
                         </p>
+                      ) : o.paymentStatus === "cod" ? (
+                        <p className="badge badge-sm badge-outline badge-info">
+                          Cash on Delivery
+                        </p>
                       ) : (
                         <button className="btn btn-sm btn-success rounded-full">
                           Pay now
@@ -82,7 +86,10 @@ export default function MyOrdersPage() {
                         >
                           View Product
                         </Link>
-                        <Link to={`${o._id}`} className="btn btn-sm">
+                        <Link
+                          to={`/dashboard/my-orders/${o._id}`}
+                          className="btn btn-sm"
+                        >
                           View Order
                         </Link>
                       </div>

@@ -28,26 +28,30 @@ export default function ProductBookingPage() {
     const bookingInfo = {
       ...data,
       productId: product._id,
+      managerEmail: product.managerEmail,
       totalCost: Number(
         data.totalCost !== product.price ? cost : data.totalCost
       ),
       orderQuantity: Number(data.orderQuantity),
+      paymentMethod: product.paymentMethod,
     };
     const res = await axios.post("/orders", bookingInfo);
     console.log("orderId", res);
-    const orderId = await res.data.orderId;
+    if (bookingInfo?.paymentMethod?.toLowerCase() === "stripe") {
+      const orderId = await res.data.orderId;
 
-    const paymentInfo = {
-      orderId: orderId,
-    };
-    const sessionRes = await axios.post(
-      "/payment/create-checkout-session",
-      paymentInfo
-    );
-    console.log("sessionRes", sessionRes);
+      const paymentInfo = {
+        orderId: orderId,
+      };
+      const sessionRes = await axios.post(
+        "/payment/create-checkout-session",
+        paymentInfo
+      );
+      console.log("sessionRes", sessionRes);
 
-    // eslint-disable-next-line react-hooks/immutability
-    window.location.href = sessionRes.data.url;
+      // eslint-disable-next-line react-hooks/immutability
+      window.location.href = sessionRes.data.url;
+    }
     try {
       console.log("bookingInfo", bookingInfo);
       if (res?.status === 201) {
@@ -193,6 +197,10 @@ export default function ProductBookingPage() {
                 min: {
                   value: product?.minOrderAmount,
                   message: `Order at least minimum of ${product?.minOrderAmount} units`,
+                },
+                max: {
+                  value: product?.availableQuantity,
+                  message: `Quantity can't exceed ${product?.availableQuantity} units`,
                 },
               })}
             />

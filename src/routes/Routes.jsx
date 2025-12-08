@@ -24,6 +24,10 @@ import MyOrdersPage from "../pages/Dashboard/Buyer/MyOrders/MyOrders";
 import PaymentSuccessPage from "../pages/Dashboard/Buyer/Payments/PaymentSuccess";
 import PaymentFailedPage from "../pages/Dashboard/Buyer/Payments/PaymentFailed";
 import BuyerRoute from "./BuyerRoute";
+import OrderDetailsPage from "../pages/Dashboard/Buyer/OrderDetails/OrderDetails";
+import AllOrdersPage from "../pages/Dashboard/Admin/AllOrders/AllOrders";
+import PendingOrdersPage from "../pages/Dashboard/Manager/PendingOrders/PendingOrders";
+import ApprovedOrdersPage from "../pages/Dashboard/Manager/ApprovedOrders/ApprovedOrders";
 
 export const router = createBrowserRouter([
   {
@@ -90,11 +94,20 @@ export const router = createBrowserRouter([
         path: "home",
         Component: DashboardHomePage,
       },
+      // Buyer routes
       {
         path: "my-orders",
         element: (
           <BuyerRoute>
             <MyOrdersPage />
+          </BuyerRoute>
+        ),
+      },
+      {
+        path: "my-orders/:id",
+        element: (
+          <BuyerRoute>
+            <OrderDetailsPage />
           </BuyerRoute>
         ),
       },
@@ -131,6 +144,22 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      {
+        path: "all-orders",
+        element: (
+          <AdminRoute>
+            <AllOrdersPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "all-orders/:id",
+        element: (
+          <AdminRoute>
+            <OrderDetailsPage />
+          </AdminRoute>
+        ),
+      },
       // admin + manager routes
       {
         path: "edit-product/:id",
@@ -154,6 +183,38 @@ export const router = createBrowserRouter([
         element: (
           <ManagerRoute>
             <AddProductPage />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "pending-orders",
+        element: (
+          <ManagerRoute>
+            <PendingOrdersPage />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "approved-orders",
+        element: (
+          <ManagerRoute>
+            <ApprovedOrdersPage />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "pending-orders/:id",
+        element: (
+          <ManagerRoute>
+            <OrderDetailsPage />
+          </ManagerRoute>
+        ),
+      },
+      {
+        path: "approved-orders/:id",
+        element: (
+          <ManagerRoute>
+            <OrderDetailsPage />
           </ManagerRoute>
         ),
       },
