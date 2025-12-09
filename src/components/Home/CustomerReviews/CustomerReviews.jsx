@@ -15,7 +15,7 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 export default function CustomerReviewsComponent({ getReviews }) {
   const reviews = use(getReviews);
-  console.log("reviews", reviews);
+
   return (
     <section className={container}>
       <SectionTitleComponent

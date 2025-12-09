@@ -1,7 +1,8 @@
 import { container } from "../../../utils/classNames";
 import SectionTitleComponent from "../../Common/SectionTitle/SectionTitle";
 import useProducts from "../../../hooks/useProducts";
-import ProductCard from "./ProductCard";
+import FeaturedProductCard from "./FeaturedProductCard";
+import { Link } from "react-router";
 
 export default function OurProductsComponent() {
   const { data: products = [], isLoading } = useProducts({
@@ -25,15 +26,23 @@ export default function OurProductsComponent() {
           <p>Loading...</p>
         ) : products?.result?.length > 5 ? (
           products?.result?.map((p, index) => (
-            <ProductCard p={p} index={index} />
+            <FeaturedProductCard p={p} key={index} />
           ))
         ) : isFallbackProdsLoading ? (
           <p>Loading...</p>
         ) : (
           fallBackProds?.result?.map((p, index) => (
-            <ProductCard p={p} index={index} />
+            <FeaturedProductCard p={p} key={index} />
           ))
         )}
+      </div>
+      <div className="flex justify-center mt-14">
+        <Link
+          to={"/products"}
+          className="btn btn-primary btn-lg h-auto py-2.5 px-12 rounded-full"
+        >
+          See All Products
+        </Link>
       </div>
     </section>
   );

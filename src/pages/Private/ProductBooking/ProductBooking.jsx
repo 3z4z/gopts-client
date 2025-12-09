@@ -6,6 +6,7 @@ import SectionTitleComponent from "../../../components/Common/SectionTitle/Secti
 import { useEffect, useState } from "react";
 import useAxios from "../../../hooks/useAxios";
 import toast from "react-hot-toast";
+import { handlePayment } from "../../../utils/handlePayment";
 
 export default function ProductBookingPage() {
   const { id } = useParams();
@@ -39,18 +40,7 @@ export default function ProductBookingPage() {
     console.log("orderId", res);
     if (bookingInfo?.paymentMethod?.toLowerCase() === "stripe") {
       const orderId = await res.data.orderId;
-
-      const paymentInfo = {
-        orderId: orderId,
-      };
-      const sessionRes = await axios.post(
-        "/payment/create-checkout-session",
-        paymentInfo
-      );
-      console.log("sessionRes", sessionRes);
-
-      // eslint-disable-next-line react-hooks/immutability
-      window.location.href = sessionRes.data.url;
+      await handlePayment(orderId, axios);
     }
     try {
       console.log("bookingInfo", bookingInfo);
@@ -69,6 +59,7 @@ export default function ProductBookingPage() {
   useEffect(() => {
     if (watchOrderQuantity && product?.price) {
       const total = Number(watchOrderQuantity) * Number(product.price);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCost(total);
     }
   }, [product, watchOrderQuantity]);

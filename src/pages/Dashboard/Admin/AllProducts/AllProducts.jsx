@@ -5,6 +5,7 @@ import { useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
 import { Link } from "react-router";
 import { handleProductDelete } from "../../../../utils/handleDeleteProduct";
+import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
 
 export default function AllProductsAdmin() {
   const axios = useAxios();
@@ -41,7 +42,7 @@ export default function AllProductsAdmin() {
   };
   return (
     <>
-      <h4 className="text-2xl mb-4">Manage all products</h4>
+      <h4 className="text-2xl mb-4">Manage All Products</h4>
       <div className="flex justify-between">
         <input
           type="search"
@@ -130,7 +131,7 @@ export default function AllProductsAdmin() {
           </table>
         </div>
       ) : (
-        <p>No products right now</p>
+        <EmptyTableDataComponent data={"Products"} />
       )}
     </>
   );

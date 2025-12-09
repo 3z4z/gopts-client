@@ -28,6 +28,7 @@ import OrderDetailsPage from "../pages/Dashboard/Buyer/OrderDetails/OrderDetails
 import AllOrdersPage from "../pages/Dashboard/Admin/AllOrders/AllOrders";
 import PendingOrdersPage from "../pages/Dashboard/Manager/PendingOrders/PendingOrders";
 import ApprovedOrdersPage from "../pages/Dashboard/Manager/ApprovedOrders/ApprovedOrders";
+import MyProfilePage from "../pages/Dashboard/Common/MyProfile/MyProfile";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
       {
         path: "home",
         Component: DashboardHomePage,
+      },
+      {
+        path: "my-profile",
+        Component: MyProfilePage,
       },
       // Buyer routes
       {

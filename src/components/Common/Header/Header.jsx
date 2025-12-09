@@ -30,7 +30,7 @@ export default function HeaderComponent() {
       setThemeState("light");
       htmlElement.setAttribute("data-theme", "light");
     }
-  }, []);
+  }, [htmlElement]);
   const handleLogOut = async () => {
     await signOut();
   };

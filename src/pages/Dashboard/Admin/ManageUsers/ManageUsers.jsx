@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/useAxios";
 import useUsers from "../../../../hooks/useUsers";
 import { useRef, useState } from "react";
+import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
 
 export default function ManageUsersPage() {
   const [selectedRole, setSelectedRole] = useState("");
@@ -70,105 +71,111 @@ export default function ManageUsersPage() {
           <option value="Buyer">Buyer</option>
         </select>
       </div>
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
-        <table className="table">
-          <thead className="bg-base-300">
-            <tr>
-              <th>Sl no</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index} className="even:bg-base-200">
-                <td>{index + 1}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>
-                  <div
-                    className={`badge badge-sm ${
-                      user?.role === "Admin"
-                        ? "badge-primary"
-                        : user?.role === "Manager"
-                        ? "badge-secondary"
-                        : "badge-neutral"
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : users.length > 0 ? (
+        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
+          <table className="table">
+            <thead className="bg-base-300">
+              <tr>
+                <th>Sl no</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index} className="even:bg-base-200">
+                  <td>{index + 1}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <div
+                      className={`badge badge-sm ${
+                        user?.role === "Admin"
+                          ? "badge-primary"
+                          : user?.role === "Manager"
+                          ? "badge-secondary"
+                          : "badge-neutral"
+                      }`}
+                    >
+                      {user.role}
+                    </div>
+                  </td>
+                  <td
+                    className={`capitalize ${
+                      user?.status.toLowerCase() === "pending"
+                        ? "text-warning"
+                        : user?.status.toLowerCase() === "rejected"
+                        ? "text-error"
+                        : "text-success"
                     }`}
                   >
-                    {user.role}
-                  </div>
-                </td>
-                <td
-                  className={`capitalize ${
-                    user?.status.toLowerCase() === "pending"
-                      ? "text-warning"
-                      : user?.status.toLowerCase() === "rejected"
-                      ? "text-error"
-                      : "text-success"
-                  }`}
-                >
-                  {user.status}
-                </td>
-                <td>
-                  <div className="flex">
-                    {user?.role !== "Admin" && (
-                      <button
-                        className="btn btn-sm btn-primary"
-                        onClick={() => handleModalOpen(user)}
-                      >
-                        Update User
-                      </button>
-                    )}
-                  </div>
-                  <dialog ref={updateStatusModalRef} className="modal">
-                    <div className="modal-box">
-                      <div className="flex gap-5">
-                        <figure className="w-20 h-20">
-                          <img src={selectedUser?.image} alt="" />
-                        </figure>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-xl text-primary">
-                              {selectedUser?.name}
-                            </h4>
-                            <p className="badge badge-primary badge-soft badge-sm font-semibold">
-                              {selectedUser?.role}
+                    {user.status}
+                  </td>
+                  <td>
+                    <div className="flex">
+                      {user?.role !== "Admin" && (
+                        <button
+                          className="btn btn-sm btn-info btn-soft rounded-full border-info/20"
+                          onClick={() => handleModalOpen(user)}
+                        >
+                          Update User
+                        </button>
+                      )}
+                    </div>
+                    <dialog ref={updateStatusModalRef} className="modal">
+                      <div className="modal-box">
+                        <div className="flex gap-5">
+                          <figure className="w-20 h-20">
+                            <img src={selectedUser?.image} alt="" />
+                          </figure>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-xl text-primary">
+                                {selectedUser?.name}
+                              </h4>
+                              <p className="badge badge-primary badge-soft badge-sm font-semibold">
+                                {selectedUser?.role}
+                              </p>
+                            </div>
+                            <p className="mb-3">{selectedUser?.email}</p>
+                            <p>
+                              Status:{" "}
+                              <span className="font-bold capitalize">
+                                {selectedUser?.status}
+                              </span>
                             </p>
                           </div>
-                          <p className="mb-3">{selectedUser?.email}</p>
-                          <p>
-                            Status:{" "}
-                            <span className="font-bold capitalize">
-                              {selectedUser?.status}
-                            </span>
-                          </p>
+                        </div>
+                        <div className="modal-action">
+                          <button
+                            onClick={() =>
+                              updateStatus(selectedUser, selectedUser?.status)
+                            }
+                            className="btn btn-primary"
+                          >
+                            {selectedUser?.status === "Pending"
+                              ? "Approve"
+                              : selectedUser?.status === "approved"
+                              ? "Reject"
+                              : "Approve"}
+                          </button>
                         </div>
                       </div>
-                      <div className="modal-action">
-                        <button
-                          onClick={() =>
-                            updateStatus(selectedUser, selectedUser?.status)
-                          }
-                          className="btn btn-primary"
-                        >
-                          {selectedUser?.status === "Pending"
-                            ? "Approve"
-                            : selectedUser?.status === "approved"
-                            ? "Reject"
-                            : "Approve"}
-                        </button>
-                      </div>
-                    </div>
-                  </dialog>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    </dialog>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <EmptyTableDataComponent data={"Users"} />
+      )}
     </>
   );
 }

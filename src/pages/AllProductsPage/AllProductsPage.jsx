@@ -1,11 +1,12 @@
-import { Link } from "react-router";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 
 import SectionTitleComponent from "../../components/Common/SectionTitle/SectionTitle";
 import useProducts from "../../hooks/useProducts";
 import { container } from "../../utils/classNames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCategories from "../../hooks/useCategories";
+import ProductCardComponent from "./ProductCard";
+import EmptyTableDataComponent from "../../components/Common/EmptyTableData/EmptyTableData";
 
 export default function AllProductsPage() {
   const [search, setSearch] = useState("");
@@ -16,6 +17,12 @@ export default function AllProductsPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [skip, setSkip] = useState(0);
   const limit = 6;
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   const { data: products = [], isLoading } = useProducts({
     search: search,
@@ -60,9 +67,9 @@ export default function AllProductsPage() {
             <option value="price-desc">Price - Highest First</option>
           </select>
           <p className="text-lg mb-4 font-bold">Filters</p>
-          <div>
-            <div className="p-3 rounded-md bg-base-100">
-              <label className="mb-2 font-semibold block">Categories</label>
+          <div className="rounded-lg bg-base-100">
+            <div className="p-3">
+              <label className="mb-2 font-semibold! block">Categories</label>
               <select
                 className="select w-full"
                 onChange={(e) =>
@@ -83,8 +90,8 @@ export default function AllProductsPage() {
                 )}
               </select>
             </div>
-            <div className="p-3 rounded-md bg-base-100">
-              <label className="mb-2 font-semibold block">Created time</label>
+            <div className="p-3">
+              <label className="mb-2 font-semibold! block">Created time</label>
               <select
                 className="select w-full"
                 onChange={(e) =>
@@ -100,18 +107,21 @@ export default function AllProductsPage() {
                 <option value="last-month">Last 1 month</option>
               </select>
             </div>
-            <select
-              className="select my-3"
-              onChange={(e) =>
-                setPayMethod(
-                  e.target.value === "Select an option" ? "" : e.target.value
-                )
-              }
-            >
-              <option value="Select an option">Select an option</option>
-              <option value="cod">Cash on delivery</option>
-              <option value="stripe">Stripe</option>
-            </select>
+            <div className="p-3">
+              <label className="mb-2 font-semibold! block">Payment type</label>
+              <select
+                className="select"
+                onChange={(e) =>
+                  setPayMethod(
+                    e.target.value === "Select an option" ? "" : e.target.value
+                  )
+                }
+              >
+                <option value="Select an option">Select an option</option>
+                <option value="cod">Cash on delivery</option>
+                <option value="stripe">Stripe</option>
+              </select>
+            </div>
           </div>
         </div>
         <div className="col-span-3">
@@ -178,53 +188,12 @@ export default function AllProductsPage() {
               <p>Loading...</p>
             ) : products.result.length > 0 ? (
               products.result.map((product) => (
-                <div
-                  key={product._id}
-                  className="p-4.5 shadow rounded-lg cursor-pointer hover:bg-base-200/50 bg-base-200/35 transition-all flex flex-col border border-base-200"
-                >
-                  <figure className="aspect-square bg-base-300 rounded-xl w-full overflow-hidden">
-                    <img
-                      src={product.images[0]}
-                      alt=""
-                      className="object-cover h-full w-full"
-                    />
-                  </figure>
-
-                  <div>
-                    <h4 className="text-xl text-neutral mt-3 line-clamp-2 h-14 mb-2">
-                      {product.name}
-                    </h4>
-                    <p>
-                      Price:{" "}
-                      <span className="text-primary font-bold">
-                        ৳{product.price}/ unit
-                      </span>
-                    </p>
-                    <div className="flex flex-col gap-1 mt-3 mb-5">
-                      <p>
-                        Category:{" "}
-                        <span className="text-secondary font-semibold">
-                          {product.category}
-                        </span>
-                      </p>
-                      <p>
-                        Available:{" "}
-                        <span className="text-secondary font-semibold">
-                          {product.availableQuantity} Units
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                  <Link
-                    to={`/products/${product._id}`}
-                    className="btn btn-primary btn-outline rounded-full"
-                  >
-                    View Details
-                  </Link>
-                </div>
+                <ProductCardComponent product={product} />
               ))
             ) : (
-              <p>No products found</p>
+              <div className="col-span-3">
+                <EmptyTableDataComponent data={"Products"} />
+              </div>
             )}
           </div>
         </div>

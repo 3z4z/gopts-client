@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router";
+import parse from "html-react-parser";
+import { useParams } from "react-router";
 import useAxios from "../../../../hooks/useAxios";
 import { container } from "../../../../utils/classNames";
 import useRole from "../../../../hooks/useRole";
@@ -35,44 +36,79 @@ export default function OrderDetailsPage() {
               Order info
             </h4>
             <p>
-              Product Name:
+              <span className="text-neutral/70">Product Name:</span>
               <span className="text-primary font-bold ms-2">
                 {order?.productName}
               </span>
             </p>
-            <p className="mb-1">Tracking ID: {order.trackingId}</p>
-            <p className="mb-1">Total unit ordered: {order.orderQuantity}</p>
             <p className="mb-1">
-              Total price: {order.totalCost.toLocaleString("en-EN")} BDT
+              <span className="text-neutral/70 me-1.5">Created date:</span>
+              {dayjs(order.createdAt).format("DD MMM YYYY @ hh:mm:ss a")}
+            </p>
+            <p className="mb-1">
+              <span className="text-neutral/70 me-1.5">Tracking ID:</span>
+              {order.trackingId}
+            </p>
+            <p className="mb-1">
+              <span className="text-neutral/70 me-1.5">
+                Total unit ordered:
+              </span>
+              {order.orderQuantity}
+            </p>
+            <p className="mb-1">
+              <span className="text-neutral/70 me-1.5">Total price:</span>
+              {order.totalCost.toLocaleString("en-EN")} BDT
             </p>
             <p>
               {order.paymentStatus === "cod"
                 ? "Payment method: Cash on Delivery"
                 : order.paymentStatus === "unpaid"
                 ? "Payment Method: Stripe (Unpaid)"
-                : "Paid with stripe"}
+                : order.transactionId && (
+                    <>
+                      <span className="text-neutral/70 me-1.5">Tx ID:</span>
+                      {order.transactionId}
+                      <span className="badge badge-primary badge-soft border-primary/20 ms-2 mb-1">
+                        Stripe
+                      </span>
+                    </>
+                  )}
             </p>
-            {order.transactionId && (
-              <p className="mb-1">Tx ID: {order.transactionId}</p>
-            )}
             <h4 className="text-2xl my-5 font-extrabold text-primary">
               Buyer info
             </h4>
             <p className="mb-1">
-              <span className="me-2">Ordered by:</span>
-              <span className="me-1.5">{order.firstName}</span>
-              <span>{order.firstName}</span>
+              <span className="me-2 text-neutral/70">Ordered by:</span>
+              <span className="me-1.5 text-primary font-bold">
+                {order.firstName}
+              </span>
+              <span className="text-primary font-bold">{order.firstName}</span>
             </p>
-            <p className="mb-1">Email: {order.buyerEmail}</p>
-            <p className="mb-1">Contact No: {order.contactNumber}</p>
-            <p className="mb-1">Address: {order.address}</p>
-            <p className="mb-1">Instructions: {order.additionalNotes}</p>
+            <p className="mb-1">
+              <span className="text-neutral/70 me-1.5">Email:</span>
+              {order.buyerEmail}
+            </p>
+            <p className="mb-1">
+              <span className="text-neutral/70 me-1.5">Contact No:</span>
+              {order.contactNumber}
+            </p>
+            <p className="mb-1">
+              <span className="text-neutral/70 me-1.5">Address:</span>
+              {order.address}
+            </p>
+            <p className="mb-1">
+              <span className="text-neutral/70 me-1.5">Instructions:</span>
+              {order.additionalNotes}
+            </p>
             {role.role.toLowerCase() !== "manager" && (
               <>
                 <h4 className="text-2xl my-5 font-extrabold text-primary">
                   Manager info
                 </h4>
-                <p>Email: {order.managerEmail}</p>
+                <p>
+                  <span className="text-neutral/70 me-1.5">Email:</span>
+                  {order.managerEmail}
+                </p>
               </>
             )}
           </div>
@@ -106,13 +142,13 @@ export default function OrderDetailsPage() {
                       )}
                     </div>
                     <div
-                      className={`timeline-end timeline-box text-sm capitalize ${
+                      className={`timeline-end timeline-box text-sm capitalize max-w-80 ${
                         log.deliveryStatus === "rejected"
                           ? "text-error"
                           : "text-primary-content bg-primary"
                       }`}
                     >
-                      {log.details}
+                      {parse(log.details)}
                     </div>
                     {index !== logs.length - 1 && <hr />}
                   </li>

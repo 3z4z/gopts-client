@@ -17,6 +17,7 @@
     "daisyui": "^5.5.8",
     "dayjs": "^1.11.19",
     "firebase": "^12.6.0",
+    "html-react-parser": "^5.2.10",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-fast-marquee": "^1.6.5",

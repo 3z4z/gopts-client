@@ -6,8 +6,8 @@ export const handleProductDelete = (product, axios, refetch) => {
     text: "You won't be able to revert this!",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
+    confirmButtonColor: "oklch(75% 0.15 240)",
+    cancelButtonColor: "oklch(65% 0.28 25)",
     confirmButtonText: "Yes, delete it!",
   }).then(async (result) => {
     if (result.isConfirmed) {
@@ -15,7 +15,7 @@ export const handleProductDelete = (product, axios, refetch) => {
       refetch();
       Swal.fire({
         title: "Deleted!",
-        text: "Your file has been deleted.",
+        text: "This product has been deleted.",
         icon: "success",
       });
     }

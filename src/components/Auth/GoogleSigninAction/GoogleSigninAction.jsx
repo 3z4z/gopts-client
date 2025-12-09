@@ -24,9 +24,9 @@ export default function GoogleSigninAction({ isRegistering, isSigningIn }) {
   };
   return (
     <button
-      disabled={isRegistering || isSigningIn}
+      disabled={isRegistering || isSigningIn || isGoogleSigningIn}
       onClick={handleGoogleSignin}
-      className="btn btn-neutral rounded-full border-neutral/25 btn-outline btn-block"
+      className="btn btn-neutral rounded-full border-neutral/25 btn-outline btn-block disabled:border-transparent"
     >
       {isGoogleSigningIn ? (
         <AuthSpinnerLoader />

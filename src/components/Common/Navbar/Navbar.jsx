@@ -4,7 +4,6 @@ import { useAuthStore } from "../../../stores/useAuthStore";
 
 export default function NavbarComponent() {
   const { isUserReady } = useAuthStore();
-  console.log("isUserReady", isUserReady);
 
   return (
     <nav className="flex items-center gap-1">

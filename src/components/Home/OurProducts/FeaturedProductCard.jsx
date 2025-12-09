@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-export default function ProductCard({ p, index }) {
+export default function FeaturedProductCard({ p, index }) {
   return (
     <div
       key={index}

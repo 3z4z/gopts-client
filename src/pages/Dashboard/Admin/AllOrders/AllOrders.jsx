@@ -1,40 +1,82 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/useAxios";
 import { Link } from "react-router";
+import { useState } from "react";
+import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
 
 export default function AllOrdersPage() {
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
   const axios = useAxios();
-  const { data: orders = [], isLoading } = useQuery({
-    queryKey: ["orders"],
+  const {
+    data: orders = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["orders", status, search],
     queryFn: async () => {
-      const res = await axios.get("/orders");
+      const res = await axios.get(`/orders?search=${search}&status=${status}`);
       return res.data;
     },
   });
+  const { data: statuses = [], isLoading: isStatusesLoading } = useQuery({
+    queryKey: ["statuses"],
+    queryFn: async () => {
+      const res = await axios.get("/orders/statuses");
+      return res.data;
+    },
+  });
+  const uniqueStatuses = [...new Set(statuses.map((s) => s.deliveryStatus))];
   return (
     <>
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
-        <table className="table">
-          <thead className="bg-base-300">
-            <tr>
-              <th>Sl no</th>
-              <th>Product</th>
-              <th>Order Quantity</th>
-              <th>Payment Info</th>
-              <th>Delivery Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
+      <h4 className="text-2xl mb-4">Manage All Orders</h4>
+      <div className="flex justify-between">
+        <input
+          type="search"
+          className="input"
+          placeholder="Search by product name..."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select
+          defaultValue={""}
+          className="select capitalize"
+          onChange={(e) => {
+            setStatus(e.target.value === "Select status" ? "" : e.target.value);
+            refetch();
+          }}
+        >
+          <option value="Select status">Select status</option>
+          {isStatusesLoading ? (
+            <option>Loading...</option>
+          ) : uniqueStatuses.length > 0 ? (
+            uniqueStatuses?.map((s, i) => (
+              <option key={i} value={s} className="capitalize">
+                {s.split("_").join(" ")}
+              </option>
+            ))
+          ) : (
+            <option>No filter option found</option>
+          )}
+        </select>
+      </div>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : orders.length > 0 ? (
+        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
+          <table className="table">
+            <thead className="bg-base-300">
               <tr>
-                <td colSpan={6} className="py-6 text-center">
-                  Loading...
-                </td>
+                <th>Sl no</th>
+                <th>Product</th>
+                <th>Order Quantity</th>
+                <th>Payment Info</th>
+                <th>Delivery Status</th>
+                <th>Action</th>
               </tr>
-            ) : (
-              orders.map((o, i) => (
-                <tr key={i}>
+            </thead>
+            <tbody>
+              {orders.map((o, i) => (
+                <tr key={i} className="even:bg-base-200">
                   <td>{i + 1}</td>
                   <td>
                     <p className="text-primary font-bold">{o.productName}</p>
@@ -43,7 +85,7 @@ export default function AllOrdersPage() {
                   <td>{o.orderQuantity}</td>
                   <td>
                     <p
-                      className={`badge badge-sm badge-outline ${
+                      className={`badge badge-sm badge-outline capitalize ${
                         o.paymentStatus === "paid"
                           ? "badge-success bg-success/20 border-success/30"
                           : o.paymentStatus === "cod"
@@ -61,15 +103,15 @@ export default function AllOrdersPage() {
                       className={`badge badge-sm font-bold capitalize ${
                         o.deliveryStatus === "pending"
                           ? "badge-warning"
-                          : o.deliveryStatus === "delivered"
+                          : o.deliveryStatus === "delivery_done"
                           ? "badge-success"
-                          : o.deliveryStatus === "not_started"
+                          : o.deliveryStatus === "not_started" ||
+                            o.deliveryStatus === "rejected"
                           ? "badge-error"
                           : "badge-info"
                       }`}
                     >
-                      {(o.deliveryStatus === "not_started" && "Not Started") ||
-                        o.deliveryStatus}
+                      {o.deliveryStatus.split("_").join(" ")}
                     </p>
                   </td>
                   <td>
@@ -89,11 +131,13 @@ export default function AllOrdersPage() {
                     </div>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <EmptyTableDataComponent data={"Orders"} />
+      )}
     </>
   );
 }

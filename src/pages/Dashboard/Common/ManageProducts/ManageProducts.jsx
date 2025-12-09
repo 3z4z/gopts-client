@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../../../../stores/useAuthStore";
 import useAxios from "../../../../hooks/useAxios";
-import Swal from "sweetalert2";
 import { Link } from "react-router";
 import { useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
 import { handleProductDelete } from "../../../../utils/handleDeleteProduct";
+import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
 
 export default function ManageProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -98,13 +98,13 @@ export default function ManageProductsPage() {
                     <div className="flex gap-2">
                       <Link
                         to={`/dashboard/edit-product/${p._id}`}
-                        className="btn btn-sm"
+                        className="btn btn-sm btn-soft btn-success border-success/20 rounded-full"
                         onClick={updateProduct}
                       >
                         Update
                       </Link>
                       <button
-                        className="btn btn-sm"
+                        className="btn btn-sm btn-soft btn-error border-error/20 rounded-full"
                         onClick={() => handleProductDelete(p, axios, refetch)}
                       >
                         Delete
@@ -117,9 +117,7 @@ export default function ManageProductsPage() {
           </table>
         </div>
       ) : (
-        <p className="bg-base-300 py-10 px-4 rounded-2xl text-center mt-2">
-          No products to show
-        </p>
+        <EmptyTableDataComponent data={"Products"} />
       )}
     </>
   );
