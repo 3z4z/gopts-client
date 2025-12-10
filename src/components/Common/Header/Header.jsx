@@ -8,11 +8,16 @@ import { Link } from "react-router";
 import { useAuthStore } from "../../../stores/useAuthStore";
 import { userDdLinks } from "../../../utils/navLinks";
 import { BiExit } from "react-icons/bi";
+import useRole from "../../../hooks/useRole";
+import { LuUser } from "react-icons/lu";
+import { RiMenu2Line } from "react-icons/ri";
+import DrawerNavbarComponent from "../DrawerNavbar/DrawerNavbar";
 
 export default function HeaderComponent() {
   const { user, isAuthLoading, signOut } = useAuthStore();
   const [themeState, setThemeState] = useState("light");
   const htmlElement = document.documentElement;
+  const { isLoading, role } = useRole();
 
   const toggleTheme = () => {
     const updateTheme = themeState === "light" ? "dark" : "light";
@@ -36,29 +41,73 @@ export default function HeaderComponent() {
   };
   return (
     <header className="flex justify-between gap-4 px-3 py-4 items-center bg-[rgba(255,255,255,0.01)] shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[5.9px] border-b border-b-neutral/10 fixed top-0 left-0 w-full z-10">
-      <MainLogoComponent
-        mainColor={"text-primary"}
-        subColor={"text-secondary"}
-      />
+      <div className="flex items-center gap-1.5">
+        <div className="drawer">
+          <input id="navbar" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content">
+            {/* Page content here */}
+            <label
+              htmlFor="navbar"
+              className="btn drawer-button md:hidden block btn-ghost rounded-full p-2.5 h-auto w-auto text-lg"
+            >
+              <RiMenu2Line />
+            </label>
+          </div>
+          <div className="drawer-side">
+            <label
+              htmlFor="navbar"
+              aria-label="close sidebar"
+              className="drawer-overlay"
+            ></label>
+            <DrawerNavbarComponent />
+          </div>
+        </div>
+        <MainLogoComponent
+          mainColor={"text-primary"}
+          subColor={"text-secondary"}
+        />
+      </div>
       <div className="flex items-center">
         <NavbarComponent />
         {isAuthLoading ? (
           <UserLoadingSpinnerLoader />
         ) : !user ? (
-          <div className="flex gap-2 ms-8 me-2">
-            <Link
-              to={"/auth/login"}
-              className="btn btn-primary rounded-full px-5 btn-outline"
-            >
-              Login
-            </Link>
-            <Link
-              to={"/auth/register"}
-              className="btn btn-primary rounded-full px-5"
-            >
-              Register
-            </Link>
-          </div>
+          <>
+            <div className="lg:flex hidden gap-2 ms-8 me-2">
+              <Link
+                to={"/auth/login"}
+                className="btn btn-primary rounded-full px-5 btn-outline"
+              >
+                Login
+              </Link>
+              <Link
+                to={"/auth/register"}
+                className="btn btn-primary rounded-full px-5"
+              >
+                Register
+              </Link>
+            </div>
+            <div className="lg:hidden block dropdown dropdown-end mx-3">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn w-11 h-11 p-0 border border-primary ring-4 ring-primary/20 rounded-full"
+              >
+                <LuUser className="w-6 h-6" />
+              </div>
+              <ul
+                tabIndex="-1"
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+              >
+                <li>
+                  <Link to={"/auth/login"}>Login</Link>
+                </li>
+                <li>
+                  <Link to={"/auth/register"}>Register</Link>
+                </li>
+              </ul>
+            </div>
+          </>
         ) : (
           <div className="dropdown dropdown-end ms-8 me-2">
             <div
@@ -82,14 +131,23 @@ export default function HeaderComponent() {
                   {user?.displayName}
                 </p>
               </div>
-              {userDdLinks.map((link, index) => (
-                <li key={index}>
-                  <Link to={link.path}>
-                    <link.icon />
-                    <span>{link.title}</span>
-                  </Link>
-                </li>
-              ))}
+              {isLoading ? (
+                <p>Loading...</p>
+              ) : (
+                userDdLinks
+                  .filter(
+                    (link) =>
+                      !link.access || link?.access === role?.role.toLowerCase()
+                  )
+                  .map((link, index) => (
+                    <li key={index}>
+                      <Link to={link.path}>
+                        <link.icon />
+                        <span>{link.title}</span>
+                      </Link>
+                    </li>
+                  ))
+              )}
               <li>
                 <button
                   className="font-normal! text-error"

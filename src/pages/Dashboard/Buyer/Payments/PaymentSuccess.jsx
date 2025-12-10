@@ -81,7 +81,10 @@ export default function PaymentSuccessPage() {
             <span className="text-gray-800">{successData.trackingId}</span>
           </p>
           {/* Add a link to the user's order history */}
-          <a href="/dashboard/my-orders" className="btn btn-primary mt-4">
+          <a
+            href="/dashboard/my-orders"
+            className="btn btn-primary mt-4 rounded-full px-5"
+          >
             View My Orders
           </a>
         </div>
@@ -90,7 +93,10 @@ export default function PaymentSuccessPage() {
         <div className="max-w-xl mx-auto p-6 bg-red-100 border border-red-400 rounded-lg shadow-lg">
           <p className="text-lg font-semibold text-red-700">Error:</p>
           <p className="mt-2 text-red-700">{error}</p>
-          <a href="/dashboard/my-orders" className="btn btn-warning mt-4">
+          <a
+            href="/dashboard/my-orders"
+            className="btn btn-warning mt-4 rounded-full px-5"
+          >
             Check Order Status
           </a>
         </div>

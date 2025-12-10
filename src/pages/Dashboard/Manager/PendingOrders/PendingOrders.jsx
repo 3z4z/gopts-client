@@ -6,11 +6,13 @@ import { Link } from "react-router";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import useUserStatus from "../../../../hooks/useUserStatus";
 
 export default function PendingOrdersPage() {
   const axios = useAxios();
   const { user } = useAuthStore();
   const [search, setSearch] = useState("");
+  const { status, isLoading: isStatusLoading } = useUserStatus();
 
   const {
     data: orders = [],
@@ -83,13 +85,14 @@ export default function PendingOrdersPage() {
       }
     });
   };
+  if (isStatusLoading) return <p>Loading...</p>;
   return (
     <>
       <h4 className="text-3xl mb-4">Manage Pending Orders</h4>
       <div className="flex justify-between">
         <input
           type="search"
-          className="input"
+          className="input max-sm:w-full"
           placeholder="Search by product name..."
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -124,18 +127,22 @@ export default function PendingOrdersPage() {
                   <td>{dayjs(o.createdAt).format("DD MMM, YYYY @ hh:mm a")}</td>
                   <td>
                     <div className="flex gap-2">
-                      <button
-                        className="btn btn-sm btn-soft btn-success border-success/20 rounded-full"
-                        onClick={() => handleApproval(o)}
-                      >
-                        Approve
-                      </button>
-                      <button
-                        className="btn btn-sm btn-soft btn-error border-error/20 rounded-full"
-                        onClick={() => handleRejection(o)}
-                      >
-                        Reject
-                      </button>
+                      {status.status === "rejected" ? null : (
+                        <>
+                          <button
+                            className="btn btn-sm btn-soft btn-success border-success/20 rounded-full"
+                            onClick={() => handleApproval(o)}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            className="btn btn-sm btn-soft btn-error border-error/20 rounded-full"
+                            onClick={() => handleRejection(o)}
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
                       <Link
                         className="btn btn-sm btn-soft btn-info border-info/20 rounded-full"
                         to={`/dashboard/pending-orders/${o._id}`}

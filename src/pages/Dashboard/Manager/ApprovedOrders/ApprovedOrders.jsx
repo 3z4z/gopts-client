@@ -55,7 +55,7 @@ export default function ApprovedOrdersPage() {
       <h4 className="text-3xl mb-4">Manage Approved Orders</h4>
       <input
         type="search"
-        className="input"
+        className="input max-sm:w-full"
         placeholder="Search by product name..."
         onChange={(e) => setSearch(e.target.value)}
       />

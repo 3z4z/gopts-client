@@ -1,26 +1,20 @@
 import { Link } from "react-router";
 import useRole from "../hooks/useRole";
 import { useAuthStore } from "../stores/useAuthStore";
+import useUserStatus from "../hooks/useUserStatus";
+import AccessDeniedComponent from "../pages/Dashboard/Common/AccessDenied/AccessDenied";
 
 export default function AdminOrManagerRoute({ children }) {
   const { role, isLoading } = useRole();
+  const { status, isLoading: isStatusLoading } = useUserStatus();
   const { isSigningIn } = useAuthStore();
-  if (isSigningIn || isLoading) return <p>Loading...</p>;
+  if (isSigningIn || isLoading || isStatusLoading) return <p>Loading...</p>;
   if (
-    role.role.toLowerCase() === "manager" ||
+    (role.role.toLowerCase() === "manager" && status?.status !== "pending") ||
     role.role.toLowerCase() === "admin"
   )
     return children;
   else {
-    return (
-      <div>
-        <p>Access Denied</p>
-        <div className="flex gap-2 mt-4">
-          <Link to={-1} className="btn btn-primary">
-            Go Back
-          </Link>
-        </div>
-      </div>
-    );
+    return <AccessDeniedComponent />;
   }
 }

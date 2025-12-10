@@ -42,12 +42,11 @@ export default function DashboardLayout() {
       </div>
       <div className="drawer-side is-drawer-close:overflow-visible">
         <label
-          htmlFor="my-drawer-4"
+          htmlFor="dashboard"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
         <div className="flex min-h-full flex-col items-start bg-base-300 is-drawer-close:w-14 is-drawer-open:w-64">
-          {/* Sidebar content here */}
           <DashboardSidebar isSidebarOpen={isSidebarOpen} />
         </div>
       </div>

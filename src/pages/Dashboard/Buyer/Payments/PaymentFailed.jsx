@@ -14,7 +14,10 @@ export default function PaymentFailedPage() {
           again from your order history.
         </p>
         {/* Link back to where they can find their unpaid order, e.g., an order history page */}
-        <a href="/dashboard/my-orders" className="btn btn-warning mt-4">
+        <a
+          href="/dashboard/my-orders"
+          className="btn btn-warning mt-4 rounded-full px-5"
+        >
           Go to My Orders
         </a>
       </div>

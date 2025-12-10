@@ -10,9 +10,11 @@ export default function OurTeamComponent({ getTeamMembers }) {
         title={"Meet our team"}
         subtitle={"Dedicated professionals working to bring you the best"}
       />
-      <div className={`flex ${container} gap-6 flex-wrap justify-center`}>
+      <div
+        className={`${container} max-w-6xl! sm:gap-12 gap-7 grid lg:grid-cols-3 sm:grid-cols-2 max-lg:max-w-2xl! max-sm:max-w-xs! items-center`}
+      >
         {teamMembers.map((m, i) => (
-          <div key={i} className="w-1/4">
+          <div key={i}>
             <figure className="aspect-square overflow-hidden px-10 pt-10 pb-3 bg-linear-to-b from-transparent from-60% to-base-300 to-60%">
               <img
                 src={m.image}

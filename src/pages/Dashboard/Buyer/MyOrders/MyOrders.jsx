@@ -59,16 +59,16 @@ export default function MyOrdersPage() {
   return (
     <>
       <h4 className="text-2xl mb-4">My All Orders</h4>
-      <div className="flex justify-between">
+      <div className="flex max-sm:flex-col justify-between sm:gap-3 gap-4">
         <input
           type="search"
-          className="input"
+          className="input max-sm:w-full"
           placeholder="Search"
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
           defaultValue={""}
-          className="select capitalize"
+          className="select max-sm:w-full capitalize"
           onChange={(e) => {
             setPayment(
               e.target.value === "Select payment" ? "" : e.target.value
@@ -105,7 +105,7 @@ export default function MyOrdersPage() {
                   <td>{i + 1}</td>
                   <td>{o._id}</td>
                   <td>
-                    <p className="text-primary font-bold text-[1rem]">
+                    <p className="text-primary font-bold text-[1rem] min-w-40">
                       {o.productName}
                     </p>
                     <p className="text-xs">T.ID: {o.trackingId}</p>
@@ -151,20 +151,20 @@ export default function MyOrdersPage() {
                     <div className="flex gap-2">
                       <Link
                         to={`/products/${o.productId}`}
-                        className="btn btn-sm btn-soft btn-info"
+                        className="btn btn-sm rounded-full btn-soft btn-info border-info/20"
                       >
                         View Product
                       </Link>
                       <Link
                         to={`/dashboard/my-orders/${o._id}`}
-                        className="btn btn-sm btn-soft btn-success"
+                        className="btn btn-sm rounded-full btn-soft btn-success border-success/20"
                       >
                         View Order
                       </Link>
                       {o.deliveryStatus === "pending" ||
                       o.deliveryStatus === "not_started" ? (
                         <button
-                          className="btn btn-error btn-soft btn-sm"
+                          className="btn btn-sm rounded-full btn-soft btn-error border-error/20"
                           onClick={() => handleCancelOrder(o)}
                         >
                           Cancel

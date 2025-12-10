@@ -31,6 +31,20 @@ label {
   @apply text-sm font-medium;
 }
 
+input:not([type="checkbox"]),
+select {
+  @apply rounded-full;
+}
+
+textarea {
+  @apply rounded-2xl;
+}
+
+table button,
+table a {
+  @apply whitespace-nowrap;
+}
+
 @import "tailwindcss";
 @plugin "daisyui";
 

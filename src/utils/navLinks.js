@@ -1,10 +1,13 @@
-import { FaClipboardUser } from "react-icons/fa6";
+import { FiUsers } from "react-icons/fi";
+import { TbRotateClockwise2 } from "react-icons/tb";
 import {
+  LuBox,
   LuBoxes,
   LuClipboardCheck,
   LuClipboardList,
   LuCog,
   LuLayoutDashboard,
+  LuUser,
   LuUserRoundCog,
   LuUsers,
 } from "react-icons/lu";
@@ -25,7 +28,37 @@ export const footerNavLinks = [
 ];
 
 export const userDdLinks = [
-  { title: "My Orders", path: "/dashboard/my-orders", icon: FaClipboardUser },
+  { title: "My Profile", path: "/dashboard/my-profile", icon: LuUser },
+  {
+    title: "Manage Users",
+    path: "/dashboard/manage-users",
+    icon: FiUsers,
+    access: "admin",
+  },
+  {
+    title: "All Products",
+    path: "/dashboard/all-products",
+    icon: LuBox,
+    access: "admin",
+  },
+  {
+    title: "Pending Orders",
+    path: "/dashboard/pending-orders",
+    icon: TbRotateClockwise2,
+    access: "manager",
+  },
+  {
+    title: "Approved Orders",
+    path: "/dashboard/approved-orders",
+    icon: LuClipboardCheck,
+    access: "manager",
+  },
+  {
+    title: "My Orders",
+    path: "/dashboard/my-orders",
+    icon: LuClipboardList,
+    access: "buyer",
+  },
 ];
 
 export const dashboardSidebarLinks = [

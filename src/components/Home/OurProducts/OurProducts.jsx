@@ -21,7 +21,9 @@ export default function OurProductsComponent() {
           "Discover the latest products posted by factory managers — handpicked and approved for buyers"
         }
       />
-      <div className={`grid grid-cols-3 gap-10 ${container} max-w-6xl!`}>
+      <div
+        className={`grid lg:grid-cols-3 sm:grid-cols-2 gap-10 ${container} max-lg:max-w-3xl! max-sm:max-w-sm! max-w-6xl!`}
+      >
         {isLoading ? (
           <p>Loading...</p>
         ) : products?.result?.length > 5 ? (

@@ -188,7 +188,7 @@ export default function AllProductsPage() {
               <p>Loading...</p>
             ) : products.result.length > 0 ? (
               products.result.map((product) => (
-                <ProductCardComponent product={product} />
+                <ProductCardComponent key={product._id} product={product} />
               ))
             ) : (
               <div className="col-span-3">

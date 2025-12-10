@@ -26,7 +26,7 @@ export default function PartnersComponent() {
         title={"Our Partners"}
         subtitle={"Building success together with our trusted partners"}
       />
-      <Marquee>
+      <Marquee className="bg-neutral/5 py-10">
         {brands.map((b, i) => (
           <figure
             key={i}

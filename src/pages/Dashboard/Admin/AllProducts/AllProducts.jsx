@@ -107,19 +107,19 @@ export default function AllProductsAdmin() {
                   <td>{p.managerName}</td>
                   <td>
                     <Link
-                      className="btn btn-sm btn-info me-2"
+                      className="btn btn-sm btn-soft rounded-full border-info/20 btn-info me-2"
                       to={`/dashboard/edit-product/${p._id}`}
                     >
                       Update
                     </Link>
                     <button
-                      className="btn btn-sm btn-error me-2"
+                      className="btn btn-sm btn-soft rounded-full border-error/20 btn-error me-2"
                       onClick={() => handleProductDelete(p, axios, refetch)}
                     >
                       Delete
                     </button>
                     <button
-                      className="btn btn-sm"
+                      className="btn btn-sm btn-soft btn-accent border-accent/20 rounded-full"
                       onClick={() => updateFeatureStatus(p)}
                     >
                       {p.markFeatured ? "Remove from home" : "Add to home"}

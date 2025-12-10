@@ -42,7 +42,9 @@ export default function WorkFlowComponent() {
           "Discover how our marketplace works for managers and buyers alike"
         }
       />
-      <div className={`grid grid-cols-4 gap-6 ${container}`}>
+      <div
+        className={`grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-2 gap-6 ${container}`}
+      >
         {steps.map((step, index) => (
           <div
             key={index}

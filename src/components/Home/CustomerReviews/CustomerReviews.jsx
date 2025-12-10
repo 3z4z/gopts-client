@@ -27,7 +27,7 @@ export default function CustomerReviewsComponent({ getReviews }) {
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
-        slidesPerView={3}
+        slidesPerView={1}
         centeredSlides={true}
         spaceBetween={24}
         coverflowEffect={{
@@ -46,10 +46,18 @@ export default function CustomerReviewsComponent({ getReviews }) {
           prevEl: ".slide-prev-nav",
           nextEl: ".slide-next-nav",
         }}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        }}
         pagination={{ el: ".pagination", clickable: true }}
         loop={true}
         modules={[EffectCoverflow, Pagination, Autoplay, Navigation]}
-        className="slider py-4!"
+        className="slider py-4! max-sm:px-4!"
       >
         {reviews.map((r, i) => (
           <SwiperSlide

@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { container } from "../../../../utils/classNames";
 import UploadInfiniteLoader from "../../../../components/Common/Loaders/UploadInfinite";
 import { IoMdCloseCircle } from "react-icons/io";
@@ -22,6 +22,7 @@ export default function ProductForm({
     trigger,
     setValue,
     reset,
+    control,
     formState: { errors, isValid },
   } = useForm({
     mode: "all",
@@ -65,11 +66,14 @@ export default function ProductForm({
     }
   }, [product, reset]);
 
+  const watchMinimumOrder = useWatch({ name: "minOrderAmount", control });
+  const watchAvailableQts = useWatch({ name: "availableQuantity", control });
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`fieldset ${container}`}>
-      <div className="grid grid-cols-2 gap-10">
+      <div className="grid lg:grid-cols-2 gap-10">
         <div>
-          <div className="flex gap-6 mb-3">
+          <div className="flex max-sm:flex-col sm:gap-6 gap-3 mb-3">
             <div className="flex flex-col gap-1 flex-1">
               <label>Product Name</label>
               <input
@@ -132,7 +136,7 @@ export default function ProductForm({
               <p className="text-error">{errors.description.message}</p>
             )}
           </div>
-          <div className="flex gap-6 mb-3">
+          <div className="flex max-sm:flex-col sm:gap-6 gap-3 mb-3">
             <div className="flex flex-col gap-1 flex-1">
               <label>Price in BDT</label>
               <input
@@ -164,8 +168,9 @@ export default function ProductForm({
                   valueAsNumber: true,
                   required: "Available quantity is required",
                   min: {
-                    value: 100,
-                    message: "Quantity is too small",
+                    value: Number(watchMinimumOrder) + 1,
+                    message:
+                      "Available quantity must be more than minimum order",
                   },
                 })}
               />
@@ -174,34 +179,31 @@ export default function ProductForm({
               )}
             </div>
           </div>
-          <div className="flex flex-col gap-2 mb-6">
-            <label>Minimum Order Quantity</label>
-            <div className="flex gap-4 mt-2">
-              {[50, 100, 150, 200].map((value) => (
-                <label
-                  key={value}
-                  className="cursor-pointer flex items-center gap-2"
-                >
-                  <input
-                    disabled={isProductAdding}
-                    type="radio"
-                    name="quantity"
-                    className="radio radio-sm"
-                    value={value}
-                    defaultChecked={value === 50}
-                    {...register("minOrderAmount", {
-                      required: "Minimum Order amount is required",
-                    })}
-                  />
-                  <span>{value}</span>
-                </label>
-              ))}
+          <div className="flex max-sm:flex-col sm:gap-6 gap-3 mb-3">
+            <div className="flex flex-col gap-1 flex-1">
+              <label className="block">Minimum Order Quantity</label>
+              <input
+                disabled={isProductAdding}
+                type="number"
+                className="input w-full"
+                placeholder="Available Quantity"
+                {...register("minOrderAmount", {
+                  valueAsNumber: true,
+                  required: "Minimum order amount is required",
+                  min: {
+                    value: 50,
+                    message: "Minimum amount is too small",
+                  },
+                  max: {
+                    value: Number(watchAvailableQts) - 1,
+                    message: "Can't exceed available quantity",
+                  },
+                })}
+              />
               {errors.minOrderAmount && (
                 <p className="text-error">{errors.minOrderAmount.message}</p>
               )}
             </div>
-          </div>
-          <div className="flex gap-6 mb-3">
             <div className="flex flex-col gap-1 flex-1">
               <label>Payment Method</label>
               <select
@@ -224,6 +226,8 @@ export default function ProductForm({
                 <p className="text-error">{errors.paymentMethod.message}</p>
               )}
             </div>
+          </div>
+          <div className="flex max-sm:flex-col sm:gap-6 gap-3 mb-3">
             <div className="flex flex-col gap-1 flex-1">
               <label>Youtube Video Demo</label>
               <input
@@ -248,15 +252,15 @@ export default function ProductForm({
           </label>
         </div>
         <div>
-          <label>Upload Images</label>
+          <label className="mb-1.5 block">Upload Images</label>
           <div className="grid grid-cols-2 gap-3">
-            <label className="flex flex-col items-center justify-center w-full h-40 border border-dashed border-neutral/35 rounded-xl cursor-pointer bg-base-200/25 hover:bg-base-200/50 transition">
+            <label className="max-sm:col-span-2 flex flex-col items-center justify-center w-full h-40 border border-dashed border-neutral/35 rounded-xl cursor-pointer bg-base-200/25 hover:bg-base-200/50 transition">
               <div className="flex flex-col items-center gap-2">
                 <LuImagePlus className="w-12 h-12 text-primary/75" />
                 <p className="text-sm text-accent">
                   <span className="font-semibold">Click to upload</span>
                 </p>
-                <p className="text-xs text-accent/75">
+                <p className="text-xs text-accent/75 text-center">
                   PNG, JPG, JPEG, WEBP, JFIF (1:1 preferred)
                 </p>
               </div>
@@ -302,7 +306,7 @@ export default function ProductForm({
         </div>
       </div>
       <button
-        disabled={!isValid || isProductAdding}
+        disabled={!isValid || imageUrls?.length < 1 || isProductAdding}
         className="btn w-max btn-primary h-auto py-2.5 px-8 rounded-full mt-6"
       >
         {isProductAdding && <AuthSpinnerLoader />}

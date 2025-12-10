@@ -3,11 +3,21 @@ import { dashboardSidebarLinks } from "../../../utils/navLinks";
 import { GiBigGear } from "react-icons/gi";
 import useRole from "../../../hooks/useRole";
 import AuthSpinnerLoader from "../Loaders/AuthSpinner";
+import { RiCloseCircleFill } from "react-icons/ri";
 
 export default function DashboardSidebar({ isSidebarOpen }) {
   const { isLoading, role } = useRole();
   return (
-    <ul className="menu w-full grow">
+    <ul className="menu w-full grow relative">
+      <li className="max-lg:block hidden absolute top-0 left-full">
+        <label
+          htmlFor="dashboard"
+          aria-label="close sidebar"
+          className="btn h-auto p-2 shadow-none bg-base-300 rounded-l-none border-none"
+        >
+          <RiCloseCircleFill className="text-primary w-6 h-6" />
+        </label>
+      </li>
       <li
         className={
           isSidebarOpen &
@@ -27,7 +37,7 @@ export default function DashboardSidebar({ isSidebarOpen }) {
       </li>
       {/* List item */}
       {isLoading ? (
-        <div className="flex items-center">
+        <div className="flex justify-center">
           <AuthSpinnerLoader />
         </div>
       ) : (

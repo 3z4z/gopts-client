@@ -55,7 +55,9 @@ export const router = createBrowserRouter([
         path: "/book-product/:id",
         element: (
           <PrivateRoute>
-            <ProductBookingPage />
+            <BuyerRoute>
+              <ProductBookingPage />
+            </BuyerRoute>
           </PrivateRoute>
         ),
       },

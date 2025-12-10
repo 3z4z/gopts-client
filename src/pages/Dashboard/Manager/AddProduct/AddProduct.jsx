@@ -6,12 +6,15 @@ import useAxios from "../../../../hooks/useAxios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../../../../stores/useAuthStore";
 import ProductForm from "../Common/ProductForm";
+import useUserStatus from "../../../../hooks/useUserStatus";
+import AccessDeniedComponent from "../../Common/AccessDenied/AccessDenied";
 
 export default function AddProductPage() {
   const [isProductAdding, setIsProductAdding] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
   const [formResetKey, setFormResetKey] = useState(0);
+  const { status, isLoading: isStatusLoading } = useUserStatus();
   const { data: categories = [], isLoading: isCategoriesLoading } =
     useCategories();
   const axios = useAxios();
@@ -84,23 +87,30 @@ export default function AddProductPage() {
     setImageFiles(updatedFiles);
     setImageUrls(updatedUrls);
   };
+  if (isStatusLoading) return <p>Loading...</p>;
   return (
     <>
-      <h4 className="mb-4 text-3xl">Add a product</h4>
-      <div className="bg-base-200 rounded-lg py-8">
-        <ProductForm
-          key={formResetKey}
-          categories={categories}
-          handleImageChange={handleImageChange}
-          onSubmit={addProduct}
-          isCategoriesLoading={isCategoriesLoading}
-          isProductAdding={isProductAdding}
-          removeImage={removeImage}
-          imageFiles={imageFiles}
-          imageUrls={imageUrls}
-          setImageFiles={setImageFiles}
-        />
-      </div>
+      {status.status === "rejected" ? (
+        <AccessDeniedComponent />
+      ) : (
+        <>
+          <h4 className="mb-4 text-3xl">Add a product</h4>
+          <div className="bg-base-200 rounded-lg py-8">
+            <ProductForm
+              key={formResetKey}
+              categories={categories}
+              handleImageChange={handleImageChange}
+              onSubmit={addProduct}
+              isCategoriesLoading={isCategoriesLoading}
+              isProductAdding={isProductAdding}
+              removeImage={removeImage}
+              imageFiles={imageFiles}
+              imageUrls={imageUrls}
+              setImageFiles={setImageFiles}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 }

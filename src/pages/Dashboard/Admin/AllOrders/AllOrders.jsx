@@ -30,16 +30,16 @@ export default function AllOrdersPage() {
   return (
     <>
       <h4 className="text-2xl mb-4">Manage All Orders</h4>
-      <div className="flex justify-between">
+      <div className="flex max-sm:flex-col justify-between sm:gap-3 gap-4">
         <input
           type="search"
-          className="input"
+          className="input max-sm:w-full"
           placeholder="Search by product name..."
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
           defaultValue={""}
-          className="select capitalize"
+          className="select capitalize max-sm:w-full"
           onChange={(e) => {
             setStatus(e.target.value === "Select status" ? "" : e.target.value);
             refetch();
@@ -79,11 +79,13 @@ export default function AllOrdersPage() {
                 <tr key={i} className="even:bg-base-200">
                   <td>{i + 1}</td>
                   <td>
-                    <p className="text-primary font-bold">{o.productName}</p>
+                    <p className="text-primary font-bold min-w-40">
+                      {o.productName}
+                    </p>
                     <p>TID: {o.trackingId}</p>
                   </td>
                   <td>{o.orderQuantity}</td>
-                  <td>
+                  <td className="whitespace-nowrap">
                     <p
                       className={`badge badge-sm badge-outline capitalize ${
                         o.paymentStatus === "paid"
@@ -98,7 +100,7 @@ export default function AllOrdersPage() {
                         : o.paymentStatus}
                     </p>
                   </td>
-                  <td>
+                  <td className="whitespace-nowrap">
                     <p
                       className={`badge badge-sm font-bold capitalize ${
                         o.deliveryStatus === "pending"
@@ -118,13 +120,13 @@ export default function AllOrdersPage() {
                     <div className="flex gap-2">
                       <Link
                         to={`/products/${o.productId}`}
-                        className="btn btn-sm"
+                        className="btn btn-sm btn-info border-info/20 btn-soft rounded-full"
                       >
                         View Product
                       </Link>
                       <Link
                         to={`/dashboard/all-orders/${o._id}`}
-                        className="btn btn-sm"
+                        className="btn btn-sm btn-accent border-accent/20 btn-soft rounded-full"
                       >
                         View Order
                       </Link>

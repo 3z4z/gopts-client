@@ -31,16 +31,16 @@ export default function ManageProductsPage() {
   return (
     <>
       <h4 className="text-3xl mb-4">Manage your products</h4>
-      <div className="flex justify-between">
+      <div className="flex max-sm:flex-col justify-between sm:gap-3 gap-4">
         <input
           type="search"
-          className="input"
+          className="input max-sm:w-full"
           placeholder="Search"
           onChange={(e) => setSearchValue(e.target.value)}
         />
         <select
           defaultValue={""}
-          className="select"
+          className="select capitalize max-sm:w-full"
           onChange={(e) => {
             setSelectedCategory(
               e.target.value === "Select category" ? "" : e.target.value
@@ -89,7 +89,7 @@ export default function ManageProductsPage() {
                     </figure>
                   </td>
                   <td>
-                    <p className="font-bold">{p.name}</p>
+                    <p className="font-bold min-w-40">{p.name}</p>
                     <p>Cat: {p.category}</p>
                   </td>
                   <td>{p.price}</td>
