@@ -30,6 +30,7 @@ import PendingOrdersPage from "../pages/Dashboard/Manager/PendingOrders/PendingO
 import ApprovedOrdersPage from "../pages/Dashboard/Manager/ApprovedOrders/ApprovedOrders";
 import MyProfilePage from "../pages/Dashboard/Common/MyProfile/MyProfile";
 import ErrorPage from "../pages/Error/Error";
+import AboutUsPage from "../pages/AboutUs/AboutUs";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "/products",
         Component: AllProductsPage,
+      },
+      {
+        path: "/about-us",
+        Component: AboutUsPage,
       },
       {
         path: "/products/:id",

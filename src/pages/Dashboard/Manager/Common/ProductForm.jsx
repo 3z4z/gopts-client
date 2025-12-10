@@ -5,6 +5,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import AuthSpinnerLoader from "../../../../components/Common/Loaders/AuthSpinner";
 import { LuImagePlus } from "react-icons/lu";
 import { useEffect } from "react";
+import BarSkeleton from "../../../../components/Common/Loaders/BarSkeleton";
 
 export default function ProductForm({
   product,
@@ -105,7 +106,9 @@ export default function ProductForm({
               >
                 <option value="Select a category">Select a category</option>
                 {isCategoriesLoading ? (
-                  <option>Loading...</option>
+                  <option disabled>
+                    <BarSkeleton />
+                  </option>
                 ) : (
                   categories.map((cat) => (
                     <option key={cat._id} value={cat.name}>

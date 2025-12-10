@@ -3,6 +3,8 @@ import useAxios from "../../../../hooks/useAxios";
 import { Link } from "react-router";
 import { useState } from "react";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
+import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
+import BarSkeleton from "../../../../components/Common/Loaders/BarSkeleton";
 
 export default function AllOrdersPage() {
   const [search, setSearch] = useState("");
@@ -47,7 +49,9 @@ export default function AllOrdersPage() {
         >
           <option value="Select status">Select status</option>
           {isStatusesLoading ? (
-            <option>Loading...</option>
+            <option>
+              <BarSkeleton />
+            </option>
           ) : uniqueStatuses.length > 0 ? (
             uniqueStatuses?.map((s, i) => (
               <option key={i} value={s} className="capitalize">
@@ -60,7 +64,7 @@ export default function AllOrdersPage() {
         </select>
       </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <TableSkeleton />
       ) : orders.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">

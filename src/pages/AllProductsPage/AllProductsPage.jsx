@@ -9,6 +9,9 @@ import useCategories from "../../hooks/useCategories";
 import ProductCardComponent from "./ProductCard";
 import EmptyTableDataComponent from "../../components/Common/EmptyTableData/EmptyTableData";
 import { scrollUp } from "../../utils/scrollUp";
+import CardSkeleton from "../../components/Common/Loaders/cardSkeleton";
+import { MdClose } from "react-icons/md";
+import BarSkeleton from "../../components/Common/Loaders/BarSkeleton";
 
 export default function AllProductsPage() {
   const [search, setSearch] = useState("");
@@ -73,16 +76,16 @@ export default function AllProductsPage() {
           className={`
             bg-base-200 p-5 max-lg:rounded-none rounded-lg h-max max-lg:min-h-full
             lg:sticky lg:top-24 lg:block lg:translate-x-0
-            fixed top-0 left-0 z-50 w-72
+            fixed top-0 left-0 z-50 max-lg:w-72 max-lg:pt-12
             transition-transform duration-300
             ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
           `}
         >
           <button
             onClick={() => setIsFilterOpen(false)}
-            className="btn btn-sm btn-circle absolute top-3 right-3 lg:hidden"
+            className="h-auto p-2 btn bg-base-300 absolute top-2 right-2 lg:hidden"
           >
-            ✕
+            <MdClose className="w-5 h-5" />
           </button>
 
           <p className="text-lg mb-4 font-bold">Sort</p>
@@ -119,7 +122,9 @@ export default function AllProductsPage() {
               >
                 <option value="Select a category">Select a category</option>
                 {isCategoryLoading ? (
-                  <option>Loading...</option>
+                  <option>
+                    <BarSkeleton />
+                  </option>
                 ) : categories.length > 0 ? (
                   categories.map((cat) => (
                     <option key={cat._id}>{cat.name}</option>
@@ -186,7 +191,7 @@ export default function AllProductsPage() {
 
           <div className="grid md:grid-cols-3 xs:grid-cols-2 gap-6">
             {isLoading ? (
-              <p>Loading...</p>
+              <CardSkeleton />
             ) : products.result.length > 0 ? (
               products.result.map((product) => (
                 <ProductCardComponent key={product._id} product={product} />

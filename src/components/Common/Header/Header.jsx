@@ -13,6 +13,7 @@ import { LuUser } from "react-icons/lu";
 import { RiMenu2Line } from "react-icons/ri";
 import DrawerNavbarComponent from "../DrawerNavbar/DrawerNavbar";
 import { toggleTheme } from "../../../utils/toggleTheme";
+import BarSkeleton from "../Loaders/BarSkeleton";
 
 export default function HeaderComponent() {
   const { user, isAuthLoading, signOut } = useAuthStore();
@@ -127,7 +128,7 @@ export default function HeaderComponent() {
                 </p>
               </div>
               {isLoading ? (
-                <p>Loading...</p>
+                <BarSkeleton />
               ) : (
                 userDdLinks
                   .filter(

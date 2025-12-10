@@ -9,12 +9,15 @@ import toast from "react-hot-toast";
 import { handlePayment } from "../../../utils/handlePayment";
 import useUserStatus from "../../../hooks/useUserStatus";
 import AccessDeniedComponent from "../../Dashboard/Common/AccessDenied/AccessDenied";
+import QueryLoader from "../../../components/Common/Loaders/QueryLoader";
+import AuthSpinnerLoader from "../../../components/Common/Loaders/AuthSpinner";
 
 export default function ProductBookingPage() {
   const { id } = useParams();
   const { user } = useAuthStore();
   const [cost, setCost] = useState(null);
   const axios = useAxios();
+  const [isBooking, setIsBooking] = useState(false);
   const { status, isLoading: isStatusLoading } = useUserStatus();
   const { data: product = {}, isLoading } = useProduct({ id: id });
   const {
@@ -28,6 +31,7 @@ export default function ProductBookingPage() {
   });
   const watchOrderQuantity = useWatch({ name: "orderQuantity", control });
   const handleBookProduct = async (data) => {
+    setIsBooking(true);
     const bookingInfo = {
       ...data,
       productId: product._id,
@@ -55,6 +59,8 @@ export default function ProductBookingPage() {
       toast.error(
         err?.response?.data?.message || err?.message || "Server failed to post"
       );
+    } finally {
+      setIsBooking(false);
     }
   };
   useEffect(() => {
@@ -64,7 +70,12 @@ export default function ProductBookingPage() {
       setCost(total);
     }
   }, [product, watchOrderQuantity]);
-  if (isLoading || isStatusLoading) return <p>Loading...</p>;
+  if (isLoading || isStatusLoading)
+    return (
+      <div className="mt-32">
+        <QueryLoader />
+      </div>
+    );
   return (
     <>
       {status.status === "rejected" ? (
@@ -116,6 +127,7 @@ export default function ProductBookingPage() {
               <div className="sm:flex-1 max-sm:w-full">
                 <label className="block">First Name</label>
                 <input
+                  disabled={isBooking}
                   type="text"
                   className="input w-full"
                   placeholder="John"
@@ -134,6 +146,7 @@ export default function ProductBookingPage() {
               <div className="sm:flex-1 max-sm:w-full">
                 <label className="block">Last Name</label>
                 <input
+                  disabled={isBooking}
                   type="text"
                   className="input w-full"
                   placeholder="Doe"
@@ -165,6 +178,7 @@ export default function ProductBookingPage() {
               <div className="sm:flex-1 max-sm:w-full">
                 <label className="block">Contact Number</label>
                 <input
+                  disabled={isBooking}
                   type="text"
                   className="input w-full"
                   placeholder="01xxxx"
@@ -185,6 +199,7 @@ export default function ProductBookingPage() {
               <div className="sm:flex-1 max-sm:w-full">
                 <label className="block">Order Quantity</label>
                 <input
+                  disabled={isBooking}
                   type="number"
                   className="input w-full"
                   placeholder="1"
@@ -219,6 +234,7 @@ export default function ProductBookingPage() {
             <div className="mb-4">
               <label>Address</label>
               <textarea
+                disabled={isBooking}
                 className="textarea w-full resize-none"
                 placeholder="Jatrabari, Dhaka"
                 rows={3}
@@ -237,6 +253,7 @@ export default function ProductBookingPage() {
             <div className="mb-4">
               <label>Additional Notes</label>
               <textarea
+                disabled={isBooking}
                 className="textarea w-full resize-none"
                 placeholder="Handle with care"
                 rows={3}
@@ -253,9 +270,10 @@ export default function ProductBookingPage() {
               )}
             </div>
             <button
-              disabled={!isValid}
+              disabled={!isValid || isBooking}
               className="btn btn-primary w-max px-8 rounded-full"
             >
+              {isBooking && <AuthSpinnerLoader />}
               Confirm Booking
             </button>
           </form>

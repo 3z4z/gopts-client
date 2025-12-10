@@ -38,13 +38,14 @@ export default function DashboardHeader() {
             </figure>
           </Link>
         )}
-
-        <button
-          onClick={() => toggleTheme(themeState, setThemeState, htmlElement)}
-          className="ms-3 btn btn-ghost rounded-full p-2.5 h-auto w-auto text-lg"
-        >
-          {themeState === "dark" ? <FiMoon /> : <FiSun />}
-        </button>
+        <div>
+          <button
+            onClick={() => toggleTheme(themeState, setThemeState, htmlElement)}
+            className="ms-3 btn btn-ghost rounded-full p-2.5 h-auto w-auto text-lg"
+          >
+            {themeState === "dark" ? <FiMoon /> : <FiSun />}
+          </button>
+        </div>
       </div>
     </div>
   );

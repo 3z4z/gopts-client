@@ -6,6 +6,7 @@ import { handlePayment } from "../../../../utils/handlePayment";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
+import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
 
 export default function MyOrdersPage() {
   const { user } = useAuthStore();
@@ -84,7 +85,7 @@ export default function MyOrdersPage() {
         </select>
       </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <TableSkeleton />
       ) : orders?.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">

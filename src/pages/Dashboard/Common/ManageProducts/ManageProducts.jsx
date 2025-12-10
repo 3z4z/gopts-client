@@ -6,6 +6,8 @@ import { useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
 import { handleProductDelete } from "../../../../utils/handleDeleteProduct";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
+import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
+import BarSkeleton from "../../../../components/Common/Loaders/BarSkeleton";
 
 export default function ManageProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -50,7 +52,9 @@ export default function ManageProductsPage() {
         >
           <option value="Select category">Select category</option>
           {isCategoriesLoading ? (
-            <option>Loading...</option>
+            <option>
+              <BarSkeleton />
+            </option>
           ) : (
             categories.map((c) => (
               <option key={c._id} value={c.name}>
@@ -61,7 +65,7 @@ export default function ManageProductsPage() {
         </select>
       </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <TableSkeleton />
       ) : products.result.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">

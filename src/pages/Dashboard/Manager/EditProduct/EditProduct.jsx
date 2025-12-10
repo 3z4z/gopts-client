@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
 import { axiosInstance } from "../../../../utils/axiosInstance";
 import toast from "react-hot-toast";
+import QueryLoader from "../../../../components/Common/Loaders/QueryLoader";
+import ErrorPage from "../../../Error/Error";
 
 export default function EditProductPage() {
   const { id } = useParams();
@@ -103,11 +105,11 @@ export default function EditProductPage() {
   };
 
   if (isProductLoading || isCategoriesLoading) {
-    return <div>Loading product and categories...</div>;
+    return <QueryLoader />;
   }
 
   if (!product || !product.name) {
-    return <div>Product not found or failed to load.</div>;
+    return <ErrorPage />;
   }
 
   return (

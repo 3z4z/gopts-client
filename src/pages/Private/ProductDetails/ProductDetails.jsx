@@ -7,6 +7,7 @@ import "./ProductDetails.css";
 import useRole from "../../../hooks/useRole";
 import useProduct from "../../../hooks/useProduct";
 import { toYouTubeEmbed } from "../../../utils/toYtEmbed";
+import ProductDetailsSkeleton from "../../../components/Common/Loaders/ProductDetailSkeleton";
 export default function ProductDetailsPage() {
   useEffect(() => {
     window.scrollTo({
@@ -18,7 +19,7 @@ export default function ProductDetailsPage() {
   const { role } = useRole();
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const { data: product = {}, isLoading } = useProduct({ id: id });
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <ProductDetailsSkeleton />;
   return (
     <div className={`${container} mt-24`}>
       <div className="grid xl:grid-cols-3 lg:grid-cols-5 md:grid-cols-2 gap-12">

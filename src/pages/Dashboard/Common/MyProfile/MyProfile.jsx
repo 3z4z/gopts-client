@@ -4,6 +4,7 @@ import { useAuthStore } from "../../../../stores/useAuthStore";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/useAxios";
 import dayjs from "dayjs";
+import QueryLoader from "../../../../components/Common/Loaders/QueryLoader";
 
 export default function MyProfilePage() {
   const { role } = useRole();
@@ -21,7 +22,7 @@ export default function MyProfilePage() {
     await signOut();
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <QueryLoader />;
   return (
     <>
       <h4 className="text-3xl font-semibold mb-6">My Profile</h4>

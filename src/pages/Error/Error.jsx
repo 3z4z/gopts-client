@@ -6,7 +6,7 @@ export default function ErrorPage() {
   const { pathname } = useLocation();
   return (
     <>
-      {pathname.includes("-orders") ? (
+      {pathname.includes("-orders") || pathname.includes("edit-") ? (
         <div className="flex-1 flex flex-col items-center mt-36">
           <figure className="max-w-xl mx-auto px-10 mb-20">
             <img src={errorImg} alt="" />

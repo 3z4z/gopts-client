@@ -1,6 +1,7 @@
 import { use } from "react";
 import SectionTitleComponent from "../../Common/SectionTitle/SectionTitle";
 import { container } from "../../../utils/classNames";
+import { motion } from "framer-motion";
 
 export default function OurTeamComponent({ getTeamMembers }) {
   const teamMembers = use(getTeamMembers);
@@ -16,7 +17,9 @@ export default function OurTeamComponent({ getTeamMembers }) {
         {teamMembers.map((m, i) => (
           <div key={i}>
             <figure className="aspect-square overflow-hidden px-10 pt-10 pb-3 bg-linear-to-b from-transparent from-60% to-base-300 to-60%">
-              <img
+              <motion.img
+                whileHover={{ rotate: 5 }}
+                transition={{ duration: 0.5 }}
                 src={m.image}
                 alt=""
                 className="w-full h-full object-cover rounded-xl"

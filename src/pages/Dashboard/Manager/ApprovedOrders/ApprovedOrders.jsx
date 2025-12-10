@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { Link } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
+import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
 
 export default function ApprovedOrdersPage() {
   const axios = useAxios();
@@ -35,12 +36,13 @@ export default function ApprovedOrdersPage() {
     }
   }, [selectedOrder]);
 
-  const handleUpdateStatus = async (order, status, details) => {
+  const handleUpdateStatus = async (order, status, details, locationInfo) => {
     try {
       const statusInfo = {
         deliveryStatus: status,
         trackingId: order.trackingId,
-        details: details,
+        details,
+        locationInfo,
       };
       const res = await axios.patch(`/orders/${order._id}`, statusInfo);
       console.log(res.data);
@@ -60,7 +62,7 @@ export default function ApprovedOrdersPage() {
         onChange={(e) => setSearch(e.target.value)}
       />
       {isLoading ? (
-        <p>Loading...</p>
+        <TableSkeleton />
       ) : orders.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">
@@ -138,10 +140,12 @@ export default function ApprovedOrdersPage() {
                           <div className="modal-action">
                             {(() => {
                               let details = "";
+                              let locationInfo = "";
                               switch (selectedOrder?.deliveryStatus) {
                                 case "approved":
                                   details =
                                     "Order is ready to start processing";
+                                  locationInfo = "Dhaka";
                                   return (
                                     <button
                                       className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -149,7 +153,8 @@ export default function ApprovedOrdersPage() {
                                         handleUpdateStatus(
                                           selectedOrder,
                                           "product_ready",
-                                          details
+                                          details,
+                                          locationInfo
                                         )
                                       }
                                     >
@@ -159,6 +164,7 @@ export default function ApprovedOrdersPage() {
                                 case "product_ready":
                                   details =
                                     "Product prepared, ready for QC check";
+                                  locationInfo = "Dhaka";
                                   return (
                                     <button
                                       className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -166,7 +172,8 @@ export default function ApprovedOrdersPage() {
                                         handleUpdateStatus(
                                           selectedOrder,
                                           "qc_passed",
-                                          details
+                                          details,
+                                          locationInfo
                                         )
                                       }
                                     >
@@ -175,6 +182,7 @@ export default function ApprovedOrdersPage() {
                                   );
                                 case "qc_passed":
                                   details = "QC passed, ready to pack";
+                                  locationInfo = "Dhaka";
                                   return (
                                     <button
                                       className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -182,7 +190,8 @@ export default function ApprovedOrdersPage() {
                                         handleUpdateStatus(
                                           selectedOrder,
                                           "packed",
-                                          details
+                                          details,
+                                          locationInfo
                                         )
                                       }
                                     >
@@ -192,6 +201,7 @@ export default function ApprovedOrdersPage() {
                                 case "packed":
                                   details =
                                     "Packing completed, Sending to delivery";
+                                  locationInfo = "Dhaka";
                                   return (
                                     <button
                                       className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -199,7 +209,8 @@ export default function ApprovedOrdersPage() {
                                         handleUpdateStatus(
                                           selectedOrder,
                                           "sent",
-                                          details
+                                          details,
+                                          locationInfo
                                         )
                                       }
                                     >
@@ -208,6 +219,7 @@ export default function ApprovedOrdersPage() {
                                   );
                                 case "sent":
                                   details = "Order is ready to pickup";
+                                  locationInfo = "Chittagong";
                                   return (
                                     <button
                                       className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -215,7 +227,8 @@ export default function ApprovedOrdersPage() {
                                         handleUpdateStatus(
                                           selectedOrder,
                                           "pickup_ready",
-                                          details
+                                          details,
+                                          locationInfo
                                         )
                                       }
                                     >
@@ -227,6 +240,7 @@ export default function ApprovedOrdersPage() {
                                     details = `Cash payment received. <br/> Amount: ${selectedOrder.totalCost.toLocaleString(
                                       "en-EN"
                                     )} BDT`;
+                                    locationInfo = "Chittagong";
                                     return (
                                       <button
                                         className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -234,7 +248,8 @@ export default function ApprovedOrdersPage() {
                                           handleUpdateStatus(
                                             selectedOrder,
                                             "payment_confirmed",
-                                            details
+                                            details,
+                                            locationInfo
                                           )
                                         }
                                       >
@@ -243,6 +258,7 @@ export default function ApprovedOrdersPage() {
                                     );
                                   }
                                   details = "Delivery Successfully Completed";
+                                  locationInfo = "Chittagong";
                                   return (
                                     <button
                                       className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -250,7 +266,8 @@ export default function ApprovedOrdersPage() {
                                         handleUpdateStatus(
                                           selectedOrder,
                                           "delivery_done",
-                                          details
+                                          details,
+                                          locationInfo
                                         )
                                       }
                                     >
@@ -259,6 +276,7 @@ export default function ApprovedOrdersPage() {
                                   );
                                 case "payment_confirmed":
                                   details = "Delivery Successfully Completed";
+                                  locationInfo = "Chittagong";
                                   return (
                                     <button
                                       className="btn btn-primary h-auto rounded-full px-6 py-2"
@@ -266,7 +284,8 @@ export default function ApprovedOrdersPage() {
                                         handleUpdateStatus(
                                           selectedOrder,
                                           "delivery_done",
-                                          details
+                                          details,
+                                          locationInfo
                                         )
                                       }
                                     >

@@ -8,6 +8,7 @@ import { useAuthStore } from "../../../../stores/useAuthStore";
 import ProductForm from "../Common/ProductForm";
 import useUserStatus from "../../../../hooks/useUserStatus";
 import AccessDeniedComponent from "../../Common/AccessDenied/AccessDenied";
+import QueryLoader from "../../../../components/Common/Loaders/QueryLoader";
 
 export default function AddProductPage() {
   const [isProductAdding, setIsProductAdding] = useState(false);
@@ -87,7 +88,7 @@ export default function AddProductPage() {
     setImageFiles(updatedFiles);
     setImageUrls(updatedUrls);
   };
-  if (isStatusLoading) return <p>Loading...</p>;
+  if (isStatusLoading) return <QueryLoader />;
   return (
     <>
       {status.status === "rejected" ? (

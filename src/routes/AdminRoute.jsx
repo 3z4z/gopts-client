@@ -1,11 +1,12 @@
 import { Link } from "react-router";
 import useRole from "../hooks/useRole";
 import { useAuthStore } from "../stores/useAuthStore";
+import QueryLoader from "../components/Common/Loaders/QueryLoader";
 
 export default function AdminRoute({ children }) {
   const { role, isLoading } = useRole();
   const { isSigningIn } = useAuthStore();
-  if (isSigningIn || isLoading) return <p>Loading...</p>;
+  if (isSigningIn || isLoading) return <QueryLoader />;
   if (
     role.role.toLowerCase() === "admin" ||
     role.role.toLowerCase() === "super admin"

@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaCircleXmark } from "react-icons/fa6";
 import ErrorPage from "../../../Error/Error";
+import QueryLoader from "../../../../components/Common/Loaders/QueryLoader";
+import LogSkeleton from "../../../../components/Common/Loaders/LogSkeleton";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
@@ -32,13 +34,13 @@ export default function OrderDetailsPage() {
     },
     retry: false,
   });
-  if (isLoading) return <p>Loading..</p>;
+  if (isLoading) return <QueryLoader />;
   if (isError) return <ErrorPage />;
   return (
     <div className="bg-base-200 rounded-xl">
       <div className={container}>
-        <div className="grid grid-cols-2 py-7 gap-10">
-          <div>
+        <div className="grid lg:grid-cols-2 md:grid-cols-5 py-7 gap-10">
+          <div className="lg:col-span-1 md:col-span-2">
             <h4 className="text-2xl mb-5 font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
               Order info
             </h4>
@@ -66,7 +68,7 @@ export default function OrderDetailsPage() {
               <span className="text-neutral/70 me-1.5">Total price:</span>
               {order.totalCost.toLocaleString("en-EN")} BDT
             </p>
-            <p>
+            <div>
               {order.paymentStatus === "cod" ? (
                 <p>
                   <span className="text-neutral/70 me-1.5">
@@ -92,7 +94,7 @@ export default function OrderDetailsPage() {
                   </>
                 )
               )}
-            </p>
+            </div>
             <h4 className="text-2xl my-5 font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
               Buyer info
             </h4>
@@ -131,26 +133,29 @@ export default function OrderDetailsPage() {
               </>
             )}
           </div>
-          <div>
+          <div className="lg:col-span-1 md:col-span-3">
             <h4 className="mb-5 text-2xl font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
               Delivery Log
             </h4>
             {isLogsLoading ? (
-              <p>Loading...</p>
+              <LogSkeleton />
             ) : logs.length > 0 ? (
-              <ul className="timeline timeline-vertical w-max">
+              <ul className="timeline timeline-vertical max-sm:timeline-compact w-max sm:max-w-max max-w-md">
                 {logs.map((log, index) => (
                   <li
                     key={log._id}
                     className="grid grid-cols-[var(--timeline-col-start,minmax(0,1fr))_auto_var(--timeline-col-end,minmax(0,3fr))]"
                   >
                     {index !== 0 && <hr />}
-                    <div className="timeline-start border border-dashed border-primary/40 bg-base-300 p-3 rounded-md">
-                      <p className="text-sm text-primary font-bold mb-1">
+                    <div className="timeline-start max-sm:mb-0 max-sm:mt-2 border border-dashed border-primary/40 bg-base-300 p-3 rounded-md">
+                      <p className="text-sm text-primary font-bold mb-1 text-nowrap">
                         {dayjs(log.createdAt).format("DD MMM, YYYY")}
                       </p>
-                      <p className="text-xs text-accent font-medium">
+                      <p className="text-xs text-accent font-medium text-nowrap">
                         {dayjs(log.createdAt).format("hh:mm:ss a")}
+                      </p>
+                      <p className="text-xs font-semibold">
+                        {log?.location || "N/A"}
                       </p>
                     </div>
                     <div className="timeline-middle">
@@ -161,7 +166,7 @@ export default function OrderDetailsPage() {
                       )}
                     </div>
                     <div
-                      className={`timeline-end timeline-box text-sm capitalize max-w-80 ${
+                      className={`timeline-end max-sm:-mt-1 max-sm:mb-2 timeline-box text-sm capitalize sm:max-w-80 max-w-64 ${
                         log.deliveryStatus === "rejected"
                           ? "text-error"
                           : "text-primary-content bg-primary"
@@ -174,7 +179,9 @@ export default function OrderDetailsPage() {
                 ))}
               </ul>
             ) : (
-              <p>No logs found</p>
+              <p className="mt-6 py-10 bg-base-300 rounded-xl text-center">
+                No logs found
+              </p>
             )}
           </div>
         </div>

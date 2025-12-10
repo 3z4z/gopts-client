@@ -3,6 +3,7 @@ import useUsers from "../../../../hooks/useUsers";
 import { useRef, useState } from "react";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
 import toast from "react-hot-toast";
+import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
 
 export default function ManageUsersPage() {
   const [selectedRole, setSelectedRole] = useState("");
@@ -92,7 +93,7 @@ export default function ManageUsersPage() {
         </select>
       </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <TableSkeleton />
       ) : users.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">

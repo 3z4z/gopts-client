@@ -1,5 +1,6 @@
 import { container } from "../../../utils/classNames";
 import SectionTitleComponent from "../../Common/SectionTitle/SectionTitle";
+import { motion } from "framer-motion";
 import {
   BsBoxFill,
   BsClipboardCheckFill,
@@ -46,14 +47,16 @@ export default function WorkFlowComponent() {
         className={`grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-2 gap-6 ${container}`}
       >
         {steps.map((step, index) => (
-          <div
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.3, type: "spring" }}
             key={index}
             className="flex flex-col items-center text-center hover:bg-base-200 px-4 py-7 rounded-xl cursor-pointer transition-all"
           >
             {step.icon}
             <h4 className="text-primary text-xl mt-5 mb-3">{step.title}</h4>
             <p className="text-neutral/75">{step.content}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

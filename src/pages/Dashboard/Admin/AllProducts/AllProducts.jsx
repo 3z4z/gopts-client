@@ -6,6 +6,8 @@ import useCategories from "../../../../hooks/useCategories";
 import { Link } from "react-router";
 import { handleProductDelete } from "../../../../utils/handleDeleteProduct";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
+import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
+import BarSkeleton from "../../../../components/Common/Loaders/BarSkeleton";
 
 export default function AllProductsAdmin() {
   const axios = useAxios();
@@ -62,7 +64,9 @@ export default function AllProductsAdmin() {
         >
           <option value="Select category">Select category</option>
           {isCategoriesLoading ? (
-            <option>Loading...</option>
+            <option>
+              <BarSkeleton />
+            </option>
           ) : (
             categories.map((c) => (
               <option key={c._id} value={c.name}>
@@ -73,7 +77,7 @@ export default function AllProductsAdmin() {
         </select>
       </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <TableSkeleton />
       ) : products.result.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">
@@ -106,24 +110,26 @@ export default function AllProductsAdmin() {
                   <td>{p.category}</td>
                   <td>{p.managerName}</td>
                   <td>
-                    <Link
-                      className="btn btn-sm btn-soft rounded-full border-info/20 btn-info me-2"
-                      to={`/dashboard/edit-product/${p._id}`}
-                    >
-                      Update
-                    </Link>
-                    <button
-                      className="btn btn-sm btn-soft rounded-full border-error/20 btn-error me-2"
-                      onClick={() => handleProductDelete(p, axios, refetch)}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      className="btn btn-sm btn-soft btn-accent border-accent/20 rounded-full"
-                      onClick={() => updateFeatureStatus(p)}
-                    >
-                      {p.markFeatured ? "Remove from home" : "Add to home"}
-                    </button>
+                    <div className="flex gap-2">
+                      <Link
+                        className="btn btn-sm btn-soft rounded-full border-info/20 btn-info"
+                        to={`/dashboard/edit-product/${p._id}`}
+                      >
+                        Update
+                      </Link>
+                      <button
+                        className="btn btn-sm btn-soft rounded-full border-error/20 btn-error"
+                        onClick={() => handleProductDelete(p, axios, refetch)}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        className="btn btn-sm btn-soft btn-accent border-accent/20 rounded-full"
+                        onClick={() => updateFeatureStatus(p)}
+                      >
+                        {p.markFeatured ? "Remove from home" : "Add to home"}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

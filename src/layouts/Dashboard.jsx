@@ -18,7 +18,7 @@ export default function DashboardLayout() {
         ref={sidebarRef}
         onChange={handleToggle}
       />
-      <div className="drawer-content">
+      <div className="drawer-content flex flex-col">
         {/* Navbar */}
         <nav className="navbar w-full bg-base-300">
           <label
@@ -36,7 +36,7 @@ export default function DashboardLayout() {
           <DashboardHeader />
         </nav>
         {/* Page content here */}
-        <div className="p-4">
+        <div className="p-4 flex-1">
           <Outlet />
         </div>
       </div>

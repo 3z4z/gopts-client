@@ -7,6 +7,8 @@ import EmptyTableDataComponent from "../../../../components/Common/EmptyTableDat
 import { useState } from "react";
 import Swal from "sweetalert2";
 import useUserStatus from "../../../../hooks/useUserStatus";
+import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
+import QueryLoader from "../../../../components/Common/Loaders/QueryLoader";
 
 export default function PendingOrdersPage() {
   const axios = useAxios();
@@ -61,6 +63,7 @@ export default function PendingOrdersPage() {
       deliveryStatus: order?.deliveryStatus,
       orderId: order._id,
       trackingId: order.trackingId,
+      location: "Dhaka",
     };
     order?.deliveryStatus === "pending"
       ? (statusInfo.deliveryStatus = "rejected")
@@ -85,7 +88,7 @@ export default function PendingOrdersPage() {
       }
     });
   };
-  if (isStatusLoading) return <p>Loading...</p>;
+  if (isStatusLoading) return <QueryLoader />;
   return (
     <>
       <h4 className="text-3xl mb-4">Manage Pending Orders</h4>
@@ -98,7 +101,7 @@ export default function PendingOrdersPage() {
         />
       </div>
       {isLoading ? (
-        <p>Loading...</p>
+        <TableSkeleton />
       ) : orders.length > 0 ? (
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-4">
           <table className="table">

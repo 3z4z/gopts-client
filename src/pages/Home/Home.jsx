@@ -5,6 +5,7 @@ import WorkFlowComponent from "../../components/Home/WorkFlow/WorkFlow";
 import CustomerReviewsComponent from "../../components/Home/CustomerReviews/CustomerReviews";
 import PartnersComponent from "../../components/Home/Partners/Partners";
 import OurTeamComponent from "../../components/Home/OurTeam/OurTeam";
+import TeamMemberSkeleton from "../../components/Common/Loaders/TeamMemberSkeleton";
 
 export default function HomePage() {
   const getReviews = () =>
@@ -16,11 +17,11 @@ export default function HomePage() {
       <HeroComponent />
       <OurProductsComponent />
       <WorkFlowComponent />
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<p></p>}>
         <CustomerReviewsComponent getReviews={getReviews()} />
       </Suspense>
       <PartnersComponent />
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<TeamMemberSkeleton />}>
         <OurTeamComponent getTeamMembers={getTeamMembers()} />
       </Suspense>
     </>
