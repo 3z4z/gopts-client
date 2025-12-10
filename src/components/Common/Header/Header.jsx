@@ -12,6 +12,7 @@ import useRole from "../../../hooks/useRole";
 import { LuUser } from "react-icons/lu";
 import { RiMenu2Line } from "react-icons/ri";
 import DrawerNavbarComponent from "../DrawerNavbar/DrawerNavbar";
+import { toggleTheme } from "../../../utils/toggleTheme";
 
 export default function HeaderComponent() {
   const { user, isAuthLoading, signOut } = useAuthStore();
@@ -19,12 +20,6 @@ export default function HeaderComponent() {
   const htmlElement = document.documentElement;
   const { isLoading, role } = useRole();
 
-  const toggleTheme = () => {
-    const updateTheme = themeState === "light" ? "dark" : "light";
-    htmlElement.setAttribute("data-theme", updateTheme);
-    setThemeState(updateTheme);
-    localStorage.setItem("theme", updateTheme);
-  };
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme) {
@@ -161,7 +156,7 @@ export default function HeaderComponent() {
           </div>
         )}
         <button
-          onClick={toggleTheme}
+          onClick={() => toggleTheme(themeState, setThemeState, htmlElement)}
           className="btn btn-ghost rounded-full p-2.5 h-auto w-auto text-lg"
         >
           {themeState === "dark" ? <FiMoon /> : <FiSun />}

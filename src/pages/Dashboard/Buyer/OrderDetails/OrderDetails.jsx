@@ -32,7 +32,7 @@ export default function OrderDetailsPage() {
       <div className={container}>
         <div className="grid grid-cols-2 py-7 gap-10">
           <div>
-            <h4 className="text-2xl mb-5 font-extrabold text-primary">
+            <h4 className="text-2xl mb-5 font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
               Order info
             </h4>
             <p>
@@ -74,7 +74,7 @@ export default function OrderDetailsPage() {
                     </>
                   )}
             </p>
-            <h4 className="text-2xl my-5 font-extrabold text-primary">
+            <h4 className="text-2xl my-5 font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
               Buyer info
             </h4>
             <p className="mb-1">
@@ -102,7 +102,7 @@ export default function OrderDetailsPage() {
             </p>
             {role.role.toLowerCase() !== "manager" && (
               <>
-                <h4 className="text-2xl my-5 font-extrabold text-primary">
+                <h4 className="text-2xl my-5 font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
                   Manager info
                 </h4>
                 <p>
@@ -113,7 +113,7 @@ export default function OrderDetailsPage() {
             )}
           </div>
           <div>
-            <h4 className="mb-5 text-2xl font-extrabold text-primary">
+            <h4 className="mb-5 text-2xl font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
               Delivery Log
             </h4>
             {isLogsLoading ? (

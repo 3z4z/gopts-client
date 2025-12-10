@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { container } from "../../../utils/classNames";
-import { footerNavLinks } from "../../../utils/navLinks";
+import { footerNavLinks, footerNavSocialLinks } from "../../../utils/navLinks";
 import MainLogoComponent from "../MainLogo/MainLogo";
 
 export default function FooterComponent() {
@@ -27,6 +27,17 @@ export default function FooterComponent() {
               className="link link-hover link-neutral font-bold hover:text-primary"
             >
               {link.title}
+            </Link>
+          ))}
+        </nav>
+        <nav className="flex gap-4 mt-8">
+          {footerNavSocialLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.path}
+              className="btn w-9 h-9 rounded-full p-0 btn-primary"
+            >
+              <link.icon className="text-[1rem]" />
             </Link>
           ))}
         </nav>

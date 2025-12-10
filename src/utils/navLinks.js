@@ -12,6 +12,7 @@ import {
   LuUsers,
 } from "react-icons/lu";
 import { MdOutlineAddBox, MdOutlinePendingActions } from "react-icons/md";
+import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 export const headerNavLinks = [
   { title: "Home", path: "/" },
@@ -25,6 +26,12 @@ export const footerNavLinks = [
   { title: "Privacy & Policy", link: "/privacy-policy" },
   { title: "About Us", link: "/about-us" },
   { title: "FaQ", link: "/faq" },
+];
+
+export const footerNavSocialLinks = [
+  { path: "https://fb.com", icon: FaFacebookF },
+  { path: "https://x.com/", icon: FaXTwitter },
+  { path: "https://www.instagram.com/", icon: FaInstagram },
 ];
 
 export const userDdLinks = [

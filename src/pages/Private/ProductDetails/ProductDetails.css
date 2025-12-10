@@ -1,3 +1,5 @@
+@reference '../../../index.css';
+
 .mySwiper2 {
   height: 80%;
   width: 100%;
@@ -17,4 +19,9 @@
 
 .mySwiper .swiper-slide-thumb-active {
   opacity: 1;
+}
+
+.mySwiper2 .swiper-button-prev,
+.mySwiper2 .swiper-button-next {
+  @apply btn btn-lg rounded-full btn-primary btn-soft p-2 text-primary hover:text-primary-content shadow-lg;
 }

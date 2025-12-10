@@ -28,7 +28,6 @@ export default function ProductBookingPage() {
   });
   const watchOrderQuantity = useWatch({ name: "orderQuantity", control });
   const handleBookProduct = async (data) => {
-    console.log(data);
     const bookingInfo = {
       ...data,
       productId: product._id,
@@ -39,19 +38,18 @@ export default function ProductBookingPage() {
       orderQuantity: Number(data.orderQuantity),
       paymentMethod: product.paymentMethod,
     };
-    const res = await axios.post("/orders", bookingInfo);
-    console.log("orderId", res);
-    if (bookingInfo?.paymentMethod?.toLowerCase() === "stripe") {
-      const orderId = await res.data.orderId;
-      await handlePayment(orderId, axios);
-    }
     try {
+      const res = await axios.post("/orders", bookingInfo);
+      if (bookingInfo?.paymentMethod?.toLowerCase() === "stripe") {
+        const orderId = res.data.orderId;
+        await handlePayment(orderId, axios);
+      }
       console.log("bookingInfo", bookingInfo);
       if (res?.status === 201) {
         toast.success("Booking confirmed!");
         reset();
       } else {
-        toast.error(res?.data?.message);
+        toast.error(res?.response.data.message || "Something went wrong!");
       }
     } catch (err) {
       toast.error(

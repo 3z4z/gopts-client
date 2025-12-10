@@ -75,6 +75,7 @@ export default function EditProductPage() {
 
       const productData = {
         ...data,
+        demoVideoLink: data.demoVideoLink,
         minOrderAmount: Number(data.minOrderAmount),
         images: finalImageUrls,
       };

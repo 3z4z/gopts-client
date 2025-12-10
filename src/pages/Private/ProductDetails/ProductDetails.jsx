@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "./ProductDetails.css";
 import useRole from "../../../hooks/useRole";
 import useProduct from "../../../hooks/useProduct";
+import { toYouTubeEmbed } from "../../../utils/toYtEmbed";
 export default function ProductDetailsPage() {
   useEffect(() => {
     window.scrollTo({
@@ -20,26 +21,90 @@ export default function ProductDetailsPage() {
   if (isLoading) return <p>Loading...</p>;
   return (
     <div className={`${container} mt-24`}>
-      <div className="grid grid-cols-3">
-        <div className="col-span-2">
-          <h1 className="text-4xl mb-6">{product?.name}</h1>
-          {role?.role?.toLowerCase() === "buyer" && (
-            <Link
-              to={`/book-product/${product._id}`}
-              className="btn btn-primary"
-            >
-              Book Now
-            </Link>
+      <div className="grid xl:grid-cols-3 lg:grid-cols-5 md:grid-cols-2 gap-12">
+        <div className="order-2 md:order-1 xl:col-span-2 lg:col-span-3">
+          <h1 className="text-5xl mb-2 text-primary">{product?.name}</h1>
+          <p>
+            <span className="me-1.5 text-neutral/75">Category:</span>
+            <span className="text-primary font-bold">{product?.category}</span>
+          </p>
+          <div className="mt-10">
+            <h5 className="mb-3 text-xl border-b border-b-neutral/10 max-w-max pe-4 text-secondary">
+              Order Info
+            </h5>
+            <p>
+              <span className="me-1.5 text-neutral/75">Per Unit Price:</span>৳
+              {product?.price} BDT
+            </p>
+            <p>
+              <span className="me-1.5 text-neutral/75">Payment Method:</span>
+              <span className="capitalize">
+                {product?.paymentMethod === "cod"
+                  ? "cash on delivery"
+                  : product.paymentMethod}
+              </span>
+            </p>
+            <p>
+              <span className="me-1.5 text-neutral/75">In Stock:</span>
+              {product?.availableQuantity} Units
+            </p>
+            <p>
+              <span className="me-1.5 text-neutral/75">Minimum Order:</span>
+              {product?.minOrderAmount} Units
+            </p>
+          </div>
+          <div className="mt-10">
+            <h5 className="mb-3 text-xl border-b border-b-neutral/10 max-w-max pe-4 text-secondary">
+              Seller Info
+            </h5>
+            <p>
+              <span className="me-1.5 text-neutral/75">Name:</span>
+              {product?.managerName}
+            </p>
+            <p>
+              <span className="me-1.5 text-neutral/75">Email:</span>
+              {product?.managerEmail}
+            </p>
+          </div>
+          <div className="mt-10">
+            <h5 className="mb-3 text-xl border-b border-b-neutral/10 max-w-max pe-4 text-secondary">
+              Description
+            </h5>
+            <p>{product?.description}</p>
+          </div>
+          <div className="my-16">
+            {role?.role?.toLowerCase() === "buyer" ? (
+              <Link
+                to={`/book-product/${product._id}`}
+                className="btn btn-primary text-lg rounded-full h-auto py-2.5 px-12"
+              >
+                Book Now
+              </Link>
+            ) : (
+              <Link
+                to={`/dashboard/edit-product/${product._id}`}
+                className="btn btn-primary text-lg rounded-full h-auto py-2.5 px-12"
+              >
+                Update Product
+              </Link>
+            )}
+          </div>
+          {product?.demoVideoLink && (
+            <div>
+              <h5 className="mb-3 text-xl border-b border-b-neutral/10 max-w-max pe-4 text-secondary">
+                See Demo Video
+              </h5>
+              <iframe
+                src={toYouTubeEmbed(product.demoVideoLink)}
+                className="aspect-video max-w-3xl"
+              ></iframe>
+            </div>
           )}
         </div>
-        <div>
+        <div className="order-1 md:order-2 xl:col-span-1 lg:col-span-2 aspect-4/5 max-md:max-h-120 max-md:w-[calc(100dvw-2rem)]">
           {product.images.length > 1 ? (
             <>
               <Swiper
-                style={{
-                  "--swiper-navigation-color": "#fff",
-                  "--swiper-pagination-color": "#fff",
-                }}
                 loop={true}
                 spaceBetween={10}
                 navigation={true}
@@ -48,10 +113,7 @@ export default function ProductDetailsPage() {
                 className="mySwiper2"
               >
                 {product.images.map((image, index) => (
-                  <SwiperSlide
-                    key={index}
-                    className="aspect-square bg-base-300 select-none"
-                  >
+                  <SwiperSlide key={index} className="bg-base-300 select-none">
                     <img
                       src={image}
                       alt=""
@@ -85,7 +147,7 @@ export default function ProductDetailsPage() {
               </Swiper>
             </>
           ) : (
-            <figure className="aspect-square w-full h-full rounded-xl bg-base-300 overflow-hidden">
+            <figure className="w-full h-full rounded-xl bg-base-300 overflow-hidden">
               <img
                 src={product.images[0]}
                 alt=""

@@ -1,12 +1,14 @@
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
+import { CgMenu } from "react-icons/cg";
+import { useEffect, useState } from "react";
 
 import SectionTitleComponent from "../../components/Common/SectionTitle/SectionTitle";
 import useProducts from "../../hooks/useProducts";
 import { container } from "../../utils/classNames";
-import { useEffect, useState } from "react";
 import useCategories from "../../hooks/useCategories";
 import ProductCardComponent from "./ProductCard";
 import EmptyTableDataComponent from "../../components/Common/EmptyTableData/EmptyTableData";
+import { scrollUp } from "../../utils/scrollUp";
 
 export default function AllProductsPage() {
   const [search, setSearch] = useState("");
@@ -16,37 +18,62 @@ export default function AllProductsPage() {
   const [payMethod, setPayMethod] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [skip, setSkip] = useState(0);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   const limit = 6;
+
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    scrollUp();
   }, []);
 
   const { data: products = [], isLoading } = useProducts({
-    search: search,
+    search,
     category: selectedCategory,
     fields:
       "name,images,category,price,availableQuantity,createdAt,paymentMethod",
-    sort: sort,
-    time: time,
-    limit: limit,
-    skip: skip,
-    payMethod: payMethod,
+    sort,
+    time,
+    limit,
+    skip,
+    payMethod,
   });
 
   const { data: categories = [], isLoading: isCategoryLoading } =
     useCategories();
+
   const totalPages = Math.ceil(products?.count / limit);
+
   return (
     <div className={`${container} mt-36`}>
       <SectionTitleComponent
         subtitle={"Browse and find the best choice that matches your taste"}
         title={"See all products"}
       />
-      <div className="grid grid-cols-4 gap-8">
-        <div className="bg-base-200 p-5 rounded-lg h-max sticky top-24">
+
+      {isFilterOpen && (
+        <div
+          onClick={() => setIsFilterOpen(false)}
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+        />
+      )}
+
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-8">
+        <div
+          className={`
+            bg-base-200 p-5 max-lg:rounded-none rounded-lg h-max max-lg:min-h-full
+            lg:sticky lg:top-24 lg:block lg:translate-x-0
+            fixed top-0 left-0 z-50 w-72
+            transition-transform duration-300
+            ${isFilterOpen ? "translate-x-0" : "-translate-x-full"}
+          `}
+        >
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="btn btn-sm btn-circle absolute top-3 right-3 lg:hidden"
+          >
+            ✕
+          </button>
+
           <p className="text-lg mb-4 font-bold">Sort</p>
           <select
             className="select w-full mb-4"
@@ -66,6 +93,7 @@ export default function AllProductsPage() {
             <option value="price-asc">Price - Lowest First</option>
             <option value="price-desc">Price - Highest First</option>
           </select>
+
           <p className="text-lg mb-4 font-bold">Filters</p>
           <div className="rounded-lg bg-base-100">
             <div className="p-3">
@@ -90,6 +118,7 @@ export default function AllProductsPage() {
                 )}
               </select>
             </div>
+
             <div className="p-3">
               <label className="mb-2 font-semibold! block">Created time</label>
               <select
@@ -107,6 +136,7 @@ export default function AllProductsPage() {
                 <option value="last-month">Last 1 month</option>
               </select>
             </div>
+
             <div className="p-3">
               <label className="mb-2 font-semibold! block">Payment type</label>
               <select
@@ -124,66 +154,26 @@ export default function AllProductsPage() {
             </div>
           </div>
         </div>
+
         <div className="col-span-3">
-          <div className="flex justify-between mb-6">
+          <div className="flex mb-6">
+            <button
+              onClick={() => setIsFilterOpen(true)}
+              className="lg:hidden flex btn me-3 rounded-full"
+            >
+              <CgMenu />
+              <span>Filters</span>
+            </button>
+
             <input
               type="search"
               className="input"
               placeholder="search"
               onChange={(e) => setSearch(e.target.value)}
             />
-            <div>
-              {totalPages > 0 && products.count > limit ? (
-                <div className="join">
-                  <button
-                    disabled={skip <= 0}
-                    onClick={() => {
-                      setSkip(currentPage * limit - limit);
-                      setCurrentPage(currentPage - 1);
-                    }}
-                    className="join-item btn"
-                  >
-                    <IoChevronBackOutline />
-                  </button>
-                  {isLoading ? (
-                    <button disabled className="join-item btn">
-                      <span className="loading loading-dots loading-xs text-primary/50"></span>
-                    </button>
-                  ) : (
-                    [
-                      ...Array(totalPages)
-                        .keys()
-                        .map((i) => (
-                          <button
-                            onClick={() => {
-                              setSkip(i * limit);
-                              setCurrentPage(i);
-                            }}
-                            key={i}
-                            className={`join-item btn ${
-                              currentPage === i && "btn-primary"
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                        )),
-                    ]
-                  )}
-                  <button
-                    disabled={currentPage >= totalPages - 1}
-                    onClick={() => {
-                      setSkip(currentPage * limit + limit);
-                      setCurrentPage(currentPage + 1);
-                    }}
-                    className="join-item btn"
-                  >
-                    <IoChevronForwardOutline />
-                  </button>
-                </div>
-              ) : null}
-            </div>
           </div>
-          <div className="grid grid-cols-3 gap-6">
+
+          <div className="grid md:grid-cols-3 xs:grid-cols-2 gap-6">
             {isLoading ? (
               <p>Loading...</p>
             ) : products.result.length > 0 ? (
@@ -197,6 +187,62 @@ export default function AllProductsPage() {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="text-center mt-14">
+        {totalPages > 0 && products.count > limit ? (
+          <div className="join">
+            <button
+              disabled={skip <= 0}
+              onClick={() => {
+                setTimeout(() => {
+                  scrollUp();
+                }, 10);
+                setSkip(currentPage * limit - limit);
+                setCurrentPage(currentPage - 1);
+              }}
+              className="join-item btn"
+            >
+              <IoChevronBackOutline />
+            </button>
+
+            {isLoading ? (
+              <button disabled className="join-item btn">
+                <span className="loading loading-dots loading-xs text-primary/50"></span>
+              </button>
+            ) : (
+              [...Array(totalPages).keys()].map((i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    scrollUp();
+                    setSkip(i * limit);
+                    setCurrentPage(i);
+                  }}
+                  className={`join-item btn ${
+                    currentPage === i && "btn-primary"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))
+            )}
+
+            <button
+              disabled={currentPage >= totalPages - 1}
+              onClick={() => {
+                setTimeout(() => {
+                  scrollUp();
+                }, 10);
+                setSkip(currentPage * limit + limit);
+                setCurrentPage(currentPage + 1);
+              }}
+              className="join-item btn"
+            >
+              <IoChevronForwardOutline />
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

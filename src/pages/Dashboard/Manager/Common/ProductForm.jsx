@@ -49,6 +49,7 @@ export default function ProductForm({
         minOrderAmount: product.minOrderAmount,
         markFeatured: product.markFeatured,
         paymentMethod: product.paymentMethod,
+        demoVideoLink: product.demoVideoLink,
         images: product.images,
       });
     } else {
@@ -61,6 +62,7 @@ export default function ProductForm({
         minOrderAmount: "50",
         markFeatured: "",
         paymentMethod: "Select payment method",
+        demoVideoLink: "",
         images: [],
       });
     }
@@ -235,6 +237,7 @@ export default function ProductForm({
                 type="text"
                 className="input w-full"
                 placeholder="https://..."
+                {...register("demoVideoLink")}
               />
             </div>
           </div>
@@ -310,7 +313,7 @@ export default function ProductForm({
         className="btn w-max btn-primary h-auto py-2.5 px-8 rounded-full mt-6"
       >
         {isProductAdding && <AuthSpinnerLoader />}
-        {product?.name ? "Edit Product" : "Add Product"}
+        {product?.name ? "Confirm Update" : "Add Product"}
       </button>
     </form>
   );

@@ -83,11 +83,11 @@ export default function CustomerReviewsComponent({ getReviews }) {
         ))}
       </Swiper>
       <div className="mt-6 flex justify-center items-center gap-6 w-max mx-auto">
-        <button className="slide-prev-nav btn btn-accent btn-outline p-2 text-lg h-auto rounded-full">
+        <button className="slide-prev-nav btn btn-accent btn-outline p-2 text-lg h-auto rounded-full shadow-lg">
           <BsArrowLeft />
         </button>
         <div className="pagination flex justify-center"></div>
-        <button className="slide-next-nav btn btn-accent btn-outline p-2 text-lg h-auto rounded-full">
+        <button className="slide-next-nav btn btn-accent btn-outline p-2 text-lg h-auto rounded-full shadow-lg">
           <BsArrowRight />
         </button>
       </div>
