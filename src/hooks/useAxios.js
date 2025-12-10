@@ -10,9 +10,7 @@ export default function useAxios() {
   useEffect(() => {
     const requestInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
-        user
-          ? (config.headers.authorization = `Bearer ${user?.accessToken}`)
-          : null;
+        config.withCredentials = true;
         return config;
       }
     );
@@ -20,7 +18,7 @@ export default function useAxios() {
       (res) => res,
       (err) => {
         const status = err?.response?.status;
-        if (status === 401 || status === 403 || status === 404) {
+        if (status === 401 || status === 403) {
           signOut();
           navigate("/auth/login");
         }

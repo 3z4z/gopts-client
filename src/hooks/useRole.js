@@ -3,7 +3,7 @@ import useAxios from "./useAxios";
 import { useAuthStore } from "../stores/useAuthStore";
 
 export default function useRole() {
-  const { user, isAuthLoading } = useAuthStore();
+  const { user, isAuthLoading, isCookieReady } = useAuthStore();
   const axios = useAxios();
   const { isLoading, data: role = "Buyer" } = useQuery({
     queryKey: ["user-role", user?.email],
@@ -11,7 +11,7 @@ export default function useRole() {
       const res = await axios.get(`/users/${user?.email}/role`);
       return res.data;
     },
-    enabled: !isAuthLoading && !!user,
+    enabled: !isAuthLoading && !!user && isCookieReady,
   });
   return { isLoading, role };
 }

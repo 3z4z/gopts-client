@@ -4,30 +4,53 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut,
+  signOut as firebaseSignOut,
   updateProfile,
 } from "firebase/auth";
 import { create } from "zustand";
-import { auth } from "../firebase.config";
-
 import { persist } from "zustand/middleware";
+import { auth } from "../firebase.config";
+import { axiosInstance } from "../utils/axiosInstance";
 
 const provider = new GoogleAuthProvider();
+
 export const useAuthStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       isSigningIn: false,
       isGoogleSigningIn: false,
       isAuthLoading: true,
       isUserReady: false,
       error: "",
+      isCookieReady: false,
+
+      // -------------------
+      // Helper: send Firebase token to backend
+      // -------------------
+      sendTokenToBackend: async (user) => {
+        if (!user) return;
+        const idToken = await user.getIdToken();
+        await axiosInstance.post(
+          "/users/login",
+          { idToken },
+          { withCredentials: true }
+        );
+        set({ isCookieReady: true });
+      },
+
+      // -------------------
+      // Google SignIn
+      // -------------------
       signInWithGoogle: async () => {
         try {
           set({ isGoogleSigningIn: true });
           const result = await signInWithPopup(auth, provider);
           const user = result.user;
-          set({ user });
+
+          await get().sendTokenToBackend(user);
+
+          set({ user, isUserReady: true });
           return { user };
         } catch (err) {
           set({ error: err.message });
@@ -36,6 +59,10 @@ export const useAuthStore = create(
           set({ isGoogleSigningIn: false });
         }
       },
+
+      // -------------------
+      // Email/Password Signup
+      // -------------------
       signUp: async (name, email, password, image) => {
         set({ isSigningIn: true });
         try {
@@ -44,13 +71,18 @@ export const useAuthStore = create(
             email,
             password
           );
-          const user = result.user;
-          await updateProfile(user, {
+          const firebaseUser = result.user;
+
+          await updateProfile(firebaseUser, {
             displayName: name,
             photoURL: image,
           });
-          set({ user });
-          return { user };
+
+          // send token to backend
+          await get().sendTokenToBackend(firebaseUser);
+
+          set({ user: firebaseUser, isUserReady: true });
+          return { user: firebaseUser };
         } catch (err) {
           set({ error: err.message });
           return { error: err.message };
@@ -58,6 +90,10 @@ export const useAuthStore = create(
           set({ isSigningIn: false });
         }
       },
+
+      // -------------------
+      // Email/Password SignIn
+      // -------------------
       signIn: async (email, password) => {
         set({ isSigningIn: true });
         try {
@@ -66,9 +102,13 @@ export const useAuthStore = create(
             email,
             password
           );
-          const user = result.user;
-          set({ user, isSigningIn: false });
-          return { user };
+          const firebaseUser = result.user;
+
+          // send token to backend
+          await get().sendTokenToBackend(firebaseUser);
+
+          set({ user: firebaseUser, isUserReady: true });
+          return { user: firebaseUser };
         } catch (err) {
           set({ error: err.message });
           return { error: err.message };
@@ -76,12 +116,32 @@ export const useAuthStore = create(
           set({ isSigningIn: false });
         }
       },
+
+      // -------------------
+      // SignOut
+      // -------------------
       signOut: async () => {
         try {
-          await signOut(auth);
-          set({ isAuthLoading: false, isSigningIn: false, user: null });
+          // Firebase logout
+          await firebaseSignOut(auth);
+
+          // clear cookie on backend
+          await axiosInstance.post(
+            "/users/logout",
+            {},
+            { withCredentials: true }
+          );
+
+          // clear store
+          set({
+            user: null,
+            isUserReady: false,
+            isAuthLoading: false,
+            isSigningIn: false,
+            isCookieReady: false,
+          });
         } catch (err) {
-          console.log(err);
+          console.error(err);
           set({ error: err.message });
         }
       },
@@ -91,18 +151,21 @@ export const useAuthStore = create(
             set({
               user: null,
               isAuthLoading: false,
-              isSigningIn: false,
               isUserReady: false,
+              isCookieReady: false,
             });
             return;
-          } else {
-            set({
-              user: currentUser,
-              isAuthLoading: false,
-              isSigningIn: false,
-              isUserReady: true,
-            });
           }
+
+          set({
+            user: currentUser,
+            isAuthLoading: false,
+            isUserReady: true,
+            isCookieReady: true,
+          });
+
+          // ensure backend cookie is set on reload
+          await get().sendTokenToBackend(currentUser);
         });
         return unsubscribe;
       },
