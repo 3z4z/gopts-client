@@ -111,7 +111,7 @@ export default function MyOrdersPage() {
                     <p className="text-xs">T.ID: {o.trackingId}</p>
                   </td>
                   <td>{o.orderQuantity}</td>
-                  <td>
+                  <td className="whitespace-nowrap">
                     {o.paymentStatus === "paid" ? (
                       <p className="badge badge-sm badge-outline badge-success">
                         Paid
@@ -129,7 +129,7 @@ export default function MyOrdersPage() {
                       </button>
                     )}
                   </td>
-                  <td>
+                  <td className="whitespace-nowrap">
                     <p
                       className={`badge badge-sm font-bold capitalize ${
                         o.deliveryStatus === "pending"

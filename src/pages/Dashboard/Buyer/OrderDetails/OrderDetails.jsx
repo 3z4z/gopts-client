@@ -7,12 +7,17 @@ import useRole from "../../../../hooks/useRole";
 import dayjs from "dayjs";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaCircleXmark } from "react-icons/fa6";
+import ErrorPage from "../../../Error/Error";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
   const axios = useAxios();
   const { role } = useRole();
-  const { data: order = {}, isLoading } = useQuery({
+  const {
+    data: order = {},
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["order", id],
     queryFn: async () => {
       const res = await axios.get(`/orders/${id}`);
@@ -25,8 +30,10 @@ export default function OrderDetailsPage() {
       const res = await axios.get(`/tracking/${order?.trackingId}/logs`);
       return res.data;
     },
+    retry: false,
   });
   if (isLoading) return <p>Loading..</p>;
+  if (isError) return <ErrorPage />;
   return (
     <div className="bg-base-200 rounded-xl">
       <div className={container}>
@@ -60,19 +67,31 @@ export default function OrderDetailsPage() {
               {order.totalCost.toLocaleString("en-EN")} BDT
             </p>
             <p>
-              {order.paymentStatus === "cod"
-                ? "Payment method: Cash on Delivery"
-                : order.paymentStatus === "unpaid"
-                ? "Payment Method: Stripe (Unpaid)"
-                : order.transactionId && (
-                    <>
-                      <span className="text-neutral/70 me-1.5">Tx ID:</span>
-                      {order.transactionId}
-                      <span className="badge badge-primary badge-soft border-primary/20 ms-2 mb-1">
-                        Stripe
-                      </span>
-                    </>
-                  )}
+              {order.paymentStatus === "cod" ? (
+                <p>
+                  <span className="text-neutral/70 me-1.5">
+                    Payment method:
+                  </span>
+                  <span>Cash on Delivery</span>
+                </p>
+              ) : order.paymentStatus === "unpaid" ? (
+                <p>
+                  <span className="text-neutral/70 me-1.5">
+                    Payment method:
+                  </span>
+                  <span>Stripe (UNPAID)</span>
+                </p>
+              ) : (
+                order.transactionId && (
+                  <>
+                    <span className="text-neutral/70 me-1.5">Tx ID:</span>
+                    {order.transactionId}
+                    <span className="badge badge-primary badge-soft border-primary/20 ms-2 mb-1">
+                      Stripe
+                    </span>
+                  </>
+                )
+              )}
             </p>
             <h4 className="text-2xl my-5 font-extrabold text-secondary border-b border-b-neutral/10 max-w-max pe-4 pb-1">
               Buyer info

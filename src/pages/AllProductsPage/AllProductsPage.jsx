@@ -42,6 +42,17 @@ export default function AllProductsPage() {
     useCategories();
 
   const totalPages = Math.ceil(products?.count / limit);
+  useEffect(() => {
+    if (!products?.count) return;
+
+    const lastPageIndex = Math.max(Math.ceil(products.count / limit) - 1, 0);
+
+    if (currentPage > lastPageIndex) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentPage(lastPageIndex);
+      setSkip(lastPageIndex * limit);
+    }
+  }, [products, limit]);
 
   return (
     <div className={`${container} mt-36`}>
