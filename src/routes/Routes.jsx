@@ -31,6 +31,8 @@ import ApprovedOrdersPage from "../pages/Dashboard/Manager/ApprovedOrders/Approv
 import MyProfilePage from "../pages/Dashboard/Common/MyProfile/MyProfile";
 import ErrorPage from "../pages/Error/Error";
 import AboutUsPage from "../pages/AboutUs/AboutUs";
+import FAQPage from "../pages/FAQ/FAQ";
+import PrivacyPolicyPage from "../components/Home/PrivacyPolicy/PrivacyPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ export const router = createBrowserRouter([
       {
         path: "/about-us",
         Component: AboutUsPage,
+      },
+      {
+        path: "/faq",
+        Component: FAQPage,
+      },
+      {
+        path: "/privacy-policy",
+        Component: PrivacyPolicyPage,
       },
       {
         path: "/products/:id",

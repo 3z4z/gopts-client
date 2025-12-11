@@ -122,9 +122,7 @@ export default function AllProductsPage() {
               >
                 <option value="Select a category">Select a category</option>
                 {isCategoryLoading ? (
-                  <option>
-                    <BarSkeleton />
-                  </option>
+                  <BarSkeleton forOption={true} />
                 ) : categories.length > 0 ? (
                   categories.map((cat) => (
                     <option key={cat._id}>{cat.name}</option>

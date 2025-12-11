@@ -15,7 +15,13 @@ export default function OurTeamComponent({ getTeamMembers }) {
         className={`${container} max-w-6xl! sm:gap-12 gap-7 grid lg:grid-cols-3 sm:grid-cols-2 max-lg:max-w-2xl! max-sm:max-w-xs! items-center`}
       >
         {teamMembers.map((m, i) => (
-          <div key={i}>
+          <div
+            data-aos="zoom-in"
+            data-aos-duration="500"
+            data-aos-delay={i * 300}
+            data-aos-anchor-placement={i < 3 && "center-bottom"}
+            key={i}
+          >
             <figure className="aspect-square overflow-hidden px-10 pt-10 pb-3 bg-linear-to-b from-transparent from-60% to-base-300 to-60%">
               <motion.img
                 whileHover={{ rotate: 5 }}

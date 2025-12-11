@@ -135,7 +135,7 @@ export default function ManageUsersPage() {
                         : "text-success"
                     }`}
                   >
-                    {user.status}
+                    {user.status || "N/A"}
                   </td>
                   <td>
                     <div className="flex">

@@ -49,9 +49,7 @@ export default function AllOrdersPage() {
         >
           <option value="Select status">Select status</option>
           {isStatusesLoading ? (
-            <option>
-              <BarSkeleton />
-            </option>
+            <BarSkeleton forOption={true} />
           ) : uniqueStatuses.length > 0 ? (
             uniqueStatuses?.map((s, i) => (
               <option key={i} value={s} className="capitalize">

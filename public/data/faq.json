@@ -1,0 +1,34 @@
+[
+  {
+    "question": "What is GOPTS?",
+    "answer": "GOPTS (Garments Order & Production Tracker System) is a web-based platform that helps garment factories manage and track buyer orders, monitor production stages, and maintain inventory records in a centralized system."
+  },
+  {
+    "question": "Who is GOPTS for?",
+    "answer": "GOPTS is designed for small and medium-sized garment factories, production managers, merchandisers, and factory owners who need an organized and efficient way to handle production workflows."
+  },
+  {
+    "question": "What production stages can GOPTS track?",
+    "answer": "The system tracks every major stage of garment production, including Cutting, Sewing, Finishing, Quality Check, Packaging, and Final Delivery, giving full visibility from order placement to shipment."
+  },
+  {
+    "question": "Does GOPTS support real-time order tracking?",
+    "answer": "Yes. GOPTS updates order status instantly, allowing users to see real-time progress for each order and identify delays or bottlenecks early."
+  },
+  {
+    "question": "Does GOPTS include inventory management?",
+    "answer": "Yes. GOPTS helps track materials such as fabrics, trims, and accessories. It shows available stock, consumption levels, and alerts when items need replenishment."
+  },
+  {
+    "question": "Is the system easy to use?",
+    "answer": "Absolutely. GOPTS is designed with a simple and clean interface so that users with minimal technical knowledge can easily navigate and operate the system."
+  },
+  {
+    "question": "Can multiple users access the system?",
+    "answer": "Yes. GOPTS offers multi-user access with role-based permissions, ensuring that each user only sees the information relevant to their department or responsibilities."
+  },
+  {
+    "question": "Does GOPTS require installation?",
+    "answer": "No installation is required. GOPTS runs directly in the browser, allowing access from desktops, laptops, tablets, or mobile devices with an internet connection."
+  }
+]

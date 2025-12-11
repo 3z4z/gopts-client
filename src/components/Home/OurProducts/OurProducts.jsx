@@ -29,13 +29,13 @@ export default function OurProductsComponent() {
           <CardSkeleton />
         ) : products?.result?.length > 5 ? (
           products?.result?.map((p, index) => (
-            <FeaturedProductCard p={p} key={index} />
+            <FeaturedProductCard p={p} key={index} index={index} />
           ))
         ) : isFallbackProdsLoading ? (
           <CardSkeleton />
         ) : (
           fallBackProds?.result?.map((p, index) => (
-            <FeaturedProductCard p={p} key={index} />
+            <FeaturedProductCard p={p} key={index} index={index} />
           ))
         )}
       </div>

@@ -22,10 +22,10 @@ export const headerNavLinks = [
 ];
 
 export const footerNavLinks = [
-  { title: "Join Us", link: "/auth/register" },
-  { title: "Privacy & Policy", link: "/privacy-policy" },
-  { title: "About Us", link: "/about-us" },
-  { title: "FaQ", link: "/faq" },
+  { title: "Join Us", path: "/auth/register" },
+  { title: "Privacy & Policy", path: "/privacy-policy" },
+  { title: "About Us", path: "/about-us" },
+  { title: "FaQ", path: "/faq" },
 ];
 
 export const footerNavSocialLinks = [

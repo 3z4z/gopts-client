@@ -1,10 +1,15 @@
+import { useEffect } from "react";
 import SectionTitleComponent from "../../components/Common/SectionTitle/SectionTitle";
 import { container } from "../../utils/classNames";
+import { scrollUp } from "../../utils/scrollUp";
 
 export default function AboutUsPage() {
+  useEffect(() => {
+    scrollUp();
+  }, []);
   return (
     <div className={`${container} mt-26`}>
-      <div className="bg-base-100 rounded-2xl shadow-lg p-8 md:p-12">
+      <div className="bg-base-100 rounded-2xl shadow-lg sm:p-8 p-4 md:p-12">
         <SectionTitleComponent
           title={"About GOPTS"}
           subtitle={
@@ -13,7 +18,9 @@ export default function AboutUsPage() {
         />
 
         <div>
-          <h2 className="text-xl mb-4 text-primary">Objective</h2>
+          <h4 className="text-xl mb-4 text-secondary pb-1 border-b border-b-neutral/20 w-max pe-4">
+            Objective
+          </h4>
           <p className="text-base-content/80 leading-relaxed">
             This system aims to simplify the entire garments production cycle —
             from order placement to production status and delivery tracking. It
@@ -24,7 +31,9 @@ export default function AboutUsPage() {
 
         <div className="grid md:grid-cols-3 gap-10 mt-10">
           <div>
-            <h2 className="text-xl mb-4 text-primary">Key Modules</h2>
+            <h4 className="text-xl mb-4 text-secondary pb-1 border-b border-b-neutral/20 w-max pe-4">
+              Key Modules
+            </h4>
             <ul className="space-y-2 text-base-content/80 list-disc ms-4">
               <li>Order management and tracking</li>
               <li>Production planning and status monitoring</li>
@@ -34,7 +43,9 @@ export default function AboutUsPage() {
           </div>
 
           <div>
-            <h2 className="text-xl mb-4 text-primary">Technology Used</h2>
+            <h4 className="text-xl mb-4 text-secondary pb-1 border-b border-b-neutral/20 w-max pe-4">
+              Technology Used
+            </h4>
             <ul className="space-y-2 text-base-content/80 list-disc ms-4">
               <li>MongoDB for secured database management</li>
               <li>Full MERN stack (MongoDB, Express, React, Node.js)</li>
@@ -44,7 +55,9 @@ export default function AboutUsPage() {
           </div>
 
           <div>
-            <h2 className="text-xl mb-4 text-primary">Benefits</h2>
+            <h4 className="text-xl mb-4 text-secondary pb-1 border-b border-b-neutral/20 w-max pe-4">
+              Benefits
+            </h4>
             <ul className="space-y-2 text-base-content/80 list-disc ms-4">
               <li>Improved production transparency</li>
               <li>Faster order processing</li>

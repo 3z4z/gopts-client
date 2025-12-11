@@ -21,10 +21,7 @@ export default function DashboardHeader() {
     }
   }, [htmlElement]);
   return (
-    <div className="px-4 flex max-sm:justify-end justify-between items-center flex-1">
-      <h5 className="max-sm:hidden">
-        Garments Orders & Production Tracking System
-      </h5>
+    <div className="px-4 flex justify-end items-center flex-1">
       <div className="flex">
         {isAuthLoading ? (
           <UserLoadingSpinnerLoader />

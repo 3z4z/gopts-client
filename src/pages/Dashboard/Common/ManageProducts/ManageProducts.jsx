@@ -52,9 +52,7 @@ export default function ManageProductsPage() {
         >
           <option value="Select category">Select category</option>
           {isCategoriesLoading ? (
-            <option>
-              <BarSkeleton />
-            </option>
+            <BarSkeleton forOption={true} />
           ) : (
             categories.map((c) => (
               <option key={c._id} value={c.name}>

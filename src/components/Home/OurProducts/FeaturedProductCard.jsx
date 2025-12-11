@@ -1,16 +1,11 @@
 import { Link } from "react-router";
-import { motion } from "framer-motion";
 export default function FeaturedProductCard({ p, index }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{
-        duration: 0.6,
-        delay: index * 0.08,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+    <div
+      data-aos="flip-right"
+      data-aos-duration="1000"
+      data-aos-delay={index * 400}
+      data-aos-anchor-placement={index < 3 && "center-bottom"}
       className="p-6 shadow rounded-xl cursor-pointer hover:bg-base-200/50 bg-base-200/35 transition-all flex flex-col border border-base-200"
     >
       <figure className="aspect-square bg-base-300 rounded-xl w-full overflow-hidden">
@@ -31,6 +26,6 @@ export default function FeaturedProductCard({ p, index }) {
       >
         View Details
       </Link>
-    </motion.div>
+    </div>
   );
 }

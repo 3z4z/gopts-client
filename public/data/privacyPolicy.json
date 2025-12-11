@@ -1,0 +1,90 @@
+{
+  "projectName": "Garments Order & Production Tracker System (GOPTS)",
+  "lastUpdated": "11 Dec, 2025 @ 3:09 pm",
+  "updatedBy": "Md. Salman Ezaz (Admin)",
+  "privacyPolicy": {
+    "introduction": {
+      "description": "Garments Order & Production Tracker System (GOPTS) is a web-based platform that helps garment factories manage orders, production stages, and workflows. This Privacy Policy explains how information is collected, used, stored, and protected when using the system.",
+      "agreement": "By using GOPTS, you agree to the practices described in this Privacy Policy."
+    },
+    "informationWeCollect": {
+      "personalInformation": [
+        "Name",
+        "Email address",
+        "Phone number",
+        "User account details (username, role, permissions)"
+      ],
+      "businessAndOperationalData": [
+        "Buyer information (name, contact, company details)",
+        "Order details (styles, quantities, delivery dates)",
+        "Production stage data (cutting, sewing, finishing)",
+        "Inventory records",
+        "Employee or operator activity logs"
+      ],
+      "automaticallyCollectedInformation": [
+        "IP address",
+        "Browser type",
+        "Device information",
+        "Usage logs and timestamps",
+        "Pages visited and actions performed"
+      ]
+    },
+    "howWeUseInformation": [
+      "Manage user accounts and authentication",
+      "Track garment orders and production workflows",
+      "Maintain accurate production and inventory logs",
+      "Improve system performance and features",
+      "Communicate updates or important notices",
+      "Ensure security and prevent unauthorized access",
+      "Provide technical/customer support"
+    ],
+    "dataStorageAndSecurity": {
+      "measures": [
+        "Secure servers",
+        "Encrypted communication (HTTPS)",
+        "Role-based access control",
+        "Regular system updates and security monitoring"
+      ],
+      "note": "Users are responsible for maintaining strong passwords and safeguarding login credentials."
+    },
+    "cookiesAndTracking": {
+      "usage": [
+        "Maintain login sessions",
+        "Improve system performance",
+        "Analyze usage statistics"
+      ],
+      "optional": "Users may disable cookies, but some system features may not function properly."
+    },
+    "dataSharing": {
+      "allowedWhenNecessary": [
+        "With hosting or service providers for system operation",
+        "When required by law or legal processes",
+        "To ensure system security and protect users"
+      ],
+      "notShared": "GOPTS does not sell or share personal or business data with third-party advertisers."
+    },
+    "userRights": [
+      "Access stored information",
+      "Request corrections",
+      "Request deletion of account or data",
+      "Export or download certain data",
+      "Restrict or limit processing activities"
+    ],
+    "dataRetention": {
+      "policy": "Data is retained as long as the user's account is active or required for system operations.",
+      "note": "Some operational data may remain for record-keeping unless deletion is specifically requested."
+    },
+    "thirdPartyIntegrations": {
+      "description": "If GOPTS uses third-party services (e.g., hosting, email systems), those services may process data according to their own privacy policies.",
+      "advice": "Users should review third-party policies when applicable."
+    },
+    "policyUpdates": {
+      "description": "This Privacy Policy may be updated periodically.",
+      "agreement": "Continued use of the system indicates acceptance of updated terms."
+    },
+    "contactInformation": {
+      "email": "md.salmanezaz@gmail.com",
+      "phone": "01632095012"
+    }
+  }
+}

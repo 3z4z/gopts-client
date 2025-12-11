@@ -106,9 +106,7 @@ export default function ProductForm({
               >
                 <option value="Select a category">Select a category</option>
                 {isCategoriesLoading ? (
-                  <option disabled>
-                    <BarSkeleton />
-                  </option>
+                  <BarSkeleton forOption={true} />
                 ) : (
                   categories.map((cat) => (
                     <option key={cat._id} value={cat.name}>
