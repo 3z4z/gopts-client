@@ -3,7 +3,7 @@ import SectionTitleComponent from "../../Common/SectionTitle/SectionTitle";
 import useProducts from "../../../hooks/useProducts";
 import FeaturedProductCard from "./FeaturedProductCard";
 import { Link } from "react-router";
-import CardSkeleton from "../../Common/Loaders/cardSkeleton";
+import CardSkeleton from "../../Common/Loaders/CardSkeleton";
 
 export default function OurProductsComponent() {
   const { data: products = [], isLoading } = useProducts({
