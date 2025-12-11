@@ -13,11 +13,13 @@ import {
 } from "react-icons/lu";
 import { MdOutlineAddBox, MdOutlinePendingActions } from "react-icons/md";
 import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { BiEnvelope, BiMap, BiPhone } from "react-icons/bi";
 
 export const headerNavLinks = [
   { title: "Home", path: "/" },
   { title: "All Products", path: "/products" },
   { title: "About Us", path: "/about-us" },
+  { title: "Contact", path: "/contact" },
   { title: "Dashboard", path: "/dashboard", isPrivate: true },
 ];
 
@@ -119,4 +121,10 @@ export const dashboardSidebarLinks = [
     access: "buyer",
   },
   { title: "My Profile", path: "/dashboard/my-profile", icon: LuUserRoundCog },
+];
+
+export const contactLinks = [
+  { icon: BiMap, title: "Address", content: "Dhalpur, Jatrabari, Dhaka" },
+  { icon: BiEnvelope, title: "Email", content: "md.salmanezaz@gmail.com" },
+  { icon: BiPhone, title: "Phone", content: "+880 1632 095 012" },
 ];

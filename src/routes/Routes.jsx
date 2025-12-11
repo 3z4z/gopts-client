@@ -33,6 +33,7 @@ import ErrorPage from "../pages/Error/Error";
 import AboutUsPage from "../pages/AboutUs/AboutUs";
 import FAQPage from "../pages/FAQ/FAQ";
 import PrivacyPolicyPage from "../components/Home/PrivacyPolicy/PrivacyPolicy";
+import ContactPage from "../pages/Contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "/about-us",
         Component: AboutUsPage,
+      },
+      {
+        path: "/contact",
+        Component: ContactPage,
       },
       {
         path: "/faq",
