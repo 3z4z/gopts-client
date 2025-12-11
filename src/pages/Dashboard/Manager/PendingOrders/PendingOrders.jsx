@@ -91,6 +91,7 @@ export default function PendingOrdersPage() {
   if (isStatusLoading) return <QueryLoader />;
   return (
     <>
+      <title>Pending Orders | GOPTS</title>
       <h4 className="text-3xl mb-4">Manage Pending Orders</h4>
       <div className="flex justify-between">
         <input

@@ -114,6 +114,7 @@ export default function EditProductPage() {
 
   return (
     <>
+      <title>Update Product | GOPTS</title>
       <h4 className="mb-4 text-3xl">Edit your product: {product.name}</h4>
       <div className="bg-base-200 rounded-lg py-8">
         <ProductForm

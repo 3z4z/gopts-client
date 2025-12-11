@@ -14,6 +14,7 @@ export default function PrivacyPolicyPage() {
   return (
     <>
       <div className={`${container} mt-26`}>
+        <title>Privacy & policy | GOPTS</title>
         <div className="bg-base-100 rounded-2xl shadow-lg sm:p-8 p-4 md:p-12">
           <SectionTitleComponent
             title={"Privacy and Policy"}

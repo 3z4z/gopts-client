@@ -22,6 +22,7 @@ export default function ProductDetailsPage() {
   if (isLoading) return <ProductDetailsSkeleton />;
   return (
     <div className={`${container} mt-24`}>
+      <title>{isLoading ? "Product" : `${product?.name} | GOPTS`}</title>
       <div className="grid xl:grid-cols-3 lg:grid-cols-5 md:grid-cols-2 gap-12">
         <div className="order-2 md:order-1 xl:col-span-2 lg:col-span-3">
           <h1 className="text-5xl mb-2 text-primary">{product?.name}</h1>
@@ -34,15 +35,15 @@ export default function ProductDetailsPage() {
               Order Info
             </h5>
             <p>
-              <span className="me-1.5 text-neutral/75">Per Unit Price:</span>৳
-              {product?.price} BDT
+              <span className="me-1.5 text-neutral/75">Per Unit Price:</span>
+              <span className="font-bold">৳{product?.price} BDT</span>
             </p>
             <p>
               <span className="me-1.5 text-neutral/75">Payment Method:</span>
               <span className="capitalize">
                 {product?.paymentMethod === "cod"
                   ? "cash on delivery"
-                  : product.paymentMethod}
+                  : "Pay First"}
               </span>
             </p>
             <p>

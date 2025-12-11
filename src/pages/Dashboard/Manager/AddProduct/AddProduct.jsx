@@ -95,6 +95,7 @@ export default function AddProductPage() {
         <AccessDeniedComponent />
       ) : (
         <>
+          <title>Add Product | GOPTS</title>
           <h4 className="mb-4 text-3xl">Add a product</h4>
           <div className="bg-base-200 rounded-lg py-8">
             <ProductForm

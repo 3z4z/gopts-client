@@ -59,6 +59,7 @@ export default function AllProductsPage() {
 
   return (
     <div className={`${container} mt-36`}>
+      <title>All Products | GOPTS</title>
       <SectionTitleComponent
         subtitle={"Browse and find the best choice that matches your taste"}
         title={"See all products"}
@@ -163,7 +164,7 @@ export default function AllProductsPage() {
               >
                 <option value="Select an option">Select an option</option>
                 <option value="cod">Cash on delivery</option>
-                <option value="stripe">Stripe</option>
+                <option value="stripe">Pay First</option>
               </select>
             </div>
           </div>

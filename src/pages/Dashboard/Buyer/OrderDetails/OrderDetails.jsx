@@ -38,6 +38,7 @@ export default function OrderDetailsPage() {
   if (isError) return <ErrorPage />;
   return (
     <div className="bg-base-200 rounded-xl">
+      <title>Order Details | GOPTS</title>
       <div className={container}>
         <div className="grid lg:grid-cols-2 md:grid-cols-5 py-7 gap-10">
           <div className="lg:col-span-1 md:col-span-2">
@@ -81,7 +82,7 @@ export default function OrderDetailsPage() {
                   <span className="text-neutral/70 me-1.5">
                     Payment method:
                   </span>
-                  <span>Stripe (UNPAID)</span>
+                  <span>Pay First (UNPAID)</span>
                 </p>
               ) : (
                 order.transactionId && (

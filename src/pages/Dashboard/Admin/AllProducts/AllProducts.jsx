@@ -45,16 +45,17 @@ export default function AllProductsAdmin() {
   return (
     <>
       <h4 className="text-2xl mb-4">Manage All Products</h4>
-      <div className="flex justify-between">
+      <title>Manage All Products | GOPTS</title>
+      <div className="flex max-sm:flex-col justify-between sm:gap-3 gap-4">
         <input
           type="search"
-          className="input"
+          className="input max-sm:w-full"
           placeholder="Search"
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
           defaultValue={""}
-          className="select"
+          className="select max-sm:w-full"
           onChange={(e) => {
             setCategory(
               e.target.value === "Select category" ? "" : e.target.value

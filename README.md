@@ -10,9 +10,10 @@ This frontend application provides a user-friendly interface for managing garmen
 
 ## Key Features
 
-- Rich dashboard with full responsiveness for products, orders and users management
+- Admin dashboard with full responsiveness for products, orders and users management
 - Interactive charts and analytics using `recharts` for Admin
 - Smooth Homepage animations with `framer-motion` and `aos`
+- Rich filtering with pages system to browse products
 - File uploads and previews integrated with backend
 - Form handling and validation with `react-hook-form`
 - Real-time notifications with `react-hot-toast`

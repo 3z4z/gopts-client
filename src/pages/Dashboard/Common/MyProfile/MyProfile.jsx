@@ -26,6 +26,7 @@ export default function MyProfilePage() {
   return (
     <>
       <h4 className="text-3xl font-semibold mb-6">My Profile</h4>
+      <title>My Profile | GOPTS</title>
       <div className="md:py-8 sm:py-5 py-2 bg-base-200 rounded-2xl p-4">
         <div className="max-w-4xl mx-auto bg-base-100 py-10 px-6 rounded-xl border border-base-300 shadow-lg">
           <div className="grid sm:grid-cols-4 max-sm:gap-8 items-center">

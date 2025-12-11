@@ -108,7 +108,11 @@ export default function ProductBookingPage() {
                   className="input disabled:bg-primary/7 w-full"
                   type="text"
                   placeholder="Payment method"
-                  defaultValue={product?.paymentMethod}
+                  defaultValue={
+                    product?.paymentMethod === "stripe"
+                      ? "Pay First"
+                      : product?.paymentMethod
+                  }
                   disabled
                 />
               </div>

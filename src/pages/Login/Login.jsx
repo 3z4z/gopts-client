@@ -31,6 +31,7 @@ export default function LoginPage() {
   };
   return (
     <div className="lg:p-16 md:p-8 py-8 px-4 rounded-xl shadow bg-base-200">
+      <title>Login | GOPTS</title>
       <div className="flex items-center flex-col">
         <MainLogoComponent
           mainColor={"text-primary"}

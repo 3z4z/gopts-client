@@ -10,13 +10,13 @@ export default function DashboardHomePage() {
   return (
     <>
       <h5 className="mb-4 text-xl">Hello, {user?.displayName}!</h5>
-
+      <title>Dashboard | GOPTS</title>
       {(() => {
         switch (role.role.toLowerCase()) {
           case "admin":
             return <AdminDbHome />;
           default:
-            return <p>Welcome someone</p>;
+            return <p>Welcome to the GOPTS Dashboard</p>;
         }
       })()}
     </>

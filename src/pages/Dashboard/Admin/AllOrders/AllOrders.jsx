@@ -32,6 +32,7 @@ export default function AllOrdersPage() {
   return (
     <>
       <h4 className="text-2xl mb-4">Manage All Orders</h4>
+      <title>All Orders | GOPTS</title>
       <div className="flex max-sm:flex-col justify-between sm:gap-3 gap-4">
         <input
           type="search"

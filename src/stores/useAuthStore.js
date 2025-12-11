@@ -60,14 +60,14 @@ export const useAuthStore = create(
             email,
             password
           );
-          const firebaseUser = result.user;
-          await updateProfile(firebaseUser, {
+          const user = result.user;
+          await updateProfile(user, {
             displayName: name,
             photoURL: image,
           });
-          await get().sendTokenToBackend(firebaseUser);
-          set({ user: firebaseUser, isUserReady: true });
-          return { user: firebaseUser };
+          set({ user });
+          await get().sendTokenToBackend(user);
+          return { user };
         } catch (err) {
           set({ error: err.message });
           return { error: err.message };

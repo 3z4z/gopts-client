@@ -61,7 +61,7 @@ export default function ProductForm({
         price: null,
         availableQuantity: null,
         minOrderAmount: "50",
-        markFeatured: "",
+        markFeatured: false,
         paymentMethod: "Select payment method",
         demoVideoLink: "",
         images: [],
@@ -223,7 +223,7 @@ export default function ProductForm({
                   Select payment method
                 </option>
                 <option value="cod">Cash On delivery</option>
-                <option value="stripe">Stripe</option>
+                <option value="stripe">Pay First</option>
               </select>
               {errors.paymentMethod && (
                 <p className="text-error">{errors.paymentMethod.message}</p>

@@ -36,33 +36,53 @@ export default function RegisterPage() {
   const watchUploadImage = useWatch({ name: "image", control });
   const handleRegister = async (data) => {
     setIsRegistering(true);
-    const formData = new FormData();
-    const { password, ...rest } = data;
-    formData.append("profileImage", data.image?.[0]);
-    const res = await axiosInstance.post("/upload", formData);
-    const profileImgUrl = await res.data?.profileImgUrl;
-    const userData = {
-      ...rest,
-      image: profileImgUrl,
-      status: "pending",
-    };
-    const { user, error } = await signUp(
-      data.name,
-      data.email,
-      password,
-      profileImgUrl
-    );
-    if (!user) {
-      toast.error(error);
-    } else {
-      await axios.post("/users", userData);
-      toast.success("User registration successful!");
+    try {
+      const checkExistedUserRes = await axiosInstance.post(
+        "/users/check-duplicate",
+        {
+          email: data.email,
+        }
+      );
+      if (checkExistedUserRes?.data.existed) {
+        toast.error(checkExistedUserRes?.data.message);
+        return;
+      } else {
+        const formData = new FormData();
+        const { password, ...rest } = data;
+        formData.append("profileImage", data.image?.[0]);
+        const res = await axiosInstance.post("/upload", formData);
+        const profileImgUrl = await res.data?.profileImgUrl;
+
+        const userData = {
+          ...rest,
+          image: profileImgUrl,
+          status: "pending",
+        };
+
+        const { user, error } = await signUp(
+          data.name,
+          data.email,
+          password,
+          profileImgUrl
+        );
+
+        if (!user) {
+          toast.error(error);
+          return;
+        }
+        await axios.post("/users", userData);
+        toast.success("User registration successful!");
+        navigate(state || "/", { replace: true });
+      }
+    } catch (err) {
+      toast.error(err.message || "Something went wrong!");
+    } finally {
       setIsRegistering(false);
-      user && navigate(state || "/", { replace: true });
     }
   };
   return (
     <div className="lg:p-16 md:p-8 py-8 px-4 rounded-xl shadow bg-base-200">
+      <title>Register | GOPTS</title>
       <div className="flex items-center flex-col">
         <MainLogoComponent
           mainColor={"text-primary"}

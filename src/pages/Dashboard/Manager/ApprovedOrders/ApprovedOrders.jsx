@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import EmptyTableDataComponent from "../../../../components/Common/EmptyTableData/EmptyTableData";
 import TableSkeleton from "../../../../components/Common/Loaders/TableSkeleton";
+import toast from "react-hot-toast";
 
 export default function ApprovedOrdersPage() {
   const axios = useAxios();
@@ -44,16 +45,17 @@ export default function ApprovedOrdersPage() {
         details,
         locationInfo,
       };
-      const res = await axios.patch(`/orders/${order._id}`, statusInfo);
-      console.log(res.data);
+      await axios.patch(`/orders/${order._id}`, statusInfo);
+      toast.success("Status Updated!");
       refetch();
     } catch (err) {
-      console.log(err);
+      toast.error(err?.response?.data.message || "Status Update Failed!");
     }
     updateDeliveryStatusModalRef.current.close();
   };
   return (
     <>
+      <title>Approved Orders | GOPTS</title>
       <h4 className="text-3xl mb-4">Manage Approved Orders</h4>
       <input
         type="search"

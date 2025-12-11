@@ -33,6 +33,7 @@ export default function ManageProductsPage() {
   return (
     <>
       <h4 className="text-3xl mb-4">Manage your products</h4>
+      <title>Manage Products | GOPTS</title>
       <div className="flex max-sm:flex-col justify-between sm:gap-3 gap-4">
         <input
           type="search"
