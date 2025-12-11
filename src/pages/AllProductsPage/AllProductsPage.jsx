@@ -9,7 +9,7 @@ import useCategories from "../../hooks/useCategories";
 import ProductCardComponent from "./ProductCard";
 import EmptyTableDataComponent from "../../components/Common/EmptyTableData/EmptyTableData";
 import { scrollUp } from "../../utils/scrollUp";
-import CardSkeleton from "../../components/Common/Loaders/cardSkeleton";
+import CardSkeleton from "../../components/Common/Loaders/CardSkeleton";
 import { MdClose } from "react-icons/md";
 import BarSkeleton from "../../components/Common/Loaders/BarSkeleton";
 

@@ -25,9 +25,6 @@ export const useAuthStore = create(
       error: "",
       isCookieReady: false,
 
-      // -------------------
-      // Helper: send Firebase token to backend
-      // -------------------
       sendTokenToBackend: async (user) => {
         if (!user) return;
         const idToken = await user.getIdToken();
@@ -39,17 +36,12 @@ export const useAuthStore = create(
         set({ isCookieReady: true });
       },
 
-      // -------------------
-      // Google SignIn
-      // -------------------
       signInWithGoogle: async () => {
         try {
           set({ isGoogleSigningIn: true });
           const result = await signInWithPopup(auth, provider);
           const user = result.user;
-
           await get().sendTokenToBackend(user);
-
           set({ user, isUserReady: true });
           return { user };
         } catch (err) {
@@ -60,9 +52,6 @@ export const useAuthStore = create(
         }
       },
 
-      // -------------------
-      // Email/Password Signup
-      // -------------------
       signUp: async (name, email, password, image) => {
         set({ isSigningIn: true });
         try {
@@ -72,15 +61,11 @@ export const useAuthStore = create(
             password
           );
           const firebaseUser = result.user;
-
           await updateProfile(firebaseUser, {
             displayName: name,
             photoURL: image,
           });
-
-          // send token to backend
           await get().sendTokenToBackend(firebaseUser);
-
           set({ user: firebaseUser, isUserReady: true });
           return { user: firebaseUser };
         } catch (err) {
@@ -91,9 +76,6 @@ export const useAuthStore = create(
         }
       },
 
-      // -------------------
-      // Email/Password SignIn
-      // -------------------
       signIn: async (email, password) => {
         set({ isSigningIn: true });
         try {
@@ -103,10 +85,7 @@ export const useAuthStore = create(
             password
           );
           const firebaseUser = result.user;
-
-          // send token to backend
           await get().sendTokenToBackend(firebaseUser);
-
           set({ user: firebaseUser, isUserReady: true });
           return { user: firebaseUser };
         } catch (err) {
@@ -117,22 +96,14 @@ export const useAuthStore = create(
         }
       },
 
-      // -------------------
-      // SignOut
-      // -------------------
       signOut: async () => {
         try {
-          // Firebase logout
           await firebaseSignOut(auth);
-
-          // clear cookie on backend
           await axiosInstance.post(
             "/users/logout",
             {},
             { withCredentials: true }
           );
-
-          // clear store
           set({
             user: null,
             isUserReady: false,
@@ -156,15 +127,12 @@ export const useAuthStore = create(
             });
             return;
           }
-
           set({
             user: currentUser,
             isAuthLoading: false,
             isUserReady: true,
             isCookieReady: true,
           });
-
-          // ensure backend cookie is set on reload
           await get().sendTokenToBackend(currentUser);
         });
         return unsubscribe;
