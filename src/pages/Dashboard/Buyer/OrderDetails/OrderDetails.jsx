@@ -104,7 +104,7 @@ export default function OrderDetailsPage() {
               <span className="me-1.5 text-primary font-bold">
                 {order.firstName}
               </span>
-              <span className="text-primary font-bold">{order.firstName}</span>
+              <span className="text-primary font-bold">{order.lastName}</span>
             </p>
             <p className="mb-1">
               <span className="text-neutral/70 me-1.5">Email:</span>
