@@ -55,8 +55,9 @@ export default function RegisterPage() {
 
         const userData = {
           ...rest,
-          image: profileImgUrl,
-          status: "pending",
+          image:
+            profileImgUrl ||
+            "https://cdn-icons-png.flaticon.com/512/149/149071.png",
         };
 
         const { user, error } = await signUp(

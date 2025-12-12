@@ -38,7 +38,7 @@ export default function MyProfilePage() {
               />
             </figure>
 
-            <div className="max-sm:text-center sm:pl-8 col-span-3">
+            <div className="max-sm:text-center sm:pl-8 sm:col-span-3">
               <p className="text-3xl font-extrabold text-primary mb-2 leading-tight">
                 {user?.displayName || "User Name"}
               </p>

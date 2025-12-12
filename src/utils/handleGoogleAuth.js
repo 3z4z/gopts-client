@@ -11,8 +11,13 @@ export const handleGoogleAuth = async (signInWithGoogle, axios) => {
     image: user.photoURL,
   };
   try {
-    const { data } = await axios.post("/users", newUser);
-    console.log(data);
+    const checkExistedUserRes = await axios.post("/users/check-duplicate", {
+      email: user?.email,
+    });
+    if (checkExistedUserRes?.data?.existed) {
+      return { user };
+    }
+    await axios.post("/users", newUser);
     return { user };
   } catch (error) {
     console.log(error);
