@@ -70,7 +70,7 @@ export default function AdminDbHome() {
             {isProdsLoading ? (
               <BarSkeleton />
             ) : (
-              <div className="grid xl:grid-cols-1 md:grid-cols-3 grid-cols-2 xl:gap-2 gap-3">
+              <div className="grid xl:grid-cols-1 md:grid-cols-3 sm:grid-cols-2 xl:gap-2 gap-3">
                 {products?.result?.map((prod) => {
                   const orderCount = orders.filter(
                     (order) => order.productId === prod._id
