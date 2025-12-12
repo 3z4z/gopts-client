@@ -149,7 +149,7 @@ export default function ProductDetailsPage() {
               </Swiper>
             </>
           ) : (
-            <figure className="w-full h-full rounded-xl bg-base-300 overflow-hidden">
+            <figure className="w-full h-full rounded-xl bg-base-300 overflow-hidden shadow-md border border-neutral/5">
               <img
                 src={product.images[0]}
                 alt=""

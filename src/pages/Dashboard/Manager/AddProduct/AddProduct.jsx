@@ -1,4 +1,3 @@
-import { useForm, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
 import useCategories from "../../../../hooks/useCategories";
 import { axiosInstance } from "../../../../utils/axiosInstance";
@@ -20,75 +19,85 @@ export default function AddProductPage() {
     useCategories();
   const axios = useAxios();
   const { user } = useAuthStore();
-  const { control } = useForm({
-    mode: "all",
-    defaultValues: {
-      images: [],
-    },
-  });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const watchUploadImages = useWatch({ name: "images", control }) || [];
-
-  useEffect(() => {
-    setImageFiles((prev) => [...prev, ...Array.from(watchUploadImages)]);
-  }, [watchUploadImages, setImageFiles]);
 
   const addProduct = async (data) => {
     setIsProductAdding(true);
-    await axios
-      .post("/products/check-duplicate", { name: data?.name })
-      .then(async (res) => {
-        if (res.data?.existed === false) {
-          const formData = new FormData();
-          for (let i = 0; imageFiles.length > i; i++) {
-            formData.append("productImages", imageFiles[i]);
-          }
-          const res = await axiosInstance.post(
-            "/upload/product-images",
-            formData
-          );
-          const productImageUrls = await res.data?.productImageUrls;
-          const productData = {
-            ...data,
-            managerName: user?.displayName,
-            managerEmail: user?.email,
-            minOrderAmount: Number(data.minOrderAmount),
-            images: productImageUrls,
-          };
-          const productRes = await axios.post("/products", productData);
-          if (productRes.status === 201) {
-            toast.success(productRes.data?.message);
-            setFormResetKey((prev) => prev + 1);
-            setImageFiles([]);
-            setImageUrls([]);
-          } else {
-            toast.error(productRes.data?.message);
-          }
-        } else {
-          toast.error(res.data?.message);
-        }
-      })
-      .catch((err) => {
-        toast.error(err);
-        console.log(err);
+    try {
+      const duplicateRes = await axios.post("/products/check-duplicate", {
+        name: data?.name,
       });
+      if (duplicateRes.data?.existed) {
+        toast.error(duplicateRes.data?.message);
+        setIsProductAdding(false);
+        return;
+      }
+
+      const formData = new FormData();
+      imageFiles.forEach((file) => formData.append("productImages", file));
+
+      const uploadRes = await axiosInstance.post(
+        "/upload/product-images",
+        formData
+      );
+      if (!uploadRes?.data?.success) {
+        toast.error(uploadRes?.data?.message || "Image upload failed!");
+        setIsProductAdding(false);
+        return;
+      }
+
+      const productData = {
+        ...data,
+        managerName: user?.displayName,
+        managerEmail: user?.email,
+        minOrderAmount: Number(data.minOrderAmount),
+        images: uploadRes.data.productImageUrls || [],
+      };
+
+      const productRes = await axios.post("/products", productData);
+      if (productRes.status === 201) {
+        toast.success(productRes.data?.message);
+        setFormResetKey((prev) => prev + 1);
+        setImageFiles([]);
+        setImageUrls([]);
+      } else {
+        toast.error(productRes.data?.message || "Failed to add product!");
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Something went wrong!");
+      console.log(err);
+    }
     setIsProductAdding(false);
   };
 
   const handleImageChange = (e) => {
-    const newFiles = Array.from(e.target.files);
-    const getImageUrls = newFiles.map((i) => URL.createObjectURL(i));
+    const files = Array.from(e.target.files);
+    const newFiles = files.filter(
+      (file) =>
+        !imageFiles.some((f) => f.name === file.name && f.size === file.size)
+    );
+    if (newFiles.length === 0) {
+      e.target.value = "";
+      return;
+    }
     setImageFiles((prev) => [...prev, ...newFiles]);
-    setImageUrls((prev) => [...prev, ...getImageUrls]);
+    setImageUrls((prev) => [
+      ...prev,
+      ...newFiles.map((f) => URL.createObjectURL(f)),
+    ]);
+    e.target.value = "";
   };
+  useEffect(() => {
+    console.log(imageUrls);
+    console.log(imageFiles);
+  }, [imageFiles, imageUrls]);
 
   const removeImage = (index) => {
-    const updatedFiles = imageFiles.filter((_, i) => i !== index);
-    const updatedUrls = imageUrls.filter((_, i) => i !== index);
-    setImageFiles(updatedFiles);
-    setImageUrls(updatedUrls);
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
   };
+
   if (isStatusLoading) return <QueryLoader />;
+
   return (
     <>
       {status.status === "rejected" ? (

@@ -34,6 +34,7 @@ export default function PendingOrdersPage() {
       deliveryStatus: order?.deliveryStatus,
       orderId: order._id,
       trackingId: order.trackingId,
+      locationInfo: "Dhaka",
     };
     order?.deliveryStatus === "pending"
       ? (statusInfo.deliveryStatus = "approved")

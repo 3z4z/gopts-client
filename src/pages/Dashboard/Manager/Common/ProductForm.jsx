@@ -21,7 +21,6 @@ export default function ProductForm({
     register,
     handleSubmit,
     trigger,
-    setValue,
     reset,
     control,
     formState: { errors, isValid },
@@ -283,20 +282,12 @@ export default function ProductForm({
                 key={index}
                 className="h-40 w-full overflow-hidden flex items-center justify-center border border-primary/20 rounded-lg relative"
               >
-                <img
-                  src={
-                    typeof image === "string"
-                      ? image
-                      : URL.createObjectURL(image)
-                  }
-                  alt=""
-                  className="object-contain h-full"
-                />
+                <img src={image} alt="" className="object-contain h-full" />
                 {isProductAdding && <UploadInfiniteLoader />}
                 <button
                   type="button"
                   className="absolute top-2 right-2 text-error text-2xl cursor-pointer"
-                  onClick={() => removeImage(index, setValue)}
+                  onClick={() => removeImage(index)}
                 >
                   <IoMdCloseCircle />
                 </button>

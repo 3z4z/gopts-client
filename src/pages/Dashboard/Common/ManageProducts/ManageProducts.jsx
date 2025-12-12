@@ -96,7 +96,11 @@ export default function ManageProductsPage() {
                     <p>Cat: {p.category}</p>
                   </td>
                   <td>{p.price}</td>
-                  <td>{p.paymentMethod}</td>
+                  <td>
+                    {p.paymentMethod === "cod"
+                      ? "Cash On Delivery"
+                      : "Pay First"}
+                  </td>
                   <td>
                     <div className="flex gap-2">
                       <Link
