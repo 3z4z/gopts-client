@@ -23,7 +23,7 @@ export default function AllProductsPage() {
   const [skip, setSkip] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const limit = 6;
+  const limit = 12;
 
   useEffect(() => {
     scrollUp();

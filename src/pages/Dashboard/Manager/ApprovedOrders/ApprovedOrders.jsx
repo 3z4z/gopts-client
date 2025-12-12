@@ -91,9 +91,7 @@ export default function ApprovedOrdersPage() {
                   <td>{o.productName}</td>
                   <td>{o.orderQuantity}</td>
                   <td>
-                    {o.approvedAt
-                      ? dayjs(o.approvedAt).format("DD MMM, YYYY @ hh:mm a")
-                      : "N/A"}
+                    {dayjs(o.approvedAt).format("DD MMM, YYYY @ hh:mm a")}
                   </td>
                   <td>
                     <div className="flex gap-2">
