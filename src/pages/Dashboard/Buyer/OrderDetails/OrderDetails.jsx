@@ -14,7 +14,7 @@ import LogSkeleton from "../../../../components/Common/Loaders/LogSkeleton";
 export default function OrderDetailsPage() {
   const { id } = useParams();
   const axios = useAxios();
-  const { role } = useRole();
+  const { isLoading: isRoleLoading, role } = useRole();
   const {
     data: order = {},
     isLoading,
@@ -34,7 +34,7 @@ export default function OrderDetailsPage() {
     },
     retry: false,
   });
-  if (isLoading) return <QueryLoader />;
+  if (isLoading || isRoleLoading) return <QueryLoader />;
   if (isError) return <ErrorPage />;
   return (
     <div className="bg-base-200 rounded-xl">

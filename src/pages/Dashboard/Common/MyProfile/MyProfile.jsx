@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import QueryLoader from "../../../../components/Common/Loaders/QueryLoader";
 
 export default function MyProfilePage() {
-  const { role } = useRole();
+  const { isLoading: isRoleLoading, role } = useRole();
   const axios = useAxios();
   const { user, signOut } = useAuthStore();
   const { data: userInfo, isLoading } = useQuery({
@@ -22,7 +22,7 @@ export default function MyProfilePage() {
     await signOut();
   };
 
-  if (isLoading) return <QueryLoader />;
+  if (isLoading || isRoleLoading) return <QueryLoader />;
   return (
     <>
       <h4 className="text-3xl font-semibold mb-6">My Profile</h4>

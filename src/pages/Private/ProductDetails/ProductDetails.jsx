@@ -16,10 +16,10 @@ export default function ProductDetailsPage() {
     });
   }, []);
   const { id } = useParams();
-  const { role } = useRole();
+  const { isLoading: isRoleLoading, role } = useRole();
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const { data: product = {}, isLoading } = useProduct({ id: id });
-  if (isLoading) return <ProductDetailsSkeleton />;
+  if (isLoading || isRoleLoading) return <ProductDetailsSkeleton />;
   return (
     <div className={`${container} mt-24`}>
       <title>{isLoading ? "Product" : `${product?.name} | GOPTS`}</title>
